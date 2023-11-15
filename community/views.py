@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 
@@ -30,7 +32,7 @@ def register_government(request):
             return redirect('login')
     else: 
         user_form = GovernmentOfficialForm()
-    return render(request,'community/register_government', {'form':user_form})
+    return render(request,'community/register_government.html', {'form':user_form})
 
 def register_instructor(request):
     if request.method == 'POST':
@@ -53,4 +55,4 @@ def general_public(request):
             return redirect('login')
     else:
         user_form =GeneralPublicForm()
-    return render(request,'community/register_public',{'form':user_form})
+    return render(request,'community/register_public.html',{'form':user_form})

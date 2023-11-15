@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm
 from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC
+from django.contrib.auth import login as auth_login
+from django.shortcuts import redirect
+
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 

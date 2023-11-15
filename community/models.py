@@ -30,4 +30,23 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
-  
+class Event(models.Model):
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    capacity =models.IntegerField(default=60)
+    cost = models.DecimalField(max_digits=6, decimal_places=2,default=0.00)
+    image = models.ImageField(upload_to ='event_images/', blank=True , null=True)
+
+    def __str__(self):
+        return self.title
+
+class Booking(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    booking_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user_profile.user.username} booking for {self.event.title}'

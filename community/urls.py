@@ -16,4 +16,5 @@ urlpatterns = [
     path('register_public/', views.general_public, name='register_public'),
     path('register_instructor/', views.register_instructor, name='register_instructor'),
     path('register_government/', views.register_government, name='register_government'),
+    path('create_event/', views.create_event, name="create_event")
 ]

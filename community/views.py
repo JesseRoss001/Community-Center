@@ -74,5 +74,4 @@ def create_event(request):
     else:
         form = EventForm()
     
-    return render(request , 'events/create_event.html',{'form':form})
-    
+    return render(request , 'community/events/create_event.html',{'form':form})

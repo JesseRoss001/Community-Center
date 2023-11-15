@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db import models
 
+
 # Create your models here.
 ADMIN = 'ADMIN'
 INSTRUCTOR = 'INSTRUCTOR'
@@ -29,4 +30,4 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
-    
+  

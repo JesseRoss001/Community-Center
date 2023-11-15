@@ -1,8 +1,8 @@
 # community urls 
 from django.urls import path 
 from django.urls import include
-from django.contrib.auth import views as auth_views
 from . import views
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
     path('gallery/',views.gallery,name='gallery'),
     path('booking/',views.booking,name='booking'),
     #django template login logout 
-    path('login/', auth_views.LoginView.as_view(template_name='community/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register_public/', views.general_public, name='register_public'),
     path('register_instructor/', views.register_instructor, name='register_instructor'),

@@ -1,8 +1,15 @@
 {% extends 'community/base.html' %}
 
-{% block title %} Home - {{block.super}}{% endblock title %}
-
 {% block content %}
+<!-- Adding in login/logout links -->
+
+<p>
+    {% if user.is_authenticated %}
+     Hi , {{user.username}} ! <a href="{% url 'logout' %}" > Logout </a>
+    {% else %}
+        <a href ="{% url 'login' %}">Login </a>
+    {% endif %}
+</p>
 
 <h1> Welcome to the community Center</h1>
 

@@ -3,6 +3,8 @@ from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,Ev
 from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event
 from django.contrib.auth import login as auth_login
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from datetime import datetime, timedelta
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -63,12 +65,18 @@ def general_public(request):
        form =GeneralPublicForm()
     return render(request,'community/register_public.html',{'form':form})
 
+
+@login_required
 def create_event(request):
+    user_profile = request.user.profile
+    two_months_ahead = datetime.now() + timedelta(days=90)
+
+
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
             event = form.save(commit=False)
-            event.author = request.user
+            event.author = user_profile
             event.save()
             return redirect('event_detail', event_id = event.id )
     else:

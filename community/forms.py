@@ -1,7 +1,8 @@
 from django import forms
+from django.forms.widgets import DateInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
-from .models import UserProfile , GOVERNMENT_OFFICIAL , INSTRUCTOR , GENERAL_PUBLIC , Event 
+from .models import UserProfile , GOVERNMENT_OFFICIAL , INSTRUCTOR , GENERAL_PUBLIC , Event , TIME_SLOTS
 
 class GovernmentOfficialForm(UserCreationForm):
     badge_number = forms.CharField(max_length=5)
@@ -23,20 +24,14 @@ class GeneralPublicForm(UserCreationForm):
         model = User
         fields = ('username','email','password1','password2')
 
+
+#Event Form 
 class EventForm(forms.ModelForm):
+    start_time = forms.ChoiceField(choices=TIME_SLOTS)
+    end_time = forms.ChoiceField(choices=TIME_SLOTS)
+
     class Meta:
         model = Event
-        fields = ['title','description','start_time', 'end_time', 'capacity', 'cost' , 'image' ]
+        fields = ['title','description','date','start_time', 'end_time', 'capacity', 'cost' , 'image' ]
+        widgets = {'date':DateInput(attrs={'type':'date'}),}
 
-def create_event(request):
-    user_profile = request.user.profile
-    if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
-        if form.is_valid() and user_profile.role in [UserProfile.INSTRUCTOR, UserProfile.GOVERNMENT_OFFICIAL]:
-            event = form.save(commit=False)
-            event.author = user_profile
-            event.save()
-            return redirect('event_detail',event_id=event.id)
-    else:
-        form =EventForm()
-    return render(request, 'events/create_event.html',{'form':form})

@@ -11,6 +11,8 @@ def events(request):
 def about(request):
     return render(request,'community/about.html')
 
+def about(request):
+    return render(request,'community/login.html')
 
 def gallery(request):
     return render(request, 'community/gallery.html')

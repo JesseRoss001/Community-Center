@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-jr^d+rwrfk%n&^sx+rxmgv$=6$acc50#6#_q@oba9udm2ig^^#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 ALLOWED_HOSTS = [
     '8000-jesseross00-communityce-zyjsz9taqgg.ws-eu106.gitpod.io','.herokuapp.com'
     # ... other hosts ...
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # installing community app
     'community',
+    
 ]
 
 MIDDLEWARE = [

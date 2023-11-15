@@ -24,35 +24,38 @@ def booking(request):
 
 def register_government(request):
     if request.method == 'POST':
-        user_form = GovernmentOfficialForm(request.POST)
-        if user_form.is_valid():
-            user = user_form.save()
-            badge_number = user_form.cleaned_data['badge_number']
+        form = GovernmentOfficialForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            badge_number = form.cleaned_data['badge_number']
             UserProfile.objects.create(user=user , role=GOVERNMENT_OFFICIAL, badge_number= badge_number)
-            return redirect('login')
+            auth_login(request,user)
+            return redirect('home')
     else: 
-        user_form = GovernmentOfficialForm()
-    return render(request,'community/register_government.html', {'form':user_form})
+        form = GovernmentOfficialForm()
+    return render(request,'community/register_government.html', {'form':form})
 
 def register_instructor(request):
     if request.method == 'POST':
-        user_form = InstructorForm(request.POST)
-        if user_form.is_valid():
-            user = user_form.save()
-            card_number = user_form.cleaned_data['card_number']
+        form = InstructorForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            card_number = form.cleaned_data['card_number']
             UserProfile.objects.create(user=user , role=INSTRUCTOR, card_number=card_number)
-            return redirect('login')
+            auth_login(request,user)
+            return redirect('home')
     else: 
-        user_form = InstructorForm()
-    return render(request,'community/register_instructor.html', {'form':user_form})
+        form = InstructorForm()
+    return render(request,'community/register_instructor.html', {'form':form})
 
 def general_public(request):
     if request.method == 'POST':
-        user_form = GeneralPublicForm(request.POST)
-        if user_form.is_valid():
-            user = user_form.save()
+        form = GeneralPublicForm(request.POST)
+        if form.is_valid():
+            user = form.save()
             UserProfile.objects.create(user=user,role=GENERAL_PUBLIC)
-            return redirect('login')
+            auth_login(request,user)
+            return redirect('home')
     else:
-        user_form =GeneralPublicForm()
-    return render(request,'community/register_public.html',{'form':user_form})
+       form =GeneralPublicForm()
+    return render(request,'community/register_public.html',{'form':form})

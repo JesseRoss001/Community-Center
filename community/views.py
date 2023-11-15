@@ -13,7 +13,7 @@ def home(request):
     user_profile = request.user.profile if request.user.is_authenticated else None
 
     if user_profile and user_profile.created_events.exists():
-        create_events = user_profile.created_events.all()
+        created_events = user_profile.created_events.all()
         return render(request, 'community/home.html',{'created_events': created_events})
     else:
         return render(request, 'community/home.html')

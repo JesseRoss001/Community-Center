@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm
 from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event
 from django.contrib.auth import login as auth_login
@@ -10,7 +10,13 @@ from datetime import datetime, timedelta
 #Creating views for home , events , about , gallery and booking pages 
 
 def home(request):
-    return render(request, 'community/home.html')
+    user_profile = request.user.profile if request.user.is_authenticated else None
+
+    if user_profile and user_profile.created_events.exists():
+        create_events = user_profile.created_events.all()
+        return render(request, 'community/home.html',{'created_events': created_events})
+    else:
+        return render(request, 'community/home.html')
 
 def events(request):
     return render(request, 'community/events.html')
@@ -65,7 +71,7 @@ def general_public(request):
        form =GeneralPublicForm()
     return render(request,'community/register_public.html',{'form':form})
 
-
+# Creating the event view
 @login_required
 def create_event(request):
     user_profile = request.user.profile
@@ -78,8 +84,13 @@ def create_event(request):
             event = form.save(commit=False)
             event.author = user_profile
             event.save()
-            return redirect('event_detail', event_id = event.id )
+            user_profile.created_events.add(event)
+            return redirect('home' )
     else:
         form = EventForm()
     
     return render(request , 'community/events/create_event.html',{'form':form})
+
+def event_detail(request,event_id):
+    event = get_object_or_404 (Event,pk = event_id)
+    return render(request,'community/events/event_detail.html',{'event':event})

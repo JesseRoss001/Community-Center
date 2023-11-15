@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=30,choices=USER_ROLES,default=GENERAL_PUBLIC)
     badge_number = models.CharField(max_length=5,blank=True) #required badgeg number for government offic
     card_number = models.CharField(max_length=4,blank=True) # card number required for instructors 
+    created_events = models.ManyToManyField('Event', related_name='creators', blank=True)
 
     def clean(self):
         #validation for card + badge 
@@ -30,6 +31,8 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
+
+#globally define time slot constant
 TIME_SLOTS = (
     ('08:00', '08:00 - 10:00'),
     ('10:00','10:00-12:00'),
@@ -38,6 +41,7 @@ TIME_SLOTS = (
     ('17:00','17:00-19:00'),
     ('19:00','19:00-21:00'),
 )
+#event model 
 class Event(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -52,6 +56,7 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+#booking class 
 class Booking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

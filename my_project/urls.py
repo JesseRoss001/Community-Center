@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #adding community url paths
     path('community/',include('community.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    
     re_path(r'^$',RedirectView.as_view(url='community/',permanent=False)),
 ]

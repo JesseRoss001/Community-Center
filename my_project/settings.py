@@ -136,7 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = '/community/login/'
 
-
-LOGIN_REDIRECT_URL = '/' # Redirect to home after login 
-LOGOUT_REDIRECT_URL = '/' # Redirect to home after logout 
+LOGIN_REDIRECT_URL = '/community/' # Redirect to home after login 
+LOGOUT_REDIRECT_URL = '/community/' # Redirect to home after logout 

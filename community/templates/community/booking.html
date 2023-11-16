@@ -8,19 +8,19 @@
 {% for date, day_schedule in schedule.items %}
     
         <h3>{{ date }}</h3>
-        {% for time_slot in time_slots %}
+        {% for time_slot, events in day_schedule.items %}
             <div class="time-slot">
                 <h4> {{ time_slot.1 }} </h4>
-                {% with event=day_schedule|get_item:time_slot.0 %}
-                    {% if event %}
-                    <div class="event">
-                        <p> {{ event.title }} by {{ event.author.user.username }}</p>
-                    </div>
-                {% else %}
-                    <div class="open-slot">Available </div>
+                {% for event, is_booked in events %}
+                    <div class="{% if is_booked %}booked-event{% else %}open-slot{% endif %}">
+                        {% if is_booked %}
+                            <p> Booked: {{ event.title }} by {{ event.author.user.username }}</p>
+                        {% else %}
+                            <p> Available: {{ event.title }} by {{event.author.user.username}}</p>
                 {% endif %}
-                {% endwith %}
+                 </div>
+                {% endfor %}
             </div>
             {% endfor %}
 {% endfor %}
-{% endblock %}
+{% endblock%}

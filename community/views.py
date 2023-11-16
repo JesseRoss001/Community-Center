@@ -52,7 +52,8 @@ def booking(request):
         day_schedule= {}
         for time_slot in TIME_SLOTS:
             events = Event.objects.filter(date=single_date,start_time=time_slot[0])
-            day_schedule[time_slot] = events if events.exists () else None 
+            booked_events = Booking.objects.filter(event__in=events).values_list('event',flat=True)
+            day_schedule[time_slot] = [(events, event.id in booked_events) for  event in events] 
         schedule[single_date] = day_schedule 
 
     context = {
@@ -62,6 +63,10 @@ def booking(request):
     }
 
     return render(request,'community/booking.html',context)
+    for date,slots in schedule.items():
+        print(f"Date: {date}")
+        for slot, event in slots.items():
+            print(f" Time Slot: {slot}, Event: {event}")
    
 
 

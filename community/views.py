@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
@@ -44,26 +44,25 @@ def gallery(request):
 
 # booking view 
 def booking(request):
-    start_date_str = request.GET.get('start',None)
-    start_date = parse_date(start_date_str) if start_date_str else datetime.now().date()
-    start_date = start_date - timedelta (days=start_date.weekday())
-
-    end_date = start_date + timedelta(days=14)
-    events = Event.objects.filter(date__range=[start_date, end_date])
-
-    previous_start = start_date - timedelta(days=14)
-    next_start = start_date + timedelta(days=14)
-
-    schedule = {day :events.filter(date=day) for day in (start_date + timedelta(days=n) for n in range(14))}
+    start_date= timezone.now().date()
+    end_date = start_date + timedelta(days=13)
+    
+    schedule = {}
+    for single_date in (start_date + timedelta(n) for n in range((end_date - start_date).days +1)):
+        day_schedule= {}
+        for time_slot in TIME_SLOTS:
+            events = Event.objects.filter(date=single_date,start_time=time_slot[0])
+            day_schedule[time_slot] = events if events.exists () else None 
+        schedule[single_date] = day_schedule 
 
     context = {
-        'schedule':schedule,
-        'previous_start': previous_start,
-        'next_start': next_start,
-        'current_start':start_date
-    }
-    return render(request, 'community/booking.html',context)
+        'schedule': schedule,
+        'time_slots':TIME_SLOTS,
 
+    }
+
+    return render(request,'community/booking.html',context)
+   
 
 
 def register_government(request):

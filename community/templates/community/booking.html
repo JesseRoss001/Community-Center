@@ -1,28 +1,26 @@
 {% extends 'community/base.html' %}
+{% load dict_key %}
 
-{% block title %} booking - {{block.super}}{% endblock title %}
 
 {% block content %}
 
 <h1> Welcome to the booking section </h1>
-<div class="navigation">
-    <a href="?start = {{ previous_start|date:'Y-m-d' }}">Previous </a>
-    <span> Week starting {{ current_start }} </span>
-    <a href="?start = {{ next_start|date:'Y-m-d' }}"> Next </a>
-</div>
-<div class ="booking-schedule">
-    {% for day , events in schedule.item %}
-    <div class="day-card">
-        <h2> {{ day }}</h2>
-        {% for event in events %}
-            <div class="event-details">
-                <h3> {{ event.title }} </h3>
+{% for date, day_schedule in schedule.items %}
+    
+        <h3>{{ date }}</h3>
+        {% for time_slot in time_slots %}
+            <div class="time-slot">
+                <h4> {{ time_slot.1 }} </h4>
+                {% with event=day_schedule|get_item:time_slot.0 %}
+                    {% if event %}
+                    <div class="event">
+                        <p> {{ event.title }} by {{ event.author.user.username }}</p>
+                    </div>
+                {% else %}
+                    <div class="open-slot">Available </div>
+                {% endif %}
+                {% endwith %}
             </div>
-            {% empty %}
-            <p> No events scheduled </p>
             {% endfor %}
-    </div>
-    {% endfor %}
-</div>
-
-{% endblock content %}
+{% endfor %}
+{% endblock %}

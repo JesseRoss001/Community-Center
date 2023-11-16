@@ -7,7 +7,7 @@
     <p class="mt-3">
         {% if user.is_authenticated %}
 
-            Hi , {{ user.name }}
+            Hi , {{ username.userProfile }}
             {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
                 <a href="{% url 'create_event' %}" class = "btn btn-success"> Create an Event </a>
             {% endif %}
@@ -23,6 +23,8 @@
         {% endif %}
     </p>
 </div>
+
+
 
 <div>
     {% if created_events %}

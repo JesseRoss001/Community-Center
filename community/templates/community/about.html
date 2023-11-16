@@ -3,7 +3,37 @@
 {% block title %} About - {{block.super}}{% endblock title %}
 
 {% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4"> About our community Center </h1>
+            <p class="lead"> We are focused on enriching lives , by providing a space for learning, creativity and community engagement </p>
+        </div>
+    </div>
+</div>
 
-<h1> Welcome to the about section </h1>
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" > Our Impact </h5>
+                <p class="card-text"> We've been making a difference in the community since  7/12/2024 </p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"> Total Members : <strong> {{ total_users }} </strong> </li>
+                    <li class="list-group-item"> Total Bookings : <strong> {{ total_bookings }} </strong></li>
+                    <li class="list-group-item"> Proud provider of official Welsh Language Classes </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <img src="assets/images/community-center.jpg" alt="community center image ">
+    </div>
+</div>
+</div>
+
 
 {% endblock content %}

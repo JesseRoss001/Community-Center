@@ -22,6 +22,13 @@ def events(request):
     return render(request, 'community/events.html')
 
 def about(request):
+    total_users=User.objects.count()
+    total_bookings=Booking.objects.count()
+
+    context = {
+        'total_users':total_users,
+        'total_bookings':total_bookings,
+    }
     return render(request,'community/about.html')
 
 

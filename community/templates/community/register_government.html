@@ -2,9 +2,10 @@
 {% block content %}
 <body>
     <h2 class="header"> Register as a Government Official </h2>
+    {% load crispy_forms_tags %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <button type ="submit"> Register </button>
     </form>
 </body>

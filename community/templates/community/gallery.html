@@ -6,7 +6,7 @@
 
 <div class="container mt-4"> <h1>Gallery</h1> 
 <div class="row">
-    {% for events in events_with_images %}
+    {% for event in events_with_images %}
     <div class="col-md-4">
         <div class="card mb-4 ">
             <img src ="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">

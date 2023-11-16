@@ -5,10 +5,10 @@
 {% block content %}
 
 <h1> Welcome to the events</h1>
-
+{% load crispy_forms_tags %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button type="submit"> Create Event</button>
 </form>
 

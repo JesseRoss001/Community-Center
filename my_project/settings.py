@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # installing community app
     'community',
+    'crispy_forms',
+    'crispy_bootstrap4',
     
 ]
 
@@ -77,6 +79,12 @@ TEMPLATES = [
         },
     },
 ]
+
+# For event media uploads 
+MEDIA_URL = '/workspace/Community-Center/community/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#crispy template 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'my_project.wsgi.application'
 

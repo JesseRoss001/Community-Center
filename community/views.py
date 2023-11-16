@@ -91,11 +91,15 @@ def create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
         if form.is_valid() and user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
-            event = form.save(commit=False)
-            event.author = user_profile
-            event.save()
-            user_profile.created_events.add(event)
-            messages.success(request, 'Event created successfully. Image uploaded to the gallery.')
+            try:
+                event = form.save(commit=False)
+                event.author = request.user.profile
+                event.save()
+                user_profile.created_events.add(event)
+                messages.success(request, 'Event created successfully. Image uploaded to the gallery.')
+            except Exception as e:
+                messages.error(request,f'Error creating event :{e}')
+                logger.error(f'Error creating event:{e}')
             return redirect('home' )
     else:
         form = EventForm()
@@ -116,7 +120,7 @@ def delete_event_image(request,event_id):
     if request.method == 'POST':
      event.image.delete()
      event.save()
-     message.success(request,'image deleted')
+     messages.success(request,'image deleted')
      return redirect('gallery')
     return render(request,'community/events/delete_event_image.html', {'event': event})
     

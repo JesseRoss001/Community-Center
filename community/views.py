@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden
 import logging 
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -35,13 +36,35 @@ def about(request):
     return render(request,'community/about.html',context)
 
 
-
+# gallery view 
 def gallery(request):
     events_with_images = Event.objects.exclude(image='').order_by('-date')
     return render(request, 'community/gallery.html', {'events_with_images': events_with_images})
 
+
+# booking view 
 def booking(request):
-    return render(request, 'community/booking.html')
+    start_date_str = request.GET.get('start',None)
+    start_date = parse_date(start_date_str) if start_date_str else datetime.now().date()
+    start_date = start_date - timedelta (days=start_date.weekday())
+
+    end_date = start_date + timedelta(days=14)
+    events = Event.objects.filter(date__range=[start_date, end_date])
+
+    previous_start = start_date - timedelta(days=14)
+    next_start = start_date + timedelta(days=14)
+
+    schedule = {day :events.filter(date=day) for day in (start_date + timedelta(days=n) for n in range(14))}
+
+    context = {
+        'schedule':schedule,
+        'previous_start': previous_start,
+        'next_start': next_start,
+        'current_start':start_date
+    }
+    return render(request, 'community/booking.html',context)
+
+
 
 def register_government(request):
     if request.method == 'POST':

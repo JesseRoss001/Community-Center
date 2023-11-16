@@ -5,5 +5,24 @@
 {% block content %}
 
 <h1> Welcome to the booking section </h1>
+<div class="navigation">
+    <a href="?start = {{ previous_start|date:'Y-m-d' }}">Previous </a>
+    <span> Week starting {{ current_start }} </span>
+    <a href="?start = {{ next_start|date:'Y-m-d' }}"> Next </a>
+</div>
+<div class ="booking-schedule">
+    {% for day , events in schedule.item %}
+    <div class="day-card">
+        <h2> {{ day }}</h2>
+        {% for event in events %}
+            <div class="event-details">
+                <h3> {{ event.title }} </h3>
+            </div>
+            {% empty %}
+            <p> No events scheduled </p>
+            {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock content %}

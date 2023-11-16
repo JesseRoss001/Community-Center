@@ -1,0 +1,22 @@
+{% extends 'community/base.html' %}
+
+{% block content %}
+<div class="container">
+<form method="POST" id="delete-event-form">
+{% csrf_token %}
+<a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+<button type="submit" class="btn btn-danger" id="delete-event-button"> Delete </button>
+</form>
+</div>
+<!--NEED TO REFFERENCE DONT FORGET  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButton = document.getElementById('delete-event-button');
+        deleteButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete this event?')) {
+                document.getElementById('delete-event-form').submit();
+            }
+        });
+    });
+    </script>
+{% endblock %}

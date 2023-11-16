@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1> Welcome to the events</h1>
+<h1>{% if event_id %} Update Event {% else %} Create Event {% endif %}</h1>
 {% load crispy_forms_tags %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}

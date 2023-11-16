@@ -81,7 +81,7 @@ def general_public(request):
        form =GeneralPublicForm()
     return render(request,'community/register_public.html',{'form':form})
 
-# Creating the event view
+# Creating +update the event view
 logger = logging.getLogger(__name__)
 @login_required
 def create_or_update_event(request,event_id=None):
@@ -118,18 +118,27 @@ def create_or_update_event(request,event_id=None):
                     event.save()
                     user_profile.create_events.add(event)
                     messages.success(request,'Event created successfully ')
+                    return redirect('home')
                 except Exception as e:
                     messages.error(request, f'Error creating event: {e}')
                     logger.error(f'Error creating event: {e}')
                     return render(request, 'community/events/create_update_event.html', {'form':form})
 
-                return redirect ('home')
+                return redirect ('')
     else:
 
         form = EventForm(instance=instance)
 
     return render(request,'community/events/create_update_event.html',{'form': form})
-             
+# Delete event
+@login_required
+def delete_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id , author=request.user.profile)
+    if request.method == 'POST':
+        event.delete()
+        messages.success(request, ' Event deleted successfully ')
+        return redirect('home')
+    return render(request, 'community/events/confirm_delete.html')            
 
 def event_detail(request,event_id):
     event = get_object_or_404 (Event,pk = event_id)

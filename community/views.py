@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking
 from django.contrib.auth import login as auth_login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+from django.contrib.auth.models import User
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -29,7 +30,7 @@ def about(request):
         'total_users':total_users,
         'total_bookings':total_bookings,
     }
-    return render(request,'community/about.html')
+    return render(request,'community/about.html',context)
 
 
 

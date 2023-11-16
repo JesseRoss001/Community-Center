@@ -9,13 +9,14 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 import logging 
+from django.utils import timezone
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 
 def home(request):
     user_profile = request.user.profile if request.user.is_authenticated else None
-
+    created_events = Event.objects.filter(author=request.user.profile)
     if user_profile and user_profile.created_events.exists():
         created_events = user_profile.created_events.all()
         return render(request, 'community/home.html',{'created_events': created_events})

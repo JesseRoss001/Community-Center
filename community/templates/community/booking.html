@@ -12,13 +12,15 @@
             <div class="time-slot">
                 <h4> {{ time_slot.1 }} </h4>
                 {% for event, is_booked in events %}
-                    <div class="{% if is_booked %}booked-event{% else %}open-slot{% endif %}">
-                        {% if is_booked %}
+                    {% if is_booked %}
+                        <div class="booked-event">
                             <p> Booked: {{ event.title }} by {{ event.author.user.username }}</p>
-                        {% else %}
-                            <p> Available: {{ event.title }} by {{event.author.user.username}}</p>
+                        </div>       
+                    {% else %}
+                    <div class="open-slot">
+                        <p> Avialable Slot </p>
+                    </div>
                 {% endif %}
-                 </div>
                 {% endfor %}
             </div>
             {% endfor %}

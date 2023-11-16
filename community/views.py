@@ -63,10 +63,6 @@ def booking(request):
     }
 
     return render(request,'community/booking.html',context)
-    for date,slots in schedule.items():
-        print(f"Date: {date}")
-        for slot, event in slots.items():
-            print(f" Time Slot: {slot}, Event: {event}")
    
 
 

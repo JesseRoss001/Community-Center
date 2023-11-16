@@ -15,13 +15,11 @@ from django.utils import timezone
 #Creating views for home , events , about , gallery and booking pages 
 
 def home(request):
-    user_profile = request.user.profile if request.user.is_authenticated else None
-    created_events = Event.objects.filter(author=request.user.profile)
-    if user_profile and user_profile.created_events.exists():
-        created_events = user_profile.created_events.all()
-        return render(request, 'community/home.html',{'created_events': created_events})
-    else:
-        return render(request, 'community/home.html')
+    created_events = None 
+    if request.user.is_authenticated:
+        created_events = Event.objects.filter(author=request.user.profile)
+    return render(request, 'community/home.html', {'created_events':created_events})
+
 
 def events(request):
     return render(request, 'community/events.html')
@@ -97,6 +95,7 @@ def create_or_update_event(request,event_id=None):
 
         if form.is_valid() and user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
             event = form.save(commit=False)
+            event.author = user_profile
 
             if event.date > three_months_ahead or event.date < timezone.now().date():
                 message.error(request,'Event date must be within 3 months and not in the past ')

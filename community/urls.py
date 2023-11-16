@@ -2,7 +2,7 @@
 from django.urls import path 
 from django.urls import include
 from . import views
-from .models import Booking
+
 from django.contrib.auth import views as auth_views
 
 
@@ -21,4 +21,5 @@ urlpatterns = [
     #Event Url 
     path('create_event/', views.create_event, name="create_event"),
     path('event/<int:event_id>/',views.event_detail, name= "event_detail"),
+    path('event/delete_image/<int:event_id>/', views.delete_event_image, name='delete_event_image'),
 ]

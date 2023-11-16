@@ -1,9 +1,28 @@
 {% extends 'community/base.html' %}
 
-{% block title %} gallery - {{block.super}}{% endblock title %}
+
 
 {% block content %}
 
-<h1> Welcome to the gallery </h1>
+<div class="container mt-4"> <h1>Gallery</h1> 
+<div class="row">
+    {% for events in events_with_images %}
+    <div class="col-md-4">
+        <div class="card mb-4 ">
+            <img src ="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">
+            <div class="card-body">
+                <h5 class="card-title"> {{ event.title }} </h5>
+                {% if user.is_authenticated and user == event.author.user %}
+                <a href="{% url 'delete_event_image' event.id %}" class="btn btn-danger" > Delete image </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p> No images have been uploaded yet </p>
+    {% endfor %}
+</div>
+</div>
 
 {% endblock content %}

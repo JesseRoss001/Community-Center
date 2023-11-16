@@ -6,6 +6,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -35,7 +37,8 @@ def about(request):
 
 
 def gallery(request):
-    return render(request, 'community/gallery.html')
+    events_with_images = Event.objects.exclude(image='').order_by('-date')
+    return render(request, 'community/gallery.html', {'events_with_images': events_with_images})
 
 def booking(request):
     return render(request, 'community/booking.html')
@@ -92,6 +95,7 @@ def create_event(request):
             event.author = user_profile
             event.save()
             user_profile.created_events.add(event)
+            messages.success(request, 'Event created successfully. Image uploaded to the gallery.')
             return redirect('home' )
     else:
         form = EventForm()
@@ -101,3 +105,18 @@ def create_event(request):
 def event_detail(request,event_id):
     event = get_object_or_404 (Event,pk = event_id)
     return render(request,'community/events/event_detail.html',{'event':event})
+# Image Deletion 
+@login_required
+def delete_event_image(request,event_id):
+    event =get_object_or_404(Event,pk=event_id , author=request.user.profile)
+
+    if request.user != event.author.user:
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+     event.image.delete()
+     event.save()
+     message.success(request,'image deleted')
+     return redirect('gallery')
+    return render(request,'community/events/delete_event_image.html', {'event': event})
+    

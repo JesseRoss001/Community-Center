@@ -27,6 +27,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     
     re_path(r'^$',RedirectView.as_view(url='community/',permanent=False)),
-    # Cloudinary must come here soon 
+    # Cloudinary must come here soon and replace the below 
     re_path('media/(?P<path>.*)$', serve, kwargs={'document_root': settings.MEDIA_ROOT}),
 ]

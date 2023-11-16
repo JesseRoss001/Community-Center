@@ -2,49 +2,69 @@
 
 {% block content %}
 <!-- Adding in login/logout links -->
-<div class="container mt-4 ">
-    <h1> Welcome to the Community Center</h1>
-    <p class="mt-3">
-        {% if user.is_authenticated %}
-
-        Hi , {{ username.userProfile }}
-        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-        <a href="{% url 'create_event' %}" class="btn btn-success"> Create an Event </a>
-        {% endif %}
-        <a href="{% url 'logout' %}" class="btn btn-light ">Logout </a>
-
-        {% else %}
-        <div class="btn-group" role="group" aria-label="login/signup">
-            <a href="{% url 'login' %}" class="btn btn-primary"> Login </a>
-            <a href="{% url 'register_public' %}" class="btn btn-primary"> Sign up </a>
-            <a href="{% url 'register_instructor'  %}" class="btn btn-primary"> Sign up as Instructor </a>
-            <a href="{% url  'register_government' %}" class="btn btn-primary"> Sign up as Government Official </a>
+<div class="container mt-4 d-flex justify-content-center ">
+    <div class="row">
+        <div class="col-12">
+            <h1> Welcome to the Community Center</h1>
         </div>
-        {% endif %}
-    </p>
+        <div class="col-12">
+            <p class="mt-3">
+                {% if user.is_authenticated %}
+
+                Hi , {{ user.profile }}
+                {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
+                <a href="{% url 'create_event' %}" class="btn btn-success"> Create an Event </a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="btn btn-light ">Logout </a>
+
+                {% else %}
+                <div class="btn-group" role="group" aria-label="login/signup">
+                    <a href="{% url 'login' %}" class="btn btn-primary"> Login </a>
+                    <a href="{% url 'register_public' %}" class="btn btn-primary"> Sign up </a>
+                    <a href="{% url 'register_instructor'  %}" class="btn btn-primary"> Sign up as Instructor </a>
+                    <a href="{% url  'register_government' %}" class="btn btn-primary"> Sign up as Government Official
+                    </a>
+                </div>
+                {% endif %}
+            </p>
+        </div>
+    </div>
 </div>
 
 
 
-<div>
-    {% if created_events %}
-    <h2> Your Created Events:</h2>
-    <ul>
-        {% for event in created_events %}
-        <li>{{ event.title }}</li>
-        <p>Date: {{ event.date }}</p>
-        <p>Start Time : {{ event.start_time }}</p>
-        <p> Capacity: {{ event.capacity }}</p>
-        <p> Cost: {{ event.cost }} </p>
-        {% if event.image %}
-        <img src="{{ event.image.url }}" alt="Event Image">
-        {% endif %}
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p> You have not create any events yet.</p>
-    {% endif %}
+
+
+{% if created_events %}
+<hr>
+<div class="row">
+    <div class="col-12 d-flex text-center justify-content-center ">
+        <h2> Your Created Events:</h2>
+    </div>
 </div>
+<div class="row">
+    {% for event in created_events %}
+    <div class="col-md-4">
+        <div class="card mb-4 ">
+
+
+            <strong>{{ event.title }}</strong>
+            <p>Date: {{ event.date }}</p>
+            <p>Start Time : {{ event.start_time }}</p>
+            <p> Capacity: {{ event.capacity }}</p>
+            <p> Cost: {{ event.cost }} </p>
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="Event Image">
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p> You have not create any events yet.</p>
+{% endif %}
+
+
 
 
 {% endblock content %}

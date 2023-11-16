@@ -1,4 +1,0 @@
-button , a {transition: background-color 0.3s ease , color  0.3s ease;}
-
-button:hover, a:hover {background-color: rgb(203, 181, 181);
-    color:white}

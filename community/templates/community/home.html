@@ -13,7 +13,7 @@
 
                 Hi , {{ user.profile }}
                 {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-                <a href="{% url 'create_event' %}" class="btn btn-success"> Create an Event </a>
+                <a href="{% url 'create_or_update_event' %}" class="btn btn-success"> Create an Event </a>
                 {% endif %}
                 <a href="{% url 'logout' %}" class="btn btn-light ">Logout </a>
 

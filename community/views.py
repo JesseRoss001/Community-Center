@@ -2,12 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm
 from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking
 from django.contrib.auth import login as auth_login
-from django.shortcuts import redirect
+from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+import logging 
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -82,29 +83,53 @@ def general_public(request):
     return render(request,'community/register_public.html',{'form':form})
 
 # Creating the event view
+logger = logging.getLogger(__name__)
 @login_required
-def create_event(request):
+def create_or_update_event(request,event_id=None):
     user_profile = request.user.profile
-    two_months_ahead = datetime.now() + timedelta(days=90)
-
-
+    three_months_ahead = timezone.now().date() + timedelta(days=90)
+    instance = None 
+    if event_id:
+        instance = Event.objects.get(id=event_id)
     if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
+        form = EventForm(request.POST,request.FILES, instance =instance)
+
         if form.is_valid() and user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
-            try:
-                event = form.save(commit=False)
-                event.author = request.user.profile
-                event.save()
-                user_profile.created_events.add(event)
-                messages.success(request, 'Event created successfully. Image uploaded to the gallery.')
-            except Exception as e:
-                messages.error(request,f'Error creating event :{e}')
-                logger.error(f'Error creating event:{e}')
-            return redirect('home' )
+            event = form.save(commit=False)
+
+            if event.date > three_months_ahead or event.date < timezone.now().date():
+                message.error(request,'Event date must be within 3 months and not in the past ')
+                return render (request, 'community/events/create_update_event.html',{'form':form})
+
+            critical_profiles = UserProfile.objects.filter(
+                role__in =[INSTRUCTOR, GOVERNMENT_OFFICIAL]
+            )
+            overlapping_events = Event.objects.filter(
+                author__in = critical_profiles,
+                date = event.date ,
+                start_time =event.start_time  
+            ).exclude(id=event.id)
+
+            if overlapping_events.exists():
+                message.error(request, 'This time slot is already booked ')
+            else:
+                try:
+                    event.author=user_profile
+                    event.save()
+                    user_profile.create_events.add(event)
+                    messages.success(request,'Event created successfully ')
+                except Exception as e:
+                    messages.error(request, f'Error creating event: {e}')
+                    logger.error(f'Error creating event: {e}')
+                    return render(request, 'community/events/create_update_event.html', {'form':form})
+
+                return redirect ('home')
     else:
-        form = EventForm()
-    
-    return render(request , 'community/events/create_event.html',{'form':form})
+
+        form = EventForm(instance=instance)
+
+    return render(request,'community/events/create_update_event.html',{'form': form})
+             
 
 def event_detail(request,event_id):
     event = get_object_or_404 (Event,pk = event_id)

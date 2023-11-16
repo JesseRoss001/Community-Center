@@ -21,7 +21,7 @@ urlpatterns = [
     path('register_instructor/', views.register_instructor, name='register_instructor'),
     path('register_government/', views.register_government, name='register_government'),
     #Event Url 
-    path('create_event/', views.create_event, name="create_event"),
+    path('create_or_update_event/', views.create_or_update_event, name="create_or_update_event"),
     path('event/<int:event_id>/',views.event_detail, name= "event_detail"),
     path('event/delete_image/<int:event_id>/', views.delete_event_image, name='delete_event_image'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

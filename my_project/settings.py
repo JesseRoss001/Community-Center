@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.conf import settings
+from django.conf.urls.static import static
 import os
 import dj_database_url
 if os.path.isfile('env.py'):
@@ -26,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-jr^d+rwrfk%n&^sx+rxmgv$=6$acc50#6#_q@oba9udm2ig^^#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 ALLOWED_HOSTS = [
     '8000-jesseross00-communityce-zyjsz9taqgg.ws-eu106.gitpod.io','.herokuapp.com'
@@ -81,8 +83,9 @@ TEMPLATES = [
 ]
 
 # For event media uploads 
-MEDIA_URL = ''
-MEDIA_ROOT = os.path.join(BASE_DIR, 'community', 'media')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 #crispy template 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

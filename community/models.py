@@ -51,7 +51,7 @@ class Event(models.Model):
     end_time = models.CharField(max_length=10, choices=TIME_SLOTS)
     capacity =models.IntegerField(default=60)
     cost = models.DecimalField(max_digits=6, decimal_places=2,default=0.00)
-    image = models.ImageField(upload_to ='event_images/', blank=True , null=True)
+    image = models.ImageField(blank=True , null=True)
 
     def __str__(self):
         return self.title

@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path , include , re_path
 from django.views.generic import RedirectView
 from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls.static import static, serve
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     #adding community url paths
@@ -26,4 +27,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     
     re_path(r'^$',RedirectView.as_view(url='community/',permanent=False)),
+    # Cloudinary must come here soon 
+    re_path('media/(?P<path>.*)$', serve, kwargs={'document_root': settings.MEDIA_ROOT}),
 ]

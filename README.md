@@ -1,7 +1,13 @@
 # Project Name: Community Center Booking System
-
+#Problem Statement  : Local community centers are not imformative about what events are being held and a booking system for them does not exist that is avialable to the public. 
+#Purpose : Provides a platform for community venue to increase public engagement and public awareness of ongoing events. To allow instructors to host events and provide a venue for education, businesses and individuals . 
+#Target Audience  : Government officials , members of the public and instructors 
 ## Overview
 This project is a web application for managing bookings at a community center. It provides interfaces for different user personas including general users , instructors  and government officials to interact with the system based on their roles.
+
+#MVP Features: User registration + login , task entry editing , deleting , submitting for instructors and officials . General Users can view events and the schedule . General users can save events to their schedule . 
+
+#Iteration 1 and 2 : Category filtering , images uploaded to gallery , downloading resources , payment system. Liking and commenting on events . 
 
 ## Personas
 
@@ -116,3 +122,6 @@ For any questions or concerns , please contact me at jesseross001@gmail.com
 20. **Event Search by Keywords for Users**:
     As a user, I want to search for events by keywords, so I can quickly find events that interest me.
 
+#USE CASES How each use case contributes to allecviating the indentified problem 
+#wire framing 
+#user flows 

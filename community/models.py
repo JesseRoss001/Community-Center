@@ -21,6 +21,7 @@ class UserProfile(models.Model):
     badge_number = models.CharField(max_length=5,blank=True) #required badgeg number for government offic
     card_number = models.CharField(max_length=4,blank=True) # card number required for instructors 
     created_events = models.ManyToManyField('Event', related_name='creators', blank=True)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def clean(self):
         #validation for card + badge 

@@ -102,21 +102,28 @@ def general_public(request):
     return render(request,'community/register_public.html',{'form':form})
 
 # Creating +update the event view
+
+
 logger = logging.getLogger(__name__)
 @login_required
 def create_or_update_event(request,event_id=None):
+     
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
     instance = None 
     if event_id:
         instance = Event.objects.get(id=event_id)
+    # Only government officials and instructors can create events  
+    if user_profile.role not in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
+        messages.error(request, "You are not authorised to create events or update them ")
+        return redirect('home')
+       
     if request.method == 'POST':
         form = EventForm(request.POST,request.FILES, instance =instance)
-
-        if form.is_valid() and user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
+        if form.is_valid():
             event = form.save(commit=False)
             event.author = user_profile
-
+            # events can only be booked 3 months in advance
             if event.date > three_months_ahead or event.date < timezone.now().date():
                 message.error(request,'Event date must be within 3 months and not in the past ')
                 return render (request, 'community/events/create_update_event.html',{'form':form})
@@ -124,6 +131,7 @@ def create_or_update_event(request,event_id=None):
             critical_profiles = UserProfile.objects.filter(
                 role__in =[INSTRUCTOR, GOVERNMENT_OFFICIAL]
             )
+            #Ensures events are unique and not double booked 
             overlapping_events = Event.objects.filter(
                 author__in = critical_profiles,
                 date = event.date ,
@@ -132,23 +140,30 @@ def create_or_update_event(request,event_id=None):
 
             if overlapping_events.exists():
                 message.error(request, 'This time slot is already booked ')
-            else:
-                try:
-                    event.author=user_profile
-                    event.save()
-                    user_profile.create_events.add(event)
-                    messages.success(request,'Event created successfully ')
-                    return redirect('home')
-                except Exception as e:
-                    messages.error(request, f'Error creating event: {e}')
-                    logger.error(f'Error creating event: {e}')
-                    return render(request, 'community/events/create_update_event.html', {'form':form})
+                return render (request, 'community/events/create_update_event.html',{'form':form})
+            # instructors are charged 200 to create an event however they are allowed a negative balance up to a point to book an event 
+            if not event_id and user_profile.role == INSTRUCTOR:
+                if user_profile.balance >= -400:
+                    user_profile.balnace -=200
+                    user_profile.save 
 
-                return redirect ('')
+                else:
+                    messages.error(request, "Insufficient fund balance to book an event ")
+                    (request, 'community/events/create_update_event.html',{'form':form})
+            
+            elif not event_id and user.profile.role == GOVERNMENT_OFFICIAL:
+                user_profile.balance = 0
+                user_profile.save 
+
+            event.save()
+            user_profile.created_events.add(event)
+            messages.success(request,'Event created successfully ')
+            return redirect('home')
+
+        else:
+            messages.error(request,'Invalid form submission ')    
     else:
-
         form = EventForm(instance=instance)
-
     return render(request,'community/events/create_update_event.html',{'form': form})
 # Delete event
 @login_required
@@ -163,7 +178,7 @@ def delete_event(request, event_id):
 def event_detail(request,event_id):
     event = get_object_or_404 (Event,pk = event_id)
     return render(request,'community/events/event_detail.html',{'event':event})
-# Image Deletion 
+# Image Deletion from gallery 
 @login_required
 def delete_event_image(request,event_id):
     event =get_object_or_404(Event,pk=event_id , author=request.user.profile)
@@ -177,4 +192,26 @@ def delete_event_image(request,event_id):
      messages.success(request,'image deleted')
      return redirect('gallery')
     return render(request,'community/events/delete_event_image.html', {'event': event})
-    
+
+# Users purchasing events 
+@login_required
+def join_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    user_profile = request.user.profile
+    #ensuring venue is not overfilled 
+    if request.method == 'POST':
+        if event.capacity > 0:
+            event.capacity -= 1
+            event.save()
+            # balance transfer
+            if event.author.role != GOVERNMENT_OFFICIAL:
+                instructor_profile = event.author
+                instructor_profile.balance += 7.00
+                instructor_profile.save()
+                user_profile.balance -= 7.00
+                user_profile.save()
+            messages.success(request, "You have successfully joined the event ")
+            return redirect('events')
+        else:
+            messages.error(request, "Event is full ")
+    return render(request, 'community/join_event.html', {'event': event})

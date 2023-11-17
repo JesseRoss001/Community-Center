@@ -1,27 +1,33 @@
 {% extends 'community/base.html' %}
 {% load dict_key %}
-
+{% load i18n %}
 
 {% block content %}
-
-<h1> Welcome to the booking section </h1>
-{% for date, day_schedule in schedule.items %}
-    
-        <h3>{{ date }}</h3>
-        {% for time_slot, event in day_schedule.items %}
-            <div class="time-slot">
-                <h4> {{ time }} </h4>
-                
+<div class="container mt-4 ">
+    <h1 class="text-center"> Welcome to the booking section </h1>
+    <div class="row">
+        {% for date, day_schedule in schedule.items %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"> {{ date|date:"D, M j, Y" }} </h3>
+                    {% for time_slot, event in day_schedule.items %}
+                    <p> {{ time_slot }}</p>
                     {% if event %}
-                        <div class="booked-event">
-                            <p> Booked: {{ event.title }} by {{ event.author.user.username }}</p>
-                        </div>       
+                    {{ event.title }} by {{ event.author.user.username }}
+                    <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm"> Join Event </a>
                     {% else %}
-                    <div class="open-slot">
-                        <p> Avialable Slot </p>
-                    </div>
-                {% endif %}
+                    {% trans "Available" %}
+                    {% endif %}
+                    </p>
+                    {% if forloop.counter|divisibleby:2 %}
+                    <p class="cleaning-break"> {% trans "30 min Cleaning Break" %} </p>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock%}

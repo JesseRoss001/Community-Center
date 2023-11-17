@@ -11,6 +11,7 @@ from django.http import HttpResponseForbidden
 import logging 
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from decimal import Decimal
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -206,12 +207,12 @@ def join_event(request, event_id):
             # balance transfer
             if event.author.role != GOVERNMENT_OFFICIAL:
                 instructor_profile = event.author
-                instructor_profile.balance += 7.00
+                instructor_profile.balance += Decimal('7.00')
                 instructor_profile.save()
-                user_profile.balance -= 7.00
+                user_profile.balance -= Decimal('7.00')
                 user_profile.save()
             messages.success(request, "You have successfully joined the event ")
-            return redirect('events')
+            return redirect('home')
         else:
             messages.error(request, "Event is full ")
     return render(request, 'community/join_event.html', {'event': event})

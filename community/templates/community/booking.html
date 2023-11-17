@@ -8,11 +8,11 @@
 {% for date, day_schedule in schedule.items %}
     
         <h3>{{ date }}</h3>
-        {% for time_slot, events in day_schedule.items %}
+        {% for time_slot, event in day_schedule.items %}
             <div class="time-slot">
-                <h4> {{ time_slot.1 }} </h4>
-                {% for event, is_booked in events %}
-                    {% if is_booked %}
+                <h4> {{ time }} </h4>
+                
+                    {% if event %}
                         <div class="booked-event">
                             <p> Booked: {{ event.title }} by {{ event.author.user.username }}</p>
                         </div>       
@@ -21,8 +21,7 @@
                         <p> Avialable Slot </p>
                     </div>
                 {% endif %}
+                </div>
                 {% endfor %}
-            </div>
             {% endfor %}
-{% endfor %}
 {% endblock%}

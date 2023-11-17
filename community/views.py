@@ -46,23 +46,20 @@ def gallery(request):
 def booking(request):
     start_date= timezone.now().date()
     end_date = start_date + timedelta(days=13)
+    all_events = Event.objects.filter(date__range=[start_date,end_date])
+
     
     schedule = {}
     for single_date in (start_date + timedelta(n) for n in range((end_date - start_date).days +1)):
-        day_schedule= {}
-        for time_slot in TIME_SLOTS:
-            events = Event.objects.filter(date=single_date,start_time=time_slot[0])
-            booked_events = Booking.objects.filter(event__in=events).values_list('event',flat=True)
-            day_schedule[time_slot] = [(events, event.id in booked_events) for  event in events] 
-        schedule[single_date] = day_schedule 
+        day_events = all_events.filter(date=single_date)
+        day_schedule={slot[0]:None for slot in TIME_SLOTS}
+        for event in day_events:
+            day_schedule[event.start_time] = event
+        schedule[single_date] = day_schedule
 
-    context = {
-        'schedule': schedule,
-        'time_slots':TIME_SLOTS,
+    return render(request, 'community/booking.html',{'schedule':schedule, 'time_slots':TIME_SLOTS})
 
-    }
 
-    return render(request,'community/booking.html',context)
    
 
 

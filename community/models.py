@@ -78,7 +78,7 @@ class BalanceChange(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='balance_changes')
     change_amount = models.DecimalField(max_digits=10,decimal_places=2)
     change_date = models.DateTimeField(auto_now_add=True)
-    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=90, choices=TRANSACTION_TYPES)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL,null=True, blank=True)
 
     def __str__(self):

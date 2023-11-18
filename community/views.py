@@ -157,7 +157,7 @@ def create_or_update_event(request,event_id=None):
                     BalanceChange.objects.create(
                         user_profile=request.user.profile,
                         event=event,
-                        amount=-200,
+                        change_amount=-200,
                         transaction_type="Event Creation Fee"
                     ) 
 
@@ -225,10 +225,10 @@ def join_event(request, event_id):
             if event.author.role != GOVERNMENT_OFFICIAL:
                 event.author.balance += Decimal('7.00')
                 event.author.save()
-                BalanceTransaction.objects.create(
+                BalanceChange.objects.create(
                     user_profile=event.author,
                     event=event,
-                    amount=Decimal('7.00'),
+                    change_amount=Decimal('7.00'),
                     transaction_type="Event Joining Fee Recieved"
                 )
             request.user.profile.balance -= Decimal('7.00')
@@ -236,7 +236,7 @@ def join_event(request, event_id):
             BalanceTransaction.objects.create(
                 user_profile=request.user.profile,
                 event=event,
-                amount=Decimal('7.00'),
+                change_amount=Decimal('7.00'),
                 transaction_type='Event Joing Fee Paid'
             )
         else:

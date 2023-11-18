@@ -123,5 +123,81 @@ For any questions or concerns , please contact me at jesseross001@gmail.com
     As a user, I want to search for events by keywords, so I can quickly find events that interest me.
 
 #USE CASES How each use case contributes to allecviating the indentified problem 
-#wire framing 
-#user flows 
+
+## Project Wireframes
+
+The wireframes for this project are detailed in the following document. This document includes the layout and design considerations for our application's interface.
+[View the Project Wireframes](https://drive.google.com/file/d/1Aa_hGM3fGi_G6RnyrY9oSEWahFzyjGzW/view?usp=sharing)
+
+
+## Examples of model view template planning 
+This file shows a rough demonstration on how the MVT was planned to be ready to implement.
+[View template examples here ](https://drive.google.com/file/d/1kkD_z-1SnDRcn4Hx_sx1PzzE5_1qTAbX/view?usp=sharing)
+
+## Time boxing 
+The intitial time boxing document can be found below 
+[View time boxing here] (https://drive.google.com/file/d/1ZcLm_VVa5sJz3wZoFjCXrjSpz_SdAryr/view?usp=sharing)
+
+
+# Community Center Booking System
+## Chosen User Stories and their Implementations 
+
+### Homepage Access for Guest Users
+- **Contribution**: Simplifies discovery of community offerings without the barrier of forced registration.
+- **Implementation**: A welcoming homepage with clear CTAs and information about the community center's offerings.
+
+### Event Browsing for Guest Users
+- **Contribution**: Engages the public by showcasing events and encourages registration.
+- **Implementation**: Publicly accessible events page with filters for dates and categories.
+
+### Account Login for Registered Users
+- **Contribution**: Personalizes the experience and unlocks full platform features.
+- **Implementation**: Secure login system with personalized dashboard reflecting bookings and interests.
+
+### Government Portal Access
+- **Contribution**: Streamlines event management for government-sponsored activities.
+- **Implementation**: Separate login portal for government officials with additional event management tools.
+
+### Instructor Dashboard Access
+- **Contribution**: Enables instructors to manage their offerings and engage with the community.
+- **Implementation**: Instructor dashboard for course management, scheduling, and communication with attendees.
+
+### Event Booking for Users
+- **Contribution**: Facilitates community participation in events.
+- **Implementation**: Intuitive booking system with confirmation and calendar integration.
+
+### Booking Details for Users
+- **Contribution**: Informs users to make educated decisions about event participation.
+- **Implementation**: Detailed event pages with cost, duration, and other relevant information.
+
+### Course Pricing for Instructors
+- **Contribution**: Provides instructors with a revenue stream for their services.
+- **Implementation**: Pricing options during event creation with secure payment processing.
+
+### Course Addition for Government Officials
+- **Contribution**: Offers educational opportunities to the community.
+- **Implementation**: Special privileges for government officials to create and manage free courses.
+
+### Event Calendar for Users
+- **Contribution**: Assists users in planning their schedules around community events.
+- **Implementation**: Interactive calendar view of events that users can subscribe to.
+
+### User Management for Admins
+- **Contribution**: Ensures appropriate access and maintains platform integrity.
+- **Implementation**: Admin panel for user role assignment and access control.
+
+### Gallery Management for Admins
+- **Contribution**: Enhances the visual appeal and informational value of the platform.
+- **Implementation**: Admin tools for curating and managing the event gallery.
+
+### Feedback Submission for Users
+- **Contribution**: Collects community input for continuous improvement.
+- **Implementation**: Feedback forms and rating systems for events and courses.
+
+### Booking and Transaction Oversight for Admins
+- **Contribution**: Monitors the financial and operational health of the community center.
+- **Implementation**: Dashboard with reports on bookings, cancellations, and financial transactions.
+
+### Event Modification for Instructors/Government Officials
+- **Contribution**: Adds flexibility to event management to adapt to unforeseen circumstances.
+- **Implementation**: Tools to edit, reschedule, or cancel events with automated attendee notifications.

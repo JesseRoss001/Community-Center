@@ -67,6 +67,34 @@
 {% endif %}
 
 
+{% if user.is_authenticated and joined_events %}
+<hr>
+<div class="row">
+    <div class="col-12 d-flex text-center justify-content-center">
+        <h2> Events You have Joined :</h2>
+    </div>
+</div>
+<div class="row">
+    {% for event in joined_events %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
+            </div>
+            <div class="card-body">
+                <p> {{ event.start_time }} - {{ event.end_time }} </p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" 
+                aria.expanded="false" aria-controls="collapse{{ forloop.counter }}"> More Info </button>
+            </div>
+             <div class="collapse" id="collapse{{ forloop.counter }}">
+                <div class="card card-body">{{ event.description }}</div>
+             </div>
+        </div>
+    </div>
+    {% endfor %}
 
-
+</div>
+{% else %}
+<p> You have not joined an event yet .</p>
+{% endif %}
 {% endblock content %}

@@ -19,9 +19,12 @@ from decimal import Decimal
 
 def home(request):
     created_events = None 
+    joined_events = None 
     if request.user.is_authenticated:
         created_events = Event.objects.filter(author=request.user.profile)
-    return render(request, 'community/home.html', {'created_events':created_events})
+        joined_bookings = Booking.objects.filter(user_profile=request.user.profile)
+        joined_events = [booking.event for booking in joined_bookings]
+    return render(request, 'community/home.html', {'created_events':created_events,'joined_events':joined_events})
 
 
 def events(request):

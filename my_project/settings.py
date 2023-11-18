@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
+    
     # installing community app
     'community',
     'crispy_forms',
@@ -63,6 +66,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dwz6t9jry',
+    'API_KEY': '629932736212655',
+    'API_SECRET': 'Adw50D56Q19cAE8qr3UnoUp-5iU'
+}
 
 ROOT_URLCONF = 'my_project.urls'
 
@@ -84,7 +94,7 @@ TEMPLATES = [
 
 # For event media uploads 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 #crispy template 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

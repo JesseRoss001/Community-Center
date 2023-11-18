@@ -52,6 +52,40 @@ This project is a web application for managing bookings at a community center. I
 5. Run migrations on Heroku:
 6. Access the live site using your Heroku app's URL.
 
+# Progress Report
+
+## Day 1: Nov 14, 2023
+- **Started the Project**: Initial commit and set up Django project and app.
+- **Base Setup**: Created base template and linked the home page.
+- **Deployment Initiatives**: Worked on deploying to Heroku and resolving application errors.
+- **Configuration**: Set up Whitenoise for static files and fixed BASE_DIR and path issues in wsgi.
+
+## Day 2: Nov 15, 2023
+- **Admin and User Management**: Worked on the admin interface and user creation, rectifying user creation errors.
+- **Authentication**: Implemented basic login functionality.
+- **User Roles**: Developed a model for different user types.
+- **Registration System**: Displayed and indicated correct login details and views for registration.
+
+## Day 3: Nov 16, 2023
+- **Signup Functionality**: Completed signup forms and addressed form submission errors.
+- **Event Management**: Began creating event models, views, and forms.
+- **Testing**: Conducted initial form testing.
+- **MVT Implementation**: Started working on the Model-View-Template for events.
+
+## Day 4: Nov 17, 2023
+- **Login and Registration**: Resolved login page errors and confirmed the effective functioning of event registration.
+- **Booking System Development**: Initiated the development of the booking system, focusing on rendering and functionality.
+
+## Day 5: Nov 18, 2023
+- **Gallery and Media**: Addressed errors in displaying media files and added functionality to the gallery.
+- **Styling**: Completed preliminary styling on the about page.
+- **Booking System Enhancement**: Worked on refining the booking system, ensuring proper rendering and addressing double booking issues.
+
+## Day 6: Nov 19, 2023
+- **Admin Interface Upgrade**: Implemented Summernote in the admin section to enhance content management.
+- **Cloud Integration**: Added Cloudinary for improved media management.
+- **System Check**: Resolved issues identified during system checks.
+- **Readme Update**: Updated the project README file.
 
 
 ## Contributing

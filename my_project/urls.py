@@ -19,7 +19,7 @@ from django.urls import path , include , re_path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static, serve
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     #adding community url paths

@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from decimal import Decimal
 
+
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 

@@ -8,7 +8,8 @@
     <title>{% block title %} Community Center {% endblock title %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-        <link rel="stylesheet" src ="{% static 'assets/styles/style.css' %}"> 
+        <link rel="stylesheet" href="{% static 'assets/styles/style.css' %}"> 
+        <link rel="stylesheet" href="{% static 'assets/styles/about.css' %}">
 </head>
 
 <body>
@@ -36,6 +37,7 @@
         </div>
     </nav>
         <!-- Navbar logo  -->
+        <span class="testing-css"> RED TEXT TEST </span>
     </header>
 
     {% block content %}

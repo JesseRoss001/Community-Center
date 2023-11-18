@@ -97,4 +97,18 @@
 {% else %}
 <p> You have not joined an event yet .</p>
 {% endif %}
+
+{% if user.is_authenticated %}
+<div> 
+    <h3> Your Balance: {{ user.profile.balance }}</h3>
+    <h4> Recent Transactions </h4>
+    <ul>
+        {% for transaction in balance_transactions %}
+        <li> {{ transaction.create_at }}: {{ transaction.amount }} {{ transaction.transaction_type }}</li>
+        {% empty %}
+        <li> No recent transactions.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% endblock content %}

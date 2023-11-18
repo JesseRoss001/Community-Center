@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS , BalanceChange
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
@@ -20,12 +20,15 @@ from decimal import Decimal
 def home(request):
     created_events = None 
     joined_events = None 
+    balance_transactions = None
     if request.user.is_authenticated:
         created_events = Event.objects.filter(author=request.user.profile)
         joined_bookings = Booking.objects.filter(user_profile=request.user.profile)
         joined_events = [booking.event for booking in joined_bookings]
-    return render(request, 'community/home.html', {'created_events':created_events,'joined_events':joined_events})
-
+        balance_transactions = BalanceChange.objects.filter(
+            user_profile=request.user.profile 
+        ).order_by('-change_date')[:10]
+    return render(request, 'community/home.html', {'created_events':created_events,'joined_events':joined_events,'balance_transactions': balance_transactions})
 
 def events(request):
     return render(request, 'community/events.html')
@@ -148,9 +151,15 @@ def create_or_update_event(request,event_id=None):
                 return render (request, 'community/events/create_update_event.html',{'form':form})
             # instructors are charged 200 to create an event however they are allowed a negative balance up to a point to book an event 
             if not event_id and user_profile.role == INSTRUCTOR:
-                if user_profile.balance >= -400:
-                    user_profile.balnace -=200
-                    user_profile.save 
+                if request.user.profile.balance >= -400:
+                    request.user.profile.balance -=200
+                    request.user.profile.save()
+                    BalanceChange.objects.create(
+                        user_profile=request.user.profile,
+                        event=event,
+                        amount=-200,
+                        transaction_type="Event Creation Fee"
+                    ) 
 
                 else:
                     messages.error(request, "Insufficient fund balance to book an event ")
@@ -214,13 +223,24 @@ def join_event(request, event_id):
             event.save()
             # balance transfer
             if event.author.role != GOVERNMENT_OFFICIAL:
-                instructor_profile = event.author
-                instructor_profile.balance += Decimal('7.00')
-                instructor_profile.save()
-                user_profile.balance -= Decimal('7.00')
-                user_profile.save()
-            else:
-                messages.error(request, "Event is full ")
+                event.author.balance += Decimal('7.00')
+                event.author.save()
+                BalanceTransaction.objects.create(
+                    user_profile=event.author,
+                    event=event,
+                    amount=Decimal('7.00'),
+                    transaction_type="Event Joining Fee Recieved"
+                )
+            request.user.profile.balance -= Decimal('7.00')
+            request.user.profile.save()
+            BalanceTransaction.objects.create(
+                user_profile=request.user.profile,
+                event=event,
+                amount=Decimal('7.00'),
+                transaction_type='Event Joing Fee Paid'
+            )
+        else:
+            messages.error(request, "Event is full ")
         Booking.objects.create(event=event,user_profile=user_profile)
         messages.success(request, "You have successfully joined the event ")
         return redirect('home')

@@ -3,31 +3,57 @@
 {% load i18n %}
 
 {% block content %}
+<!-- Container for the booking section -->
 <div class="container mt-4 ">
-    <h1 class="text-center"> Welcome to the booking section </h1>
+    <h1 class="text-center mb-4"> Welcome to the booking section </h1>
     <div class="row">
+        <!-- Loop over each day in the schedule -->
         {% for date, day_schedule in schedule.items %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
+        <div class="col-md-6 col-lg-4 mb-4">
+             <!-- Start of a card -->
+            <div class="card   schedule-card">
+                <div class="card-header">
                     <h3 class="card-title"> {{ date|date:"D, M j, Y" }} </h3>
-                    {% for time_slot, event in day_schedule.items %}
-                    <p> {{ time_slot }}</p>
-                    {% if event %}
-                    {{ event.title }} by {{ event.author.user.username }}
-                    <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm"> Join Event </a>
-                    {% else %}
-                    {% trans "Available" %}
-                    {% endif %}
-                    </p>
-                    {% if forloop.counter|divisibleby:2 %}
-                    <p class="cleaning-break"> {% trans "30 min Cleaning Break" %} </p>
-                    {% endif %}
-                    {% endfor %}
                 </div>
+                <div class="card-body">
+                      <!-- Loop over each time slot in the day's schedule -->
+                {% for time_slot, event in day_schedule.items %}
+                <hr>
+                <p> {{ time_slot }} </p>
+                <hr>
+                <!-- Check if there is an event in this time slot -->
+                {% if event %}
+                
+                  <div  class="{% if event.author.role == 'INSTRUCTOR' %}text-orange{% elif event.author.role == 'GOVERNMENT_OFFICIAL' %}text-blue{% endif %}">
+                    {{ event.title }} by {{ event.author.user.username }}
+                    <br> <span> Cost :
+                        {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                        {% elif event.author.role == 'GOVERNMENT_OFFICIAL' %} £0.00
+                        {% endif %}
+                    </span>
+                     <!-- Join event link with onclick event for confirmation -->
+                    <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm" onclick="return confirmJoinEvent()"> Join Event </a>
+                </div>
+                {% else %}
+                <span class="status-available"> {% trans "Available" %} </span>
+                {% endif %}
+
+                {% if forloop.counter|divisibleby:2 %}
+                <hr>
+                <p class="cleaning-break"> {% trans "30 min Cleaning Break" %} </p>
+                {% endif %}
+
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+</div>
 </div>
 {% endblock%}
+
+<script>
+    function confirmJoinEvent() {
+        return confirm ('Are you sure you want to join this event ? This will deduct the cost from your wallet. Refunds are not eligible for events ');
+    }
+    </script>

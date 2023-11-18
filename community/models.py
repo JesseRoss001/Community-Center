@@ -67,3 +67,19 @@ class Booking(models.Model):
 
     def __str__(self):
         return f'{self.user_profile.user.username} booking for {self.event.title}'
+
+
+class BalanceChange(models.Model):
+    TRANSACTION_TYPES = [
+        ('CREATE_EVENT',' Created Event'),
+        ('JOIN_EVENT',' Joined Event'),
+    ]
+
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='balance_changes')
+    change_amount = models.DecimalField(max_digits=10,decimal_places=2)
+    change_date = models.DateTimeField(auto_now_add=True)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
+    event = models.ForeignKey(EVENT, on_delete=models.SET_NULL,null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.change_amount} on {self.change_date} ({self.get_transaction_type_display()})"

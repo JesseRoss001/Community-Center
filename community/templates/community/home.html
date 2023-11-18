@@ -82,7 +82,7 @@
                 <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
             </div>
             <div class="card-body">
-                <p> {{ event.start_time }} - {{ event.end_time }} </p>
+                <p> {{ event.date|date:"l, F j , Y" }}-{{ event.start_time }} - {{ event.end_time }} </p>
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" 
                 aria.expanded="false" aria-controls="collapse{{ forloop.counter }}"> More Info </button>
             </div>

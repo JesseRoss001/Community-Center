@@ -27,6 +27,7 @@ urlpatterns = [
     path('event/join/<int:event_id>/', views.join_event, name='join_event'),
     path('event/<int:event_id>/',views.event_detail, name= "event_detail"),
     path('event/delete_image/<int:event_id>/', views.delete_event_image, name='delete_event_image'),
+    path('summernote/', include('django_summernote.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

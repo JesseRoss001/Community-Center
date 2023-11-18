@@ -31,8 +31,12 @@
                         {% elif event.author.role == 'GOVERNMENT_OFFICIAL' %} £0.00
                         {% endif %}
                     </span>
+                    {% if event.id in user_bookings %}
+                    <button class="btn btn-secondary btn-sm disabled"> Joined </button>
+                    {% else %}
                      <!-- Join event link with onclick event for confirmation -->
                     <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm" onclick="return confirmJoinEvent()"> Join Event </a>
+                    {% endif %}
                 </div>
                 {% else %}
                 <span class="status-available"> {% trans "Available" %} </span>

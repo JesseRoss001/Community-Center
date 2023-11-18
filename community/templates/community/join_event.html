@@ -4,9 +4,21 @@
 <h1> Join Event </h1>
 <p> Event {{ event.title }}</p>
 <p> Capacity: {{ event.capacity }}</p>
-<p> Cost : </p>
+<p> Cost :{% if event.author.role == 'INSTRUCTOR' %} 
+    £7.00
+{% else %}
+    £0.00
+{% endif %} </p>
+
+<p class="text-warning">
+    By joining this event , £ {% if event.author.role == 'INSTRUCTOR' %} 
+    7.00
+{% else %}
+    0.00
+{% endif %} will be deducted from your wallet . 
+</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-primary"> Confirm Join </button>
+    <button type="submit" class="btn btn-primary"  onclick="return confirmJoinEvent()"> Confirm Join </button>
 </form>
 {% endblock %}

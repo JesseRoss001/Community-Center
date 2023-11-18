@@ -58,8 +58,8 @@ def booking(request):
         for event in day_events:
             day_schedule[event.start_time] = event
         schedule[single_date] = day_schedule
-
-    return render(request, 'community/booking.html',{'schedule':schedule, 'time_slots':TIME_SLOTS})
+    user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id',flat=True)
+    return render(request, 'community/booking.html',{'schedule':schedule, 'time_slots':TIME_SLOTS , 'user_bookings': user_bookings})
 
 
    
@@ -200,6 +200,10 @@ def delete_event_image(request,event_id):
 def join_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
+    existing_booking=Booking.objects.filter(event=event,user_profile=user_profile).exists()
+
+    if existing_booking:
+        messages.info(request,"You have already joined this event.")
     #ensuring venue is not overfilled 
     if request.method == 'POST':
         if event.capacity > 0:
@@ -212,8 +216,9 @@ def join_event(request, event_id):
                 instructor_profile.save()
                 user_profile.balance -= Decimal('7.00')
                 user_profile.save()
-            messages.success(request, "You have successfully joined the event ")
-            return redirect('home')
-        else:
-            messages.error(request, "Event is full ")
+            else:
+                messages.error(request, "Event is full ")
+        Booking.objects.create(event=event,user_profile=user_profile)
+        messages.success(request, "You have successfully joined the event ")
+        return redirect('home')
     return render(request, 'community/join_event.html', {'event': event})

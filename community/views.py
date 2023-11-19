@@ -149,6 +149,8 @@ def create_or_update_event(request,event_id=None):
             if overlapping_events.exists():
                 message.error(request, 'This time slot is already booked ')
                 return render (request, 'community/events/create_update_event.html',{'form':form})
+
+            event.save()
             # instructors are charged 200 to create an event however they are allowed a negative balance up to a point to book an event 
             if not event_id and user_profile.role == INSTRUCTOR:
                 if request.user.profile.balance >= -400:
@@ -169,7 +171,7 @@ def create_or_update_event(request,event_id=None):
                 user_profile.balance = 0
                 user_profile.save 
 
-            event.save()
+            
             user_profile.created_events.add(event)
             messages.success(request,'Event created successfully ')
             return redirect('home')
@@ -212,6 +214,8 @@ def delete_event_image(request,event_id):
 def join_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
+    if user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
+        messages.error(request,'Instructors and officials are not allowed to join booking classes')
     existing_booking=Booking.objects.filter(event=event,user_profile=user_profile).exists()
 
     if existing_booking:
@@ -233,7 +237,7 @@ def join_event(request, event_id):
                 )
             request.user.profile.balance -= Decimal('7.00')
             request.user.profile.save()
-            BalanceTransaction.objects.create(
+            BalanceChange.objects.create(
                 user_profile=request.user.profile,
                 event=event,
                 change_amount=Decimal('7.00'),

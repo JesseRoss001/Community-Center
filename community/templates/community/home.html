@@ -56,8 +56,19 @@
             {% if event.image %}
             <img src="{{ event.image.url }}" alt="Event Image">
             {% endif %}
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" 
+            aria.expanded="false" aria-controls="collapse{{ forloop.counter }}"> More Info </button>
+        
+         <div class="collapse" id="collapse{{ forloop.counter }}">
+            <div class="card card-body">{{ event.description }}</div>
+         </div>
             <a href="{% url  'update_event' event.id %}" class="btn btn-primary"> Update </a>
+            {% if event.capacity >= 60 %}
             <a href="{% url 'delete_event' event.id %}" class="btn btn-danger"> Delete </a>
+            {% else %}
+            <p> Event deletion is  disabled after public booking of course </p>
+            <button class="btn btn-danger disabled" >Delete </button>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

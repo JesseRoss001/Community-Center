@@ -33,7 +33,12 @@
                     </span>
                     {% if event.id in user_bookings %}
                     <button class="btn btn-secondary btn-sm disabled"> Joined </button>
+
+                    
+                    {% elif user.profile.role  in 'INSTRUCTOR,GOVERNMENT_OFFICIAL' %}
+                    <button class="btn btn-secondary btn-sm disabled"> No Access </button>
                     {% else %}
+                    
                      <!-- Join event link with onclick event for confirmation -->
                     <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm" onclick="return confirmJoinEvent()"> Join Event </a>
                     {% endif %}

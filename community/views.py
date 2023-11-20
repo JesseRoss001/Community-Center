@@ -12,23 +12,39 @@ import logging
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from decimal import Decimal
+import json
 
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 
 def home(request):
-    created_events = None 
-    joined_events = None 
-    balance_transactions = None
+    context = {
+    'created_events' : None,
+    'joined_events' : None,
+    'balance_transactions' : None,
+    'transaction_dates':'[]',
+    'transaction_amounts':'[]',
+    'user_balance':0
+
+    }
     if request.user.is_authenticated:
         created_events = Event.objects.filter(author=request.user.profile)
         joined_bookings = Booking.objects.filter(user_profile=request.user.profile)
         joined_events = [booking.event for booking in joined_bookings]
         balance_transactions = BalanceChange.objects.filter(
             user_profile=request.user.profile 
-        ).order_by('-change_date')[:10]
-    return render(request, 'community/home.html', {'created_events':created_events,'joined_events':joined_events,'balance_transactions': balance_transactions})
+        ).order_by('-change_date')
+        transaction_dates =[transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
+        transaction_amounts =[float(transaction.change_amount) for transaction in balance_transactions]
+
+        context['transaction_dates'] = json.dumps(transaction_dates)
+        context['transaction_amounts'] = json.dumps(transaction_amounts)
+        context['created_events'] = created_events
+        context['joined_events'] = joined_events
+        context['balance_transactions'] = balance_transactions
+        context['user_balance'] = request.user.profile.balance
+    return render(request, 'community/home.html', context)
 
 def events(request):
     return render(request, 'community/events.html')

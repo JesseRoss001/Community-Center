@@ -1,3 +1,7 @@
+
+
+
+
 .booked-event {
     background-color: #ffcccc;
 }
@@ -5,3 +9,40 @@
 .open-slot {
     background-color: #ccffcc;
 }
+
+
+.banner-container {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carousel-item img {
+    border-radius: 15px;
+  }
+  
+  
+  .carousel-inner {
+    background: linear-gradient(45deg, #6DC8F3, #73A1F9, #FFD26F, #FFB199);
+    background-size: 600% 600%;
+  
+    -webkit-animation: Gradient 15s ease infinite;
+    -moz-animation: Gradient 15s ease infinite;
+    animation: Gradient 15s ease infinite;
+  }
+  
+  @-webkit-keyframes Gradient {
+    0% {background-position: 0% 50%}
+    50% {background-position: 100% 50%}
+    100% {background-position: 0% 50%}
+  }
+  @-moz-keyframes Gradient {
+    0% {background-position: 0% 50%}
+    50% {background-position: 100% 50%}
+    100% {background-position: 0% 50%}
+  }
+  @keyframes Gradient {
+    0% {background-position: 0% 50%}
+    50% {background-position: 100% 50%}
+    100% {background-position: 0% 50%}
+  }

@@ -3,12 +3,12 @@
 
 
 {% block content %}
-
+<main id="main-background">
 <div class="container mt-4"> <h1>Gallery</h1> 
 <div class="row">
     {% for event in events_with_images %}
-    <div class="col-md-4">
-        <div class="card mb-4 ">
+    <div class="col-md-4 ">
+        <div class="card mb-4  ">
             <img src ="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">
             <div class="card-body">
                 <h5 class="card-title"> {{ event.title }} </h5>
@@ -23,6 +23,7 @@
     <p> No images have been uploaded yet </p>
     {% endfor %}
 </div>
+</main>
 </div>
 
 {% endblock content %}

@@ -18,10 +18,12 @@
     background: linear-gradient(45deg, #6DC8F3, #73A1F9, #FFD26F, #FFB199);
     background-size: 600% 600%;
   
-    -webkit-animation: Gradient 15s ease infinite;
-    -moz-animation: Gradient 15s ease infinite;
-    animation: Gradient 15s ease infinite;
+    -webkit-animation: Gradient 25s ease infinite;
+    -moz-animation: Gradient 25s ease infinite;
+    animation: Gradient 25s ease infinite;
   }
+
+
   
   @-webkit-keyframes Gradient {
     0% {background-position: 0% 50%}
@@ -38,3 +40,12 @@
     50% {background-position: 100% 50%}
     100% {background-position: 0% 50%}
   }
+
+  .carousel-inner > .item {
+    position: relative;
+    display: none;
+    -webkit-transition: 3s ease-in-out left;
+    -moz-transition: 3s ease-in-out left;
+    -o-transition: 3s ease-in-out left;
+    transition: 3s ease-in-out left;
+}

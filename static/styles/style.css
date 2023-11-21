@@ -1,7 +1,39 @@
 
 
 .testing-css { font-size: 100px;}
+button {
+  /* Variables */
+  --button_radius: 0.75em;
+  --button_color: #e8e8e8;
+  --button_outline_color: #000000;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
 
+.button_top {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+  background: linear-gradient(45deg, #FF5F6D, #FFC371);
+}
+
+button:hover .button_top {
+  /* Pull the button upwards when hovered */
+  transform: translateY(-0.33em);
+}
+
+button:active .button_top {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
+}
 
 .banner-container {
     border-radius: 15px;
@@ -44,8 +76,10 @@
   .carousel-inner > .item {
     position: relative;
     display: none;
-    -webkit-transition: 3s ease-in-out left;
-    -moz-transition: 3s ease-in-out left;
-    -o-transition: 3s ease-in-out left;
-    transition: 3s ease-in-out left;
+    -webkit-transition: 7s ease-in-out left;
+    -moz-transition: 7s ease-in-out left;
+    -o-transition: 7s ease-in-out left;
+    transition: 7s ease-in-out left;
 }
+.card-opacity { background-color: rgba(255, 165, 0, 0.25);}
+.card *  {opacity:1;}

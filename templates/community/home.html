@@ -18,25 +18,40 @@
 
             Hi , {{ user.profile }}
             {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-            <a href="{% url 'create_or_update_event' %}" class="btn btn-success"> Create an Event </a>
+            <a href="{% url 'create_or_update_event' %}"><button>
+                <span class="button_top"> Create an Event </span>
+              </button>  </a>
             {% endif %}
-            <a href="{% url 'logout' %}" class="btn btn-light ">Logout </a>
+            <a href="{% url 'logout' %}"> <button>
+                <span class="button_top"> Logout  </span>
+              </button>  </a>
 
             {% else %}
-            <div class="btn-group" role="group" aria-label="login/signup">
-                <a href="{% url 'login' %}" class="btn btn-primary"> Login </a>
-                <a href="{% url 'register_public' %}" class="btn btn-primary"> Sign up </a>
-                <a href="{% url 'register_instructor'  %}" class="btn btn-primary"> Sign up as Instructor </a>
-                <a href="{% url  'register_government' %}" class="btn btn-primary"> Sign up as Government Official
-                </a>
-            </div>
+            <div> 
+                <a href="{% url 'login' %}"> <button>
+                    <span class="button_top"> Login </span>
+                  </button>
+                  
+                <a href="{% url 'register_public' %}" ><button>
+                    <span class="button_top"> Sign up  </span>
+                  </button>
+                   </a>
+                <a href="{% url 'register_instructor'  %}" ><button>
+                    <span class="button_top"> Sign up as an Instructor  </span>
+                  </button>
+                   </a>
+                <a href="{% url  'register_government' %}" ><button>
+                    <span class="button_top"> Sign up as a Government Official  </span>
+                  </button>
+                   </a>
             {% endif %}
         </p>
     </div>
+    <div class="row">
 
     <div class="col-md-3 event-info">
         <h3 class="text-center">Types of Events</h3>
-        <p>Maths Tutoring: Enhance your skills with expert tutors.Yoga for Wellness: Stretch and strengthen your body.
+        <p class="text-center ">Maths Tutoring: Enhance your skills with expert tutors.Yoga for Wellness: Stretch and strengthen your body.
         Chess Championship: Showcase your strategic prowess.
         <p> And more .... </p>
     </div>
@@ -87,7 +102,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
+    </div>
     </div>
 </div>
 
@@ -95,25 +110,27 @@
 
 {% if created_events %}
 <hr>
+<div class="container mt-5 carousel-inner">
 <div class="row">
     <div class="col-12 d-flex text-center justify-content-center ">
-        <h2> Your Created Events:</h2>
+        <h2 class="display-4"> Your Created Events:</h2>
     </div>
 </div>
 <div class="row">
     {% for event in created_events %}
-    <div class="col-md-4">
-        <div class="card mb-4 ">
+    <div class="col-md-4 mb-3 ">
+        <div class="card card-opacity border-0">
 
 
             <strong>{{ event.title }}</strong>
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="Event Image">
+            {% endif %}
             <p>Date: {{ event.date }}</p>
             <p>Start Time : {{ event.start_time }}</p>
             <p> Capacity: {{ event.capacity }}</p>
             <p> Cost: {{ event.cost }} </p>
-            {% if event.image %}
-            <img src="{{ event.image.url }}" alt="Event Image">
-            {% endif %}
+           
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
                 aria-controls="collapse{{ forloop.counter }}"> More Info </button>
@@ -121,7 +138,11 @@
             <div class="collapse" id="collapse{{ forloop.counter }}">
                 <div class="card card-body">{{ event.description }}</div>
             </div>
-            <a href="{% url  'update_event' event.id %}" class="btn btn-primary"> Update </a>
+            <div class="row justify-content-between m-1" >
+                <div class="col-6">
+            <a href="{% url  'update_event' event.id %}" class="btn btn-warning"> Update </a>
+        </div>
+        <div class="col-6">
             {% if event.capacity >= 60 %}
             <a href="{% url 'delete_event' event.id %}" class="btn btn-danger"> Delete </a>
             {% else %}
@@ -129,17 +150,21 @@
             <button class="btn btn-danger disabled">Delete </button>
             {% endif %}
         </div>
+        </div>
+    </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <p> You have not create any events yet.</p>
 {% endif %}
-
+</div>
+</div>
 
 {% if user.is_authenticated and joined_events %}
 <hr>
-<div class="row">
+<div class="container mt-5 carousel-inner">
+<div class="row ">
     <div class="col-12 d-flex text-center justify-content-center">
         <h2> Events You have Joined :</h2>
     </div>
@@ -147,7 +172,7 @@
 <div class="row">
     {% for event in joined_events %}
     <div class="col-md-4">
-        <div class="card mb-4">
+        <div class="card card-opacity border-0 mb-4">
             <div class="card-header">
                 <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
             </div>
@@ -168,7 +193,7 @@
 {% else %}
 <p> You have not joined an event yet .</p>
 {% endif %}
-
+</div>
 {% if user.is_authenticated %}
 <div>
     <h3> Your Balance: {{ user.profile.balance }}</h3>

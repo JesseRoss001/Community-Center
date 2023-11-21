@@ -23,7 +23,7 @@ button {
   box-sizing: border-box;
   border: 2px solid var(--button_outline_color);
   border-radius: var(--button_radius);
-  padding: 0.75em 1.5em;
+  padding: 0.375em 0.75em;
   color: var(--button_outline_color);
   transform: translateY(-0.2em);
   transition: transform 0.1s ease;
@@ -60,6 +60,7 @@ button:active .button_top {
     animation: Gradient 25s ease infinite;
   }
 
+  .budget-list {list-style-type: none;}
 
   
   @-webkit-keyframes Gradient {
@@ -87,7 +88,36 @@ button:active .button_top {
     transition: 7s ease-in-out left;
 }
 
+button:not(:has(.button_top)) {
+  background: linear-gradient(45deg, #2D3E50, #4B6278);
+  color: #fff;
+  padding: 0.75em 1.5em;
+  border-radius: 0.75em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+}
+
+button:not(:has(.button_top)):hover {
+  background: linear-gradient(45deg, #4B6278, #2D3E50);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:not(:has(.button_top)):active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 
 .card-opacity { background-color: rgba(255, 165, 0, 0.25);}
 .card *  {opacity:1;}
 
+.carousel-control-prev,
+.carousel-control-next {width:2rem;
+  height:2rem;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transform: translate(0, -50%);}
+
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  opacity: 0.4;}

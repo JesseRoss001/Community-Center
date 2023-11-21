@@ -5,8 +5,9 @@
 
 
 <!-- Adding in login/logout links -->
-
-<div class="row carousel-inner d-flex justify-content-center align-items-center pb-5">
+<main id="main-background">
+    <div class="row">
+<div class="col-11 row  carousel-inner d-flex justify-content-center align-items-center pb-5 border-0 rounded m-1">
 
 
     <div class="col-12 container mt-4 d-flex justify-content-center ">
@@ -105,12 +106,13 @@
     </div>
     </div>
 </div>
+</div>
 
 
 
 {% if created_events %}
-<hr>
-<div class="container mt-5 carousel-inner">
+
+<div class="container mt-5 carousel-inner border-0 rounded">
 <div class="row">
     <div class="col-12 d-flex text-center justify-content-center ">
         <h2 class="display-4"> Your Created Events:</h2>
@@ -162,8 +164,8 @@
 </div>
 
 {% if user.is_authenticated and joined_events %}
-<hr>
-<div class="container mt-5 carousel-inner">
+
+<div class="container mt-5 carousel-inner border-0 rounded">
 <div class="row ">
     <div class="col-12 d-flex text-center justify-content-center">
         <h2> Events You have Joined :</h2>
@@ -196,9 +198,13 @@
 </div>
 {% if user.is_authenticated %}
 <div>
+    <div class="row">
+        <div class="col-8">
     <h3> Your Balance: {{ user.profile.balance }}</h3>
+</div>
+    <div class="row">
+        <div class="col-10 col-md-4">
     <h4> Recent Transactions </h4>
-    <canvas id="transactionGraph" width='400' height="400"></canvas>
     <ul>
         {% for transaction in balance_transactions %}
         <li> {{ transaction.create_at }}: {{ transaction.amount }} {{ transaction.transaction_type }}</li>
@@ -206,8 +212,17 @@
         <li> No recent transactions.</li>
         {% endfor %}
     </ul>
-    {% endif %}
+    
 </div>
+<div class="d-none d-md-inline-block col-8">
+    <canvas id="transactionGraph" width='300' height="150"></canvas>
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>

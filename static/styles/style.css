@@ -1,5 +1,10 @@
 
 
+
+#main-background {
+  background: radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%);
+}
+
 .testing-css { font-size: 100px;}
 button {
   /* Variables */
@@ -81,5 +86,7 @@ button:active .button_top {
     -o-transition: 7s ease-in-out left;
     transition: 7s ease-in-out left;
 }
+
+
 .card-opacity { background-color: rgba(255, 165, 0, 0.25);}
 .card *  {opacity:1;}

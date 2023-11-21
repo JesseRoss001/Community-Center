@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{% static 'styles/about.css' %}">
 </head>
 
-<body>
+<body >
     <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="{% url 'home' %}"> Community Center </a>
@@ -37,10 +37,15 @@
     </nav>
       
     </header>
-
+    <main>
     {% block content %}
+    
+
+    
     <!-- Place for page content -->
     {% endblock content %}
+
+</main>
     <!-- Footer Section -->
     <footer class="footer bg-light mt-4 py-3">
         <div class="container">

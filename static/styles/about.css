@@ -22,6 +22,15 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.1);}
 
 .join-event.btn {font-size:0.8rem;}
 
+ li {text-decoration: none;
+list-style-type: none;}
+
+ul {text-decoration: none;
+    list-style-type: none;}
+
+
+
+
 .cleaning-break {font-size: 0.9rem;
 color:#6c757d;
 text-align: center;

@@ -59,7 +59,7 @@
                         <p> And more .... </p>
                 </div>
                 <div class="col-12 col-md-6 h-75">
-                  
+
                     <div class="banner-container">
                         <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel"
                             data-bs-interval="10000">
@@ -97,18 +97,18 @@
                                 <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700521641/first-aid_mf3tfy.png"
                                     class="d-block w-100" data-bs-event="firstaid" alt=" First Aid  Event">
                             </div>
-                            <button class="carousel-control-prev opacity-0.05" id="carousel-button" type="button" data-bs-target="#bannerCarousel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                     
-                        <button class="carousel-control-next" id="carousel-button" type="button" data-bs-target="#bannerCarousel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+                            <button class="carousel-control-prev opacity-0.05" id="carousel-button" type="button"
+                                data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+
+                            <button class="carousel-control-next" id="carousel-button" type="button"
+                                data-bs-target="#bannerCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,20 +140,20 @@
                     <p> Capacity: {{ event.capacity }}</p>
                     <p> Cost: {{ event.cost }} </p>
 
-                    <button class="btn btn-primary w-50" type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-primary " type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
                         aria-controls="collapse{{ forloop.counter }}"> More Info </button>
 
                     <div class="collapse" id="collapse{{ forloop.counter }}">
                         <div class="card card-body">{{ event.description }}</div>
                     </div>
-                    <div class="row justify-content-between m-1">
-                        <div class="col-3">
-                            <a href="{% url  'update_event' event.id %}" > <button> Update </button> </a>
+                    <div class="row ">
+                        <div class="col-6">
+                            <a href="{% url  'update_event' event.id %}"> <button> Update </button> </a>
                         </div>
-                        <div class="col-3">
+                        <div class="col-6">
                             {% if event.capacity >= 60 %}
-                            <a href="{% url 'delete_event' event.id %}" ><button>  Delete </button> </a>
+                            <a href="{% url 'delete_event' event.id %}"><button> Delete </button> </a>
                             {% else %}
                             <p> Event deletion is disabled after public booking of course </p>
                             <button class="btn btn-danger disabled">Delete </button>
@@ -182,7 +182,7 @@
             {% for event in joined_events %}
             <div class="col-md-4">
                 <div class="card card-opacity border-0 mb-4">
-                    <div >
+                    <div>
                         <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
                     </div>
                     <div class="card-body">
@@ -207,25 +207,26 @@
     <div class="container mt-5 mb-3 pb-4 ">
         <div class="row align-items-start carousel-inner border-0 rounded m-1">
             <div class="col-8 col-md-4">
-                
-                    <h3> Your Balance: {{ user.profile.balance }}</h3>
-                    <h4> Recent Transactions </h4>
-                    <ul class="budget-list">
-                        {% for transaction in balance_transactions %}
-                        <li class="budget-list"> {{ transaction.create_at }} {{ transaction.amount }} {{ transaction.transaction_type }}
-                        </li>
-                        {% empty %}
-                        <li class="budget-list" > No recent transactions.</li>
-                        {% endfor %}
-                    </ul>
 
-                </div>
-                <div class="d-none d-md-inline-block col-8">
-                    <canvas id="transactionGraph" width='300' height="150"></canvas>
-                </div>
-                {% endif %}
+                <h3> Your Balance: {{ user.profile.balance }}</h3>
+                <h4> Recent Transactions </h4>
+                <ul class="budget-list">
+                    {% for transaction in balance_transactions %}
+                    <li class="budget-list"> {{ transaction.create_at }} {{ transaction.amount }}
+                        {{ transaction.transaction_type }}
+                    </li>
+                    {% empty %}
+                    <li class="budget-list"> No recent transactions.</li>
+                    {% endfor %}
+                </ul>
+
             </div>
+            <div class="d-none d-md-inline-block col-8">
+                <canvas id="transactionGraph" width='300' height="150"></canvas>
+            </div>
+            {% endif %}
         </div>
+    </div>
     </div>
     </div>
 </main>
@@ -246,12 +247,12 @@
                     backgroundColor: 'rgba(54,162,235,0.2)',
                     borderColor: 'rgba(54,162,235,1)',
                     borderWidth: 3,
-                    tension:0.4,
-                    pointBackgroundColor:'#fff',
-                    pointBorderColor:'rgba(54,162,235,1)',
-                    pointRadius:5,
-                    pointHoverRadius:7,
-                    fill:true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: 'rgba(54,162,235,1)',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
 
                 }]
             },
@@ -261,18 +262,19 @@
                         beginAtZero: false
                     }
                 },
-                plugins:{
-                    legend:{
-                        display:true,
-                        position:'top',
-                        labels:{
-                            font:{
-                                size:14
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
                             }
                         }
                     }
-                },responsive:true,
-                maintainAspectRatio:false
+                },
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
     });

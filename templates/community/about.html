@@ -12,45 +12,49 @@
     </div>
 </div>
 
-<div class="row mt-5">
+<div class="row mt-5 d-flex justify-content-center align-items-center">
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
+        <div class="card d-flex justify-content-center align-items-center carousel-inner ">
+            <div class="card-body carousel-inner">
+              <div class="bg-light border-0 rounded-1 p-2 mb-3">
                 <h5 class="card-title" > Our Impact </h5>
                 <p class="card-text"> We've been making a difference in the community since  7/12/2024 </p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"> Total Members : <strong> {{ total_users }} </strong> </li>
-                    <li class="list-group-item"> Total Bookings : <strong> {{ total_bookings }} </strong></li>
-                    <li class="list-group-item"> Proud provider of official Welsh Language Classes </li>
+              </div>
+                <div class="bg-light border-0 rounded-1">
+                <ul class="list-unstyled p-3">
+                    <li class=""> Total Members : <strong> {{ total_users }} </strong> </li>
+                    <li class=""> Total Bookings : <strong> {{ total_bookings }} </strong></li>
+                    <li class=""> Proud provider of official Welsh Language Classes </li>
 
 
                 </ul>
+                </div>
             </div>
-            <div class="col-8 w-80">
-              <h3> Meet the Team </h3>
+            <div class="col-10 w-80 justify-content-center">
+              <h3 class="text-center"> Meet the Team </h3>
               <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel carousel-image">
                   <ol class="carousel-indicators">
                     <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
                     <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
                     <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
                   </ol>
-                  <div class="carousel-inner">
+                  <div class="carousel-inner pb-3">
                     <div class="carousel-item active">
-                      <img src="{% static 'assets/images/admin-image-person.jpeg' %}" class="d-block w-100 carousel-image" alt="...">
+                      <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700575274/admin-image-person_qlayeg.jpg" class="d-block w-100 carousel-image" alt="...">
                       <div class="carousel-caption d-none d-md-block">
                         <h5>Admin : Sarah Wang </h5>
                         <p> I am here for any query or concerns you might have.</p>
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <img src="{% static 'assets/images/cleaner-image.jpg' %}" class="d-block w-100" alt="...">
+                      <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700575091/cleaner-image_kmjx4i.jpg" class="d-block w-100" alt="...">
                       <div class="carousel-caption d-none d-md-block">
                         <h5> Cleaner : Tamie Hamilton </h5>
                         <p> I keep our community center spotless and welcoming.</p>
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <img src="{% static 'assets/images/maintenanceguy-image.jpg' %}" class="d-block w-100 carousel-image " alt="...">
+                      <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700575161/maintenanceguy-image_lm0rsy.jpg" class="d-block w-100 carousel-image " alt="...">
                       <div class="carousel-caption d-none d-md-block">
                         <h5>Maintenance : Mark Hamilton </h5>
                         <p> They call me bob the builder , no problem I can't fix.</p>

@@ -3,11 +3,15 @@
 <!-- confirm_delete.html-->
 {% block content %}
 <div class="container">
-<form method="POST" id="delete-event-form">
+    <div class="row justify-content-center align-items-center d-flex carousel-inner">
+        <div class="col-11 col-md-9 col-lg-7 mt-5 mb-5 border-0" id="main-background">    
+<form method="POST" id="delete-event-form" class="col-12">
 {% csrf_token %}
 <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
 <button type="submit" class="btn btn-danger" id="delete-event-button"> Delete </button>
 </form>
+</div>
+</div>
 </div>
 <!--NEED TO REFFERENCE DONT FORGET  -->
 <script>

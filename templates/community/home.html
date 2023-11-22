@@ -20,7 +20,7 @@
 
                     Hi , {{ user.profile }}
                     {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-                    <a href="{% url 'create_or_update_event' %}"><button>
+                    <a href="{% url 'create_event' %}"><button>
                             <span class="button_top"> Create an Event </span>
                         </button> </a>
                     {% endif %}

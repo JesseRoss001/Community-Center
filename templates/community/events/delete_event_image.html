@@ -5,7 +5,7 @@
 <h2> Delete Event Image </h2>
 <p> Are you sure you want to delete the image for the event "{{ event.title }}"?</p>
 {% load crispy_forms_tags %}
-<form method="post"  enctype="multipart/form-data" >
+<form method="post"  enctype="multipart/form-data" class="custom-form" >
     {% csrf_token %}
     <button type="submit" class="btn btn-danger"> Delete Image </button>
     <a href="{% url 'gallery' %}" class="btn btn-secondary"> Cancel </a>

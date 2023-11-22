@@ -35,3 +35,7 @@ class EventForm(forms.ModelForm):
         fields = ['title','description','date','start_time', 'end_time', 'capacity', 'cost' , 'image' ]
         widgets = {'date':DateInput(attrs={'type':'date'}),}
 
+class EventUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        exclude = ['date','start_time','end_time']

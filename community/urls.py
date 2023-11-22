@@ -21,8 +21,8 @@ urlpatterns = [
     path('register_instructor/', views.register_instructor, name='register_instructor'),
     path('register_government/', views.register_government, name='register_government'),
     #Event Url 
-    path('create_or_update_event/', views.create_or_update_event, name="create_or_update_event"),
-    path('event/update/<int:event_id>/', views.create_or_update_event, name='update_event'),
+    path('event/create/', views.create_event, name="create_event"),
+    path('event/update/<int:event_id>/', views.update_event, name='update_event'),
     path('event/delete/<int:event_id>/', views.delete_event, name='delete_event'),
     path('event/join/<int:event_id>/', views.join_event, name='join_event'),
     path('event/<int:event_id>/',views.event_detail, name= "event_detail"),

@@ -34,7 +34,11 @@
                             <a class="nav-link" href="{% url 'gallery' %}"> Gallery </a>
                         </li>
                         <li class="nav-item">
+                            {% if user.is_authenticated %}
                             <a class="nav-link" href="{% url 'booking' %}"> Booking </a>
+                            {% else %}
+                            
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

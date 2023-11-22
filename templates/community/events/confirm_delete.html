@@ -2,13 +2,16 @@
 
 <!-- confirm_delete.html-->
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center align-items-center d-flex carousel-inner">
-        <div class="col-11 col-md-9 col-lg-7 mt-5 mb-5 border-0" id="main-background">    
-<form method="POST" id="delete-event-form" class="col-12">
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    
+    <div class="row justify-content-center align-items-center d-flex carousel-inner border-0 rounded">
+        <div class="col-11 col-md-9 col-lg-7 mt-5 mb-5 border-0 rounded" id="main-background"> 
+            <p class="text-center mt-2 mb-2 "> <strong> Deleting an event will remove it from the booking page and event will be refunded </strong> </p>   
+<form method="POST" id="delete-event-form" class="col-12 d-flex justify-content-center align-items-center p-1 m-1">
 {% csrf_token %}
-<a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
-<button type="submit" class="btn btn-danger" id="delete-event-button"> Delete </button>
+
+<a href="{% url 'home' %}" class="btn btn-secondary align-items-center m-1 ">Cancel</a>
+<button type="submit" class="btn btn-danger m-1" id="delete-event-button"> Delete </button>
 </form>
 </div>
 </div>

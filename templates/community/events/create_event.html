@@ -3,9 +3,20 @@
 {% block title %} Events - {{block.super}}{% endblock title %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center d-flex carousel-inner">
-    <div class="col-11 col-md-9 col-lg-7 mt-5 mb-5 border-0" id="main-background">
-        <h1> Create Event </h1>
+<div class="row justify-content-center align-items-center p-1 border-0 rounded d-flex carousel-inner">
+    <div class="col-11 col-md-9 col-lg-7 mt-5 p-1 mb-5 border-0 rounded" id="main-background">
+        <div class="bg-light m-1 p-1 border-0 rounded ">
+        <h1 class="text-center"> Create Event </h1>
+        
+        <p class="text-warning">
+            <strong> Disclaimer: </strong>
+            Instructors will be charged a fee of £200 for event creation. For government officials, no fee is charged.
+        </p>
+        <p class="text-info">
+            Please note that once an event is created, its date and time cannot be changed. 
+            An event cannot be deleted once someone has joined. If an image is chosen to be uploaded it will be added to the gallery page. You can choose to delete it from the gallery page. 
+        </p>
+    </div>
         {% load crispy_forms_tags %}
         <form method="post" enctype="multipart/form-data" class="col-12">
             {% csrf_token %}

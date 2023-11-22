@@ -27,15 +27,15 @@ class GeneralPublicForm(UserCreationForm):
 
 #Event Form 
 class EventForm(forms.ModelForm):
-    start_time = forms.ChoiceField(choices=TIME_SLOTS)
-    end_time = forms.ChoiceField(choices=TIME_SLOTS)
+    time = forms.ChoiceField(choices=TIME_SLOTS)
+    
 
     class Meta:
         model = Event
-        fields = ['title','description','date','start_time', 'end_time', 'capacity', 'cost' , 'image' ]
+        fields = ['title','description','date','time', 'capacity', 'image' ]
         widgets = {'date':DateInput(attrs={'type':'date'}),}
 
 class EventUpdateForm(forms.ModelForm):
     class Meta:
         model = Event
-        exclude = ['date','start_time','end_time']
+        exclude = ['date','time']

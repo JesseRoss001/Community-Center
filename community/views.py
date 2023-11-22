@@ -79,7 +79,7 @@ def booking(request):
         day_events = all_events.filter(date=single_date)
         day_schedule={slot[0]:None for slot in TIME_SLOTS}
         for event in day_events:
-            day_schedule[event.start_time] = event
+            day_schedule[event.time] = event
         schedule[single_date] = day_schedule
     user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id',flat=True)
     return render(request, 'community/booking.html',{'schedule':schedule, 'time_slots':TIME_SLOTS , 'user_bookings': user_bookings})
@@ -154,7 +154,7 @@ def create_event(request, event_id=None):
                 return render(request, 'community/events/create_update_event.html', {'form': form})
 
             critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
-            overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, start_time=event.start_time).exclude(id=event.id)
+            overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
 
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')

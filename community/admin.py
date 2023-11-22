@@ -4,7 +4,7 @@ from .models import UserProfile, Event , Booking
 # Register your models here.
 
 class EventAdmin(SummernoteModelAdmin):
-    list_display = ('title','author','date','start_time','end_time','capacity','cost')
+    list_display = ('title','author','date','time','capacity')
     search_fields = ['title','description','author__user__username']
     list_filter = ('date','author__role')
     summernote_fields = ('description',)

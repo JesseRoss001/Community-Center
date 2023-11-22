@@ -48,14 +48,12 @@ class Event(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     date = models.DateField()
-    start_time = models.CharField(max_length=10, choices=TIME_SLOTS)
-    end_time = models.CharField(max_length=10, choices=TIME_SLOTS)
+    time = models.CharField(max_length=10, choices=TIME_SLOTS)
     capacity =models.IntegerField(default=60)
-    cost = models.DecimalField(max_digits=6, decimal_places=2,default=0.00)
     image = models.ImageField(upload_to='event_images/',blank=True , null=True)
 
     class Meta:
-        unique_together = ('date','start_time')
+        unique_together = ('date','time')
     def __str__(self):
         return self.title
 

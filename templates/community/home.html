@@ -136,9 +136,13 @@
                     <img src="{{ event.image.url }}" alt="Event Image">
                     {% endif %}
                     <p>Date: {{ event.date }}</p>
-                    <p>Start Time : {{ event.start_time }}</p>
+                    <p>Start Time : {{ event.time }}</p>
                     <p> Capacity: {{ event.capacity }}</p>
-                    <p> Cost: {{ event.cost }} </p>
+                    <p> Cost: £ {% if event.author.role == 'INSTRUCTOR' %} 
+                        7.00
+                    {% else %}
+                        0.00
+                    {% endif %} </p>
 
                     <button class="btn btn-primary " type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
@@ -186,7 +190,7 @@
                         <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
                     </div>
                     <div class="card-body">
-                        <p> {{ event.date|date:"l, F j , Y" }}-{{ event.start_time }} - {{ event.end_time }} </p>
+                        <p> {{ event.date|date:"l, F j , Y" }}-{{ event.time }}  </p>
                         <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
                             aria-controls="collapse{{ forloop.counter }}"> More Info </button>

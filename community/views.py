@@ -12,6 +12,7 @@ import logging
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from decimal import Decimal
+from django.db import transaction
 import json
 
 
@@ -219,11 +220,22 @@ def update_event(request, event_id):
 @login_required
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id , author=request.user.profile)
+    
+    
     if request.method == 'POST':
+        with transaction.atomic():
+            if event.author.role == INSTRUCTOR:
+                event.author.balance += 200
+                event.author.save()
+                BalanceChange.objects.create(
+                    user_profile=event.author,
+                    change_amount=200,
+                    transaction_type="Event Deletion Refund"
+                )
         event.delete()
         messages.success(request, ' Event deleted successfully ')
         return redirect('home')
-    return render(request, 'community/events/confirm_delete.html')            
+    return render(request, 'community/events/confirm_delete.html',{'event': event})            
 
 def event_detail(request,event_id):
     event = get_object_or_404 (Event,pk = event_id)

@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="container mt-4">
-<h2> Delete Event Image </h2>
-<p> Are you sure you want to delete the image for the event "{{ event.title }}"?</p>
-{% load crispy_forms_tags %}
+<h2> Delete Event Image </h2><!-- Heading for deleting event image -->
+<p> Are you sure you want to delete the image for the event "{{ event.title }}"?</p><!-- Confirmation message with event title -->
+{% load crispy_forms_tags %}<!-- Load crispy forms tags for better form styling -->
 <form method="post"  enctype="multipart/form-data" class="custom-form" >
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger"> Delete Image </button>
-    <a href="{% url 'gallery' %}" class="btn btn-secondary"> Cancel </a>
+    <button type="submit" class="btn btn-danger"> Delete Image </button><!-- Button to confirm image deletion -->
+    <a href="{% url 'gallery' %}" class="btn btn-secondary"> Cancel </a><!-- Button to cancel and return to the gallery -->
 </form>
 </div>
 {% endblock %}

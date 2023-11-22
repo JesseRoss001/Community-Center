@@ -1,14 +1,15 @@
 {% extends 'community/base.html' %}
 {% load static %}
 {% block title %} About - {{block.super}}{% endblock title %}
-
+ <!-- Sets the title of the About page, appending to the base title -->
 {% block content %}<main id="main-background">
   <div class="container mt-4 ">
     <div class="row">
       <div class="col-12 carousel-inner mt-3 pt-3 border-none rounded">
-        <h1 class="display-4"> About our community Center </h1>
+        <h1 class="display-4"> About our community Center </h1> <!-- Main heading for the About page -->
         <p class="lead"> We are focused on enriching lives , by providing a space for learning, creativity and community
-          engagement </p>
+          engagement </p><!-- Brief description of the community center -->
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +24,7 @@
           </div>
           <div class="bg-light border-0 rounded-1">
             <ul class="list-unstyled p-3">
+              <!-- List of key impact statistics -->
               <li class=""> Total Members : <strong> {{ total_users }} </strong> </li>
               <li class=""> Total Bookings : <strong> {{ total_bookings }} </strong></li>
               <li class=""> Proud provider of official Welsh Language Classes </li>
@@ -32,6 +34,9 @@
           </div>
         </div>
         <div class="col-10 w-80 justify-content-center">
+          <!-- Carousel to showcase the team members -->
+           <!-- Carousel structure with indicators and items -->
+            <!-- ... Carousel content ... -->
           <h3 class="text-center"> Meet the Team </h3>
           <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel carousel-image">
             <ol class="carousel-indicators">

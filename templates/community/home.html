@@ -4,21 +4,21 @@
 {% block content %}
 
 
-<!-- Adding in login/logout links -->
+
 <main id="main-background">
     <div class="row">
         <div
             class="col-11 row  carousel-inner d-flex justify-content-center align-items-center pb-5 border-0 rounded m-1">
 
-
+ <!-- Title and user-specific greeting -->
             <div class="col-12 container mt-4 d-flex justify-content-center ">
                 <h1> Welcome to the Community Center</h1>
             </div>
             <div class="col-12  align-items-center text-center mt-3">
-                <p>
+                <p><!-- Check if user is authenticated -->
                     {% if user.is_authenticated %}
 
-                    Hi , {{ user.profile }}
+                    Hi , {{ user.profile }} <!-- Display 'Create an Event' option for certain user roles -->
                     {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
                     <a href="{% url 'create_event' %}"><button>
                             <span class="button_top"> Create an Event </span>
@@ -29,6 +29,7 @@
                         </button> </a>
 
                     {% else %}
+                    <!-- Login and sign up options for unauthenticated users -->
                     <div>
                         <a href="{% url 'login' %}"> <button>
                                 <span class="button_top"> Login </span>
@@ -50,7 +51,7 @@
                 </p>
             </div>
             <div class="row">
-
+ <!-- Section displaying event categories and a carousel of event images -->
                 <div class="col-md-3 event-info">
                     <h3 class="text-center">Types of Events</h3>
                     <p class="text-center ">Maths Tutoring: Enhance your skills with expert tutors.Yoga for Wellness:
@@ -118,7 +119,7 @@
 
 
     {% if created_events %}
-
+ <!-- ... Content for displaying created events ... -->
     <div class="container mt-5 carousel-inner border-0 rounded">
         <div class="row">
             <div class="col-12 d-flex text-center justify-content-center ">
@@ -173,7 +174,7 @@
         {% endif %}
     </div>
     </div>
-
+<!-- ... Content for displaying joined events ... -->
     {% if user.is_authenticated and joined_events %}
 
     <div class="container mt-5 carousel-inner border-0 rounded">
@@ -206,7 +207,7 @@
         {% else %}
         <p> You have not joined an event yet .</p>
         {% endif %}
-    </div>
+    </div> <!-- ... Content for displaying user's balance and recent transactions ... -->
     {% if user.is_authenticated %}
     <div class="container mt-5 mb-3 pb-4 ">
         <div class="row align-items-start carousel-inner border-0 rounded m-1">
@@ -233,9 +234,9 @@
     </div>
     </div>
     </div>
-</main>
+</main><!-- ... Script for initializing the chart ... -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<!-- JavaScript for Chart.js to display transaction history graphically -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const transactionDates = JSON.parse('{{ transaction_dates|safe }}');

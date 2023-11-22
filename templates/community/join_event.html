@@ -1,6 +1,6 @@
 {% extends 'community/base.html' %}
 
-{% block content %}
+{% block content %}<!-- Displaying the cost of the event based on the author's role -->
 <h1> Join Event </h1>
 <p> Event {{ event.title }}</p>
 <p> Capacity: {{ event.capacity }}</p>
@@ -10,13 +10,13 @@
     £0.00
 {% endif %} </p>
 
-<p class="text-warning">
+<p class="text-warning"><!-- Warning about the deduction and refund policy -->
     By joining this event , £ {% if event.author.role == 'INSTRUCTOR' %} 
     7.00
 {% else %}
     0.00
 {% endif %} will be deducted from your wallet . No refund is eligible for events. If the event is cancelled a full refund must be issued by the instructor. 
-</p>
+</p><!-- Form for confirming the join action -->
 <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-primary"  onclick="return confirmJoinEvent()"> Confirm Join </button>

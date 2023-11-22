@@ -1,6 +1,6 @@
 {% extends 'community/base.html' %}
-{% load dict_key %}
-{% load i18n %}
+{% load dict_key %}<!-- Custom template tag for handling dictionaries -->
+{% load i18n %}<!-- Load internationalization tag for language translation -->
 
 {% block content %}
 <main id="main-background">
@@ -24,14 +24,15 @@
 
                         <!-- Check if there is an event in this time slot -->
                         {% if event %}
-
+<!-- Conditional styling based on event author's role -->
                         <div class="{% if event.author.role == 'INSTRUCTOR' %}text-orange{% elif event.author.role == 'GOVERNMENT_OFFICIAL' %}text-blue{% endif %}">
                             <div id="main-background">{{ event.title }} by {{ event.author.user.username }} </div>
                                 <div id="main-background"> Cost :
+                                     <!-- Display cost based on event author's role -->
                                     {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
                                     {% elif event.author.role == 'GOVERNMENT_OFFICIAL' %} £0.00
                                     {% endif %}
-                                
+                                 <!-- Handling user booking status -->
                                 {% if event.id in user_bookings %}
                                 <button class="btn btn-secondary btn-sm disabled"> Joined </button>
                            
@@ -47,13 +48,14 @@
                             </div>
                         </div>
                         {% else %}
+                        <!-- Displaying 'Available' if no event is scheduled -->
                         <div class="carousel-inner pt-1 pb-1"><span class="status-available"> {% trans "Available" %}
                             </span>
                         </div>
                         {% endif %}
 
                         {% if forloop.counter|divisibleby:2 %}
-
+ <!-- Adding a cleaning break after every two time slots -->
                         <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
                         {% endif %}
 
@@ -68,6 +70,7 @@
 
 
 <script>
+     // JavaScript function for confirming event join action
     function confirmJoinEvent() {
         return confirm(
             'Are you sure you want to join this event ? This will deduct the cost from your wallet. Refunds are not eligible for events '

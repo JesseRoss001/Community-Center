@@ -3,16 +3,17 @@
 {% block title %} Events - {{block.super}}{% endblock title %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center p-1 border-0 rounded d-flex carousel-inner">
+<div class="row justify-content-center align-items-center p-1 border-0 rounded d-flex carousel-inner"> <!-- Content styling to match website -->
     <div class="col-11 col-md-9 col-lg-7 mt-5 p-1 mb-5 border-0 rounded" id="main-background">
         <div class="bg-light m-1 p-1 border-0 rounded ">
-        <h1 class="text-center"> Update Event  </h1>
+        <h1 class="text-center"> Update Event  </h1> <!-- Heading for updating the event -->
         </div>
-        {% load crispy_forms_tags %}
+        {% load crispy_forms_tags %}  <!-- Load crispy forms tags for better form styling -->
         <form method="post" enctype="multipart/form-data" class="col-12">
             {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="mt-3"> Update Event </button>
+            {{ form|crispy }}  <!-- Renders the form fields with crispy forms styling -->
+            <button type="submit" class="mt-3"> Update Event </button> <!-- Button to submit the form and update the event -->
+        </form>
             
         </form>
     </div>

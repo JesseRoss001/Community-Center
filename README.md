@@ -87,7 +87,26 @@ This project is a web application for managing bookings at a community center. I
 - **System Check**: Resolved issues identified during system checks.
 - **Readme Update**: Updated the project README file.
 
+## Day 7:Nov 20, 2023
+- **Fixed Media Upload Errors**: Corrected issues with uploading media and the correct use of static files.
+- **Styling Home Page**: Began the process of enhancing the home page styling.
 
+## Day 8: Nov 21, 2023
+- **Rough Styling of Pages**: Applied initial styling to various pages excluding forms.
+- **Styling the Booking Page**: Focused on refining the booking page appearance.
+- **Styling the About Page**: Made several commits to improve the layout and style of the about page.
+
+## Day 9: Nov 22, 2023
+- **Testing**: Added `tests.py` ensuring all tests pass.
+- **Code Commenting**: Improved code documentation to adhere to industry standards.
+- **Migrations and Updates**: Kept database migrations up to date and made minor updates.
+- **MVP Achieved**: Reached a minimal viable product with current features.
+- **Form Styling**: Enhanced the styling of forms and updated the event updating form.
+
+## Day 10: Nov 23, 2023
+- **Correcting Styling Errors**: Made adjustments to fix prominent styling issues across the platform.
+- **Finalizing Home Page Design**: Worked on finalizing the home page design, ensuring responsiveness across all device sizes.
+- **Footer Layout Improvement**: Reverted footer styling to its original design and enhanced the layout.
 ## Contributing
 This project is aimed at meeting assessment criteria and therefore contributions are not welcome.
 

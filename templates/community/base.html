@@ -19,7 +19,7 @@
 <body>
     <!-- Navbar structure with links to different pages -->
     <!-- ... Navbar content ... -->
-    <header class="navbar-heading bg-light z-3">
+    <header class="navbar-heading bg-light z-3 ">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light ">
                 <a class="navbar-brand" href="{% url 'home' %}"> Community Center </a>
@@ -30,7 +30,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'home' %}"> Home <span class"sr-only"> (current)</span></a>
+                            <a class="nav-link" href="{% url 'home' %}"> Home <span class="visually-hidden"> (current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'about' %}">About </a>
@@ -113,11 +113,11 @@
                         <i class="fab fa-instagram"></i>
                     </a>
 
-                    <a href="https://facebook.com" target="_blank" class="text-dark m-2">
+                    <a href="https://facebook.com" target="_blank" class="text-muted m-2">
                         <i class="fab fa-facebook-f"></i>
                     </a>
 
-                    <a href="https://tiktok.com" target="_blank" class="text-dark m-2">
+                    <a href="https://tiktok.com" target="_blank" class="text-muted m-2">
                         <i class="fab fa-tiktok"></i>
                     </a>
 

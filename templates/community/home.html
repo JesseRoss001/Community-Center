@@ -10,11 +10,16 @@
     <div class="col-12 row   d-flex justify-content-center align-items-center pb-3 border-0 rounded m-1">
 
         <!-- Title and user-specific greeting -->
-        <div class="col-8 container mt-4 d-flex justify-content-center ">
+        <div class="col-8 container mt-4 d-flex d-md-none justify-content-center ">
             <h1 class="h1 text-center"> Welcome to <br> the Community <br> Center</h1>
         </div>
 
+        <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
+            <h1 class="h1 text-center"> Welcome to the Community Center</h1>
         </div>
+
+
+    </div>
     </div>
     <div class="row d-flex d-md-none justify-content-center align-items-center ">
         <!-- Section displaying event categories and a carousel of event images -->
@@ -78,9 +83,9 @@
             </div>
         </div>
     </div>
-    
 
-    <div class="col-12 d-flex justify-content-between align-items-center d-md-none">
+
+    <div class="col-12 pb-4 d-flex justify-content-between align-items-center d-md-none">
         <div class="col-12  align-items-center text-center mt-3">
             <p class="leading ">
                 <!-- Check if user is authenticated -->
@@ -89,62 +94,63 @@
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
                 {% endif %}
-        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-        <div class="mt-4 col-12 row  d-flex justify-content-center align-items-center d-md-none ">
-            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
-                <a href="{% url 'create_event' %}"><button>
-                        <span class="button_top"> Create an Event </span>
-                    </button> </a>
-            </div>
-            
-            <div class=" mt-4  mb-4 col-12 col-md-6 d-flex justify-content-center align-items-center d-md-none ">
-                <a href="{% url 'logout' %}"> <button>
-                        <span class="button_top"> Logout </span>
-                    </button> </a>
-            </div>
+                {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
+                <div class="mt-4 col-12 row  d-flex justify-content-center align-items-center d-md-none ">
+                    <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                        <a href="{% url 'create_event' %}"><button>
+                                <span class="button_top"> Create an Event </span>
+                            </button> </a>
+                    </div>
+
+                    <div
+                        class=" mt-4  mb-4 col-12 col-md-6 d-flex justify-content-center align-items-center d-md-none ">
+                        <a href="{% url 'logout' %}"> <button>
+                                <span class="button_top"> Logout </span>
+                            </button> </a>
+                    </div>
+                </div>
+
+
+                {% else %}
+                <!-- Login and sign up options for unauthenticated users -->
+                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
+
+                    <a href="{% url 'login' %}"> <button>
+                            <span class="button_top"> Login </span>
+                        </button>
+                    </a>
+                </div>
+                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
+                    <a href="{% url 'register_public' %}"><button>
+                            <span class="button_top"> Sign up </span>
+                        </button>
+                    </a>
+                </div>
+                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
+
+                    <a href="{% url 'register_instructor'  %}"><button>
+                            <span class="button_top"> Sign up as an Instructor </span>
+                        </button>
+                    </a>
+                </div>
+                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none "></div>
+                <a href="{% url  'register_government' %}"><button>
+                        <span class="button_top"> Sign up as an Official </span>
+                    </button>
+                </a>
+                {% endif %}
+
         </div>
-
-
-        {% else %}
-        <!-- Login and sign up options for unauthenticated users -->
-        <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-
-            <a href="{% url 'login' %}"> <button>
-                    <span class="button_top"> Login </span>
-                </button>
-            </a>
-        </div>
-        <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-            <a href="{% url 'register_public' %}"><button>
-                    <span class="button_top"> Sign up </span>
-                </button>
-            </a>
-        </div>
-        <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-
-            <a href="{% url 'register_instructor'  %}"><button>
-                    <span class="button_top"> Sign up as an Instructor </span>
-                </button>
-            </a>
-        </div>
-        <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none "></div>
-        <a href="{% url  'register_government' %}"><button>
-                <span class="button_top"> Sign up as an Official </span>
-            </button>
-        </a>
-        {% endif %}
-
     </div>
     </div>
-    </div>
-    <div class="d-none row d-md-flex">
+    <div class="d-none row  pb-4 d-md-flex justify-content-around">
         <!-- Section displaying event categories and a carousel of event images -->
-        <div class="d-none d-md-flex col-md-3 event-info">
-            <h3 class="text-center">Types of Events</h3>
-            <p class="text-center ">Maths Tutoring: Enhance your skills with expert tutors.Yoga for Wellness:
-                Stretch and strengthen your body.
+        <div class=" col-md-5 col-lg-4  ms-3 ps-2 event-info bg-light border-0 rounded">
+            <h3 class="text-center mt-3 ">Types of Events</h3>
+            <p class="text-center ">Enhance your skills with expert tutors.
+                Stretch and strengthen your body with specialists. Obtain government approved qualifications.
                 Chess Championship: Showcase your strategic prowess.
-                <p> And more .... </p>
+                <br> And more ..... </p>
         </div>
         <div class="col-12 col-md-6 h-75">
 
@@ -198,6 +204,69 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="col-12 row pb-4 d-none d-md-flex justify-content-center align-items-center ">
+        <div class="col-12  align-items-center text-center mt-3">
+            <p class="leading ">
+                <!-- Check if user is authenticated -->
+                {% if user.is_authenticated %}
+
+                Hi , {{ user.profile }}
+                <!-- Display 'Create an Event' option for certain user roles -->
+                {% endif %} </p>
+        </div>
+        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
+        <div class="mt-4 col-6   d-flex justify-content-center align-items-center  ">
+
+            <a href="{% url 'create_event' %}"><button>
+                    <span class="button_top"> Create an Event </span>
+                </button> </a>
+        </div>
+
+        <div class=" mt-4   col-6 d-flex justify-content-center align-items-center ">
+            <a href="{% url 'logout' %}"> <button>
+                    <span class="button_top"> Logout </span>
+                </button> </a>
+        </div>
+
+
+
+        {% else %}
+        <!-- Login and sign up options for unauthenticated users -->
+
+        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+
+            <a href="{% url 'login' %}"> <button>
+                    <span class="button_top"> Login </span>
+                </button>
+            </a>
+        </div>
+
+        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+
+            <a href="{% url 'register_instructor'  %}"><button>
+                    <span class="button_top"> Sign up as an Instructor </span>
+                </button>
+            </a>
+        </div>
+
+        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+            <a href="{% url 'register_public' %}"><button>
+                    <span class="button_top"> Sign up </span>
+                </button>
+            </a>
+        </div>
+        
+        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+        <a href="{% url  'register_government' %}"><button>
+                <span class="button_top"> Sign up as an Official </span>
+            </button>
+        </a>
+    </div>
+        {% endif %}
+
+   
     </div>
     </div>
     </div>
@@ -262,7 +331,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <p> You have not create any events yet.</p>
+
         {% endif %}
     </div>
     </div>
@@ -297,7 +366,7 @@
 
         </div>
         {% else %}
-        <p> You have not joined an event yet .</p>
+
         {% endif %}
     </div> <!-- ... Content for displaying user's balance and recent transactions ... -->
     {% if user.is_authenticated %}

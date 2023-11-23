@@ -1,6 +1,10 @@
 
 #fire-background{background: linear-gradient(89.2deg, rgb(0, 0, 0) 10.4%, rgb(255, 0, 0) 37.1%, rgb(255, 216, 51) 64.3%, rgb(255, 255, 255) 90.5%);}
-
+/* Header styling */
+.navbar-heading {position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;}
 #main-background {
   background: linear-gradient(45deg, #FFB199,#FFD26F,#73A1F9,  #6DC8F3);
   background-size: 600% 600%;

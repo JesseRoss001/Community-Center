@@ -278,7 +278,9 @@ form {
 .discord-button:hover {
   background: #5865F2;
 }
-
+.discord-button:hover {
+  background: #5865F2;
+}
 
 .buttons.active .discord-button {
   transform: translate(70px, 0px);

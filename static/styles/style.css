@@ -94,7 +94,7 @@ button:active .button_top {
     transition: 7s ease-in-out left;
 }
 
-button:not(:has(.button_top)) {
+.standard {
   background: linear-gradient(45deg, #2D3E50, #4B6278);
   color: #fff;
   padding: 0.75em 1.5em;
@@ -103,12 +103,12 @@ button:not(:has(.button_top)) {
   border: 2px solid transparent;
 }
 
-button:not(:has(.button_top)):hover {
+.standard:hover {
   background: linear-gradient(45deg, #4B6278, #2D3E50);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-button:not(:has(.button_top)):active {
+.standard:active {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -163,4 +163,187 @@ form {
 :root {
   --form-background-gradient: linear-gradient(45deg, #FFB199,#FFD26F,#73A1F9,  #6DC8F3);
   --button-gradient: linear-gradient(45deg, #FF5F6D, #FFC371);
+}
+
+
+/* footer styling */ 
+.Btninstagram {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  /* overflow: hidden; */
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.svgContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.8px;
+  border-radius: 10px;
+  transition: all .3s;
+  border: 1px solid rgba(156, 156, 156, 0.466);
+}
+
+.BG {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #f09433;
+  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+  z-index: -1;
+  border-radius: 9px;
+  pointer-events: none;
+  transition: all .3s;
+}
+
+.Btninstagram:hover .BG {
+  transform: rotate(35deg);
+  transform-origin: bottom;
+}
+
+.Btninstagram:hover .svgContainer {
+  background-color: rgba(156, 156, 156, 0.466);
+}
+
+
+.buttons {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 50px; 
+  width: 50px;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
+  
+}
+
+.buttons:hover {
+  padding: 20px;
+}
+
+.buttons:hover .button {
+  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
+}
+
+.main-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: none;
+  background: #e8e8e8;
+  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
+  border-radius: 50%;
+  transition: 0.2s;
+  z-index: 100;
+  top:-20px;
+  right:20px;
+}
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.buttons {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: none;
+  background: #e8e8e8;
+  box-shadow: 5px 5px 12px rgba(202, 202, 202, 0), -5px -5px 12px rgba(255, 255, 255, 0);
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+
+.discord-button:hover {
+  background: #5865F2;
+}
+
+
+.buttons.active .discord-button {
+  transform: translate(70px, 0px);
+}
+
+.twitter-button:hover {
+  background: #1CA1F1;
+}
+
+.buttons.active .twitter-button {
+  transform: translate(47px, -47px);
+}
+
+.reddit-button:hover {
+  background: #FF4500;
+}
+
+.buttons.active .reddit-button {
+  transform: translate(0px, -70px);
+}
+
+.messenger-button:hover {
+  background: #0093FF;
+}
+
+.buttons.active .messenger-button {
+  transform: translate(-47px, -47px);
+}
+
+.pinterest-button:hover {
+  background: #F0002A;
+}
+
+.buttons.active .pinterest-button {
+  transform: translate(-70px, 0px);
+}
+
+.instagram-button:hover {
+  background: #F914AF;
+}
+
+.buttons.active .instagram-button {
+  transform: translate(-47px, 47px);
+}
+
+.snapchat-button:hover {
+  background: #FFFC00;
+}
+
+.buttons.active .snapchat-button {
+  transform: translate(0px, 70px);
+}
+
+.whatsapp-button:hover {
+  background: #25D366;
+}
+
+.buttons.active .whatsapp-button {
+  transform: translate(47px, 47px);
+}
+
+
+.social-button:hover {
+  transform: scale(1.1);
+}
+#shareButtonContainer.active{
+padding: 30px;
 }

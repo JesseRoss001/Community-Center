@@ -31,15 +31,15 @@
                     {% else %}
                     <!-- Login and sign up options for unauthenticated users -->
                     <div>
-                        <a href="{% url 'login' %}"> <button>
+                        <a href="{% url 'login' %}"> <button class="standard">
                                 <span class="button_top"> Login </span>
                             </button>
 
-                            <a href="{% url 'register_public' %}"><button>
+                            <a href="{% url 'register_public' %}"><button class="standard" >
                                     <span class="button_top"> Sign up </span>
                                 </button>
                             </a>
-                            <a href="{% url 'register_instructor'  %}"><button>
+                            <a href="{% url 'register_instructor'  %}"><button class="standard" >
                                     <span class="button_top"> Sign up as an Instructor </span>
                                 </button>
                             </a>
@@ -98,7 +98,7 @@
                                 <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700521641/first-aid_mf3tfy.png"
                                     class="d-block w-100" data-bs-event="firstaid" alt=" First Aid  Event">
                             </div>
-                            <button class="carousel-control-prev opacity-0.05" id="carousel-button" type="button"
+                            <button class="carousel-control-prev  standard opacity-0.05" id="carousel-button" type="button"
                                 data-bs-target="#bannerCarousel" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
@@ -145,7 +145,7 @@
                         0.00
                     {% endif %} </p>
 
-                    <button class="btn btn-primary " type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-primary standard" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
                         aria-controls="collapse{{ forloop.counter }}"> More Info </button>
 
@@ -154,14 +154,14 @@
                     </div>
                     <div class="row ">
                         <div class="col-6">
-                            <a href="{% url  'update_event' event.id %}"> <button> Update </button> </a>
+                            <a href="{% url  'update_event' event.id %}"> <button class="standard"> Update </button> </a>
                         </div>
                         <div class="col-6">
                             {% if event.capacity >= 60 %}
-                            <a href="{% url 'delete_event' event.id %}"><button> Delete </button> </a>
+                            <a href="{% url 'delete_event' event.id %}"><button class="standard" > Delete </button> </a>
                             {% else %}
                             <p> Event deletion is disabled after public booking of course </p>
-                            <button class="btn btn-danger disabled">Delete </button>
+                            <button class="btn btn-danger standard disabled">Delete </button>
                             {% endif %}
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                     </div>
                     <div class="card-body">
                         <p> {{ event.date|date:"l, F j , Y" }}-{{ event.time }}  </p>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        <button class="btn btn-primary standard" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
                             aria-controls="collapse{{ forloop.counter }}"> More Info </button>
                     </div>

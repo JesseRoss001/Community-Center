@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from .models import Event, UserProfile ,Booking,BalanceChange
 from django.utils import timezone
 import datetime
+# Developed with assistance from ChatGPT, Stack Overflow to test various functionalities in a Django web application
+#Django's official documentation on testing: https://docs.djangoproject.com/en/4.0/topics/testing/
 class EventTests(TestCase):
     def setUp(self):
         self.client = Client()

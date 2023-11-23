@@ -152,10 +152,10 @@
                 Chess Championship: Showcase your strategic prowess.
                 <br> And more ..... </p>
         </div>
-        <div class="col-12 col-md-6 h-75">
+        <div class=" col-md-6 h-75">
 
             <div class="banner-container">
-                <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000">
+                <div id="bannerCarousel1" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000">
 
                     <div class="carousel-item active">
                         <img src="https://res.cloudinary.com/dwz6t9jry/image/upload/v1700521728/pexels-katerina-holmes-5905456_zkqiwh.jpg"
@@ -191,13 +191,13 @@
                             class="d-block w-100" data-bs-event="firstaid" alt=" First Aid  Event">
                     </div>
                     <button class="carousel-control-prev  standard opacity-0.05" id="carousel-button" type="button"
-                        data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                        data-bs-target="#bannerCarousel1" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
 
                     <button class="carousel-control-next standard opacity-0.05 " id="carousel-button" type="button"
-                        data-bs-target="#bannerCarousel" data-bs-slide="next">
+                        data-bs-target="#bannerCarousel1" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -235,7 +235,7 @@
         {% else %}
         <!-- Login and sign up options for unauthenticated users -->
 
-        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+        <div class="mt-4 col-5 col-lg-3  d-flex justify-content-center align-items-center  ">
 
             <a href="{% url 'login' %}"> <button>
                     <span class="button_top"> Login </span>
@@ -243,7 +243,7 @@
             </a>
         </div>
 
-        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+        <div class="mt-4 col-5  col-lg-3  d-flex justify-content-center align-items-center  ">
 
             <a href="{% url 'register_instructor'  %}"><button>
                     <span class="button_top"> Sign up as an Instructor </span>
@@ -251,14 +251,14 @@
             </a>
         </div>
 
-        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+        <div class="mt-4 col-5  col-lg-3  d-flex justify-content-center align-items-center  ">
             <a href="{% url 'register_public' %}"><button>
                     <span class="button_top"> Sign up </span>
                 </button>
             </a>
         </div>
         
-        <div class="mt-4 col-5   d-flex justify-content-center align-items-center  ">
+        <div class="mt-4 col-5 col-lg-3   d-flex justify-content-center align-items-center  ">
         <a href="{% url  'register_government' %}"><button>
                 <span class="button_top"> Sign up as an Official </span>
             </button>

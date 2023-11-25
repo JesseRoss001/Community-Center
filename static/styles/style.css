@@ -101,7 +101,7 @@ button:active .button_top {
 .standard {
   background: linear-gradient(45deg, #2D3E50, #4B6278);
   color: #fff;
-  padding: 0.75em 1.5em;
+  padding: 0.5em 1.1em;
   border-radius: 0.75em;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border: 2px solid transparent;

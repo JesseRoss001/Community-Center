@@ -205,16 +205,16 @@
             </div>
         </div>
     </div>
-
+    {% if user.is_authenticated %}
     <div class="col-12 row pb-4 d-none d-md-flex justify-content-center align-items-center ">
         <div class="col-12  align-items-center text-center mt-3">
             <p class="leading ">
                 <!-- Check if user is authenticated -->
-                {% if user.is_authenticated %}
+                
 
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
-                {% endif %} </p>
+                 </p>
         </div>
         {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
         <div class="mt-4 col-6   d-flex justify-content-end align-items-center  ">
@@ -230,11 +230,18 @@
                 </button> </a>
         </div>
 
+        {% else %}
+        <div class=" mt-4   col-6 d-flex justify-content-center align-items-center ">
+            <a href="{% url 'logout' %}"> <button>
+                    <span class="button_top"> Logout </span>
+                </button> </a>
+        </div>
 
+        {% endif %}
 
         {% else %}
         <!-- Login and sign up options for unauthenticated users -->
-
+        <div class="col-12 row pb-4 d-none d-md-flex justify-content-center align-items-center ">
         <div class="mt-4 col-5 col-lg-3  d-flex justify-content-center align-items-center  ">
 
             <a href="{% url 'login' %}"> <button>
@@ -257,16 +264,16 @@
                 </button>
             </a>
         </div>
-        
+
         <div class="mt-4 col-5 col-lg-3   d-flex justify-content-center align-items-center  ">
-        <a href="{% url  'register_government' %}"><button>
-                <span class="button_top"> Sign up as an Official </span>
-            </button>
-        </a>
-    </div>
+            <a href="{% url  'register_government' %}"><button>
+                    <span class="button_top"> Sign up as an Official </span>
+                </button>
+            </a>
+        </div>
         {% endif %}
 
-   
+
     </div>
     </div>
     </div>
@@ -300,17 +307,34 @@
                         0.00
                         {% endif %} </p>
 
-                    <button class="btn btn-primary w-75 standard" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
-                        aria-controls="collapse{{ forloop.counter }}"> More Info </button>
+                    <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                        data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                    <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <span> Event by {{ event.author.user.username }} <br> </span>
+                                    <p> {{ event.description }} </p> <!-- Display event description -->
+                                    <p>Date: {{ event.date }}</p> <!-- Display event date -->
 
-                    <div class="collapse" id="collapse{{ forloop.counter }}">
-                        <div class="card card-body">{{ event.description }}</div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="row p-1 d-flex justify-content-center  ">
-                        <div class="col-6 ">
+                        <div class="col-6  ">
                             {% if event.capacity < 60 %}
-                            <a href="{% url  'update_event' event.id %}"> <button class=" ms-md-1 ms-lg-3 standard"> Update
+                            <a href="{% url  'update_event' event.id %}"> <button class=" mt-4 ms-md-1 ms-lg-4 standard">
+                                    Update
                                 </button> </a>
                             {% else %}
                             <a href="{% url  'update_event' event.id %}"> <button class="standard"> Update </button>
@@ -322,7 +346,7 @@
                             <a href="{% url 'delete_event' event.id %}"><button class="standard"> Delete </button> </a>
                             {% else %}
                             <p class="ms-md-1"> Event deletion is disabled after public booking of course </p>
-                            <button class="btn btn-danger standard disabled">Delete </button>
+                            <button class="btn btn-danger standard disabled  ms-md-1 ms-lg-4 ">Delete </button>
                             {% endif %}
                         </div>
                     </div>
@@ -353,13 +377,26 @@
                     </div>
                     <div class="card-body">
                         <p> {{ event.date|date:"l, F j , Y" }}-{{ event.time }} </p>
-                        <button class="btn btn-primary standard" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ forloop.counter }}" aria.expanded="false"
-                            aria-controls="collapse{{ forloop.counter }}"> More Info </button>
-                    </div>
-                    <div class="collapse" id="collapse{{ forloop.counter }}">
-                        <div class="card card-body">{{ event.description }}</div>
-                    </div>
+                        <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                        <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                   <span> Event by {{ event.author.user.username }} <br> </span>
+                                    <p> {{ event.description }} </p> <!-- Display event description -->
+                                    <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                   
+                                    
+                                   
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
                 </div>
             </div>
             {% endfor %}

@@ -40,11 +40,19 @@
                             {% elif user.profile.role  in 'INSTRUCTOR,GOVERNMENT_OFFICIAL' %}
                             <button class="btn btn-secondary btn-sm standard disabled"> No Access </button>
                             {% else %}
+<!-- Info button to zoom in and display details of th event upon clicking -->
+<button class="btn btn-info btn-sm standard" onclick="showEventDetails({{ event.id }})"> Info 
+ </button>
 
                             <!-- Join event link with onclick event for confirmation -->
                             <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm"
                                 onclick="return confirmJoinEvent()"> Join Event </a>
                             {% endif %}
+                            </div>
+                            <div id="event-details-{{ event.id }}" class="event-details" style="display:none;">
+                                <h4> Event Details:</h4>
+                                <p> {{ event.description }} </p>
+                                <button  class="btn btn-close" onclick="hideEventDetails({{ event.id }})"> Close  </button>
                             </div>
                         </div>
                         {% else %}
@@ -67,7 +75,19 @@
         </div>
     </div>
 </main>
+<script > 
+function showEventDetails(eventId) {
+    let eventDetailsDiv = document.getElementById('event-details-' + eventId);
+    if(eventDetailsDiv){
+    eventDetailsDiv.style.display ='block';
+}}
 
+function hideEventDetails(eventId) {
+    let eventDetailsDiv =document.getElementById('event-details' + eventId);
+    if(eventDetailsDiv)
+    {eventDetailsDiv.style.display = 'none';
+}}
+</script> 
 
 <script>
      // JavaScript function for confirming event join action

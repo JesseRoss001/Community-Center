@@ -1,6 +1,8 @@
 {% extends 'community/base.html' %}
-{% load dict_key %}<!-- Custom template tag for handling dictionaries -->
-{% load i18n %}<!-- Load internationalization tag for language translation -->
+{% load dict_key %}
+<!-- Custom template tag for handling dictionaries -->
+{% load i18n %}
+<!-- Load internationalization tag for language translation -->
 
 {% block content %}
 <main id="main-background">
@@ -24,73 +26,90 @@
 
                         <!-- Check if there is an event in this time slot -->
                         {% if event %}
-<!-- Conditional styling based on event author's role -->
-                        <div class="{% if event.author.role == 'INSTRUCTOR' %}text-orange{% elif event.author.role == 'GOVERNMENT_OFFICIAL' %}text-blue{% endif %}">
-                            <div id="main-background">{{ event.title }} by {{ event.author.user.username }} </div>
-                                <div id="main-background"> Cost :
-                                     <!-- Display cost based on event author's role -->
-                                    {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-                                    {% elif event.author.role == 'GOVERNMENT_OFFICIAL' %} £0.00
-                                    {% endif %}
-                                 <!-- Handling user booking status -->
+                        <!-- Conditional styling based on event author's role -->
+                        <div id="main-background" class=" p-2 mt-2 mb-2 border-none rounded text-center ">
+                            <div class="pt-2 bg-light " ><h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-primary {% else %} text-warning {% endif %} ">{{ event.title }} </h5> <p class="mb-1"> {{ event.author.user.username }} </p>
+                            <p> Cost :
+                                <!-- Display cost based on event author's role -->
+                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                {% else %} £0.00
+                                {% endif %}
+                            </p>
+                                <!-- Handling user booking status -->
                                 {% if event.id in user_bookings %}
-                                <button class="btn btn-secondary btn-sm standard disabled"> Joined </button>
-                           
+                                <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
 
-                            {% elif user.profile.role  in 'INSTRUCTOR,GOVERNMENT_OFFICIAL' %}
-                            <button class="btn btn-secondary btn-sm standard disabled"> No Access </button>
-                            {% else %}
-<!-- Info button to zoom in and display details of th event upon clicking -->
-<button class="btn btn-info btn-sm standard" onclick="showEventDetails({{ event.id }})"> Info 
- </button>
 
-                            <!-- Join event link with onclick event for confirmation -->
-                            <a href="{% url 'join_event' event.id %}" class="btn btn-primary btn-sm"
+                                {% elif user.profile.role  in 'INSTRUCTOR,GOVERNMENT_OFFICIAL' %}
+                                <button class="btn btn-secondary btn-sm  disabled"> No Access </button>
+                                {% else %}
+                                <a href="{% url 'join_event' event.id %}" class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm"
                                 onclick="return confirmJoinEvent()"> Join Event </a>
                             {% endif %}
+                                <!-- Info button to zoom in and display details of th event upon clicking -->
+                                <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                                <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                           <span> Event by {{ event.author.user.username }} <br> </span>
+                                            <p> {{ event.description }} </p> <!-- Display event description -->
+                                            <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                            <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
+                                            <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
+                                            Cost :
+                                <!-- Display cost based on event author's role -->
+                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                {% else  %} £0.00
+                                {% endif %} 
+                                        </p> <!-- Placeholder for event cost -->
+                                            
+                                           
+                                        </div>
+                                        <div class="modal-footer">
+                                          
+                                          <a href="{% url 'join_event' event.id %}" class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm {% endif %}"
+                                    onclick="return confirmJoinEvent()"> Join Event </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                <!-- Join event link with onclick event for confirmation -->
+                        
                             </div>
-                            <div id="event-details-{{ event.id }}" class="event-details" style="display:none;">
-                                <h4> Event Details:</h4>
-                                <p> {{ event.description }} </p>
-                                <button  class="btn btn-close" onclick="hideEventDetails({{ event.id }})"> Close  </button>
                             </div>
-                        </div>
-                        {% else %}
-                        <!-- Displaying 'Available' if no event is scheduled -->
-                        <div class="carousel-inner pt-1 pb-1"><span class="status-available"> {% trans "Available" %}
-                            </span>
-                        </div>
-                        {% endif %}
+                        
+                            {% else %}
+                            <!-- Displaying 'Available' if no event is scheduled -->
+                            <div class="carousel-inner pt-1 pb-1"><span class="status-available">
+                                    {% trans "Available" %}
+                                </span>
+                            </div>
+                            {% endif %}
 
-                        {% if forloop.counter|divisibleby:2 %}
- <!-- Adding a cleaning break after every two time slots -->
-                        <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
-                        {% endif %}
+                            {% if forloop.counter|divisibleby:2 %}
+                            <!-- Adding a cleaning break after every two time slots -->
+                            <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
+                            {% endif %}
 
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
+           
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
+        
 </main>
-<script > 
-function showEventDetails(eventId) {
-    let eventDetailsDiv = document.getElementById('event-details-' + eventId);
-    if(eventDetailsDiv){
-    eventDetailsDiv.style.display ='block';
-}}
 
-function hideEventDetails(eventId) {
-    let eventDetailsDiv =document.getElementById('event-details' + eventId);
-    if(eventDetailsDiv)
-    {eventDetailsDiv.style.display = 'none';
-}}
-</script> 
 
 <script>
-     // JavaScript function for confirming event join action
+    // JavaScript function for confirming event join action
     function confirmJoinEvent() {
         return confirm(
             'Are you sure you want to join this event ? This will deduct the cost from your wallet. Refunds are not eligible for events '

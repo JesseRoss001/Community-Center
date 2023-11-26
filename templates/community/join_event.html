@@ -1,24 +1,30 @@
 {% extends 'community/base.html' %}
 
 {% block content %}<!-- Displaying the cost of the event based on the author's role -->
-<h1> Join Event </h1>
-<p> Event {{ event.title }}</p>
-<p> Capacity: {{ event.capacity }}</p>
-<p> Cost :{% if event.author.role == 'INSTRUCTOR' %} 
+<div class="row justify-content-center align-items-center p-1 border-0 rounded d-flex carousel-inner">
+    <div class="col-11 col-md-9 col-lg-7 mt-5 p-1 mb-5 justify-content-center align-items-center border-0 rounded bg-light">
+<h1 class="ms-4 mt-4 " > Join Event </h1>
+<p class="ms-4"> Event : <strong >{{ event.title }} </strong>  </p>
+<p class="ms-4" > Capacity: {{ event.capacity }}</p>
+<p class="ms-4" > Cost :{% if event.author.role == 'INSTRUCTOR' %} 
     £7.00
 {% else %}
     £0.00
 {% endif %} </p>
 
-<p class="text-warning"><!-- Warning about the deduction and refund policy -->
+<p class="ms-4" ><!-- Warning about the deduction and refund policy -->
     By joining this event , £ {% if event.author.role == 'INSTRUCTOR' %} 
     7.00
 {% else %}
     0.00
 {% endif %} will be deducted from your wallet . No refund is eligible for events. If the event is cancelled a full refund must be issued by the instructor. 
 </p><!-- Form for confirming the join action -->
-<form method="post">
+<div class="ms-3 mb-4 ">
+<form method="post" class="d-flex justify-content-center align-items-center col-10 bg-light">
     {% csrf_token %}
-    <button type="submit" class="btn btn-primary"  onclick="return confirmJoinEvent()"> Confirm Join </button>
+    <button type="submit" class=" btn btn-lg btn-success"  onclick="return confirmJoinEvent()"> Confirm Join </button>
 </form>
+</div>
+    </div>
+</div>
 {% endblock %}

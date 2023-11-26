@@ -10,6 +10,7 @@
     <div class="container mt-4 ">
         <h1 class="text-center mb-4"> Welcome to the booking section </h1>
         <div class="row">
+
             <!-- Loop over each day in the schedule -->
             {% for date, day_schedule in schedule.items %}
             <div class="col-md-6 col-lg-4 mb-4">
@@ -20,91 +21,122 @@
                     </div>
                     <div class="card-body">
                         <!-- Loop over each time slot in the day's schedule -->
-                        {% for time_slot, event in day_schedule.items %}
+                        {% for time_slot , slot_data in day_schedule.items %}
 
                         <p> {{ time_slot }} </p>
+                        {% if slot_data.available %}
+                        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT_OFFICIAL' %}
+                        <a href="{% url 'create_event' %}" class="btn btn-primary btn-sm">Book Event</a>
+                        <!-- Adding a booking button -->
+                        {% endif %}
 
+                        {% else %}
+                        {% for event in slot_data.events %}
                         <!-- Check if there is an event in this time slot -->
-                        {% if event %}
+
                         <!-- Conditional styling based on event author's role -->
                         <div id="main-background" class=" p-2 mt-2 mb-2 border-none rounded text-center ">
-                            <div class="pt-2 bg-light " ><h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-primary {% else %} text-warning {% endif %} ">{{ event.title }} </h5> <p class="mb-1"> {{ event.author.user.username }} </p>
-                            <p> Cost :
-                                <!-- Display cost based on event author's role -->
-                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-                                {% else %} £0.00
-                                {% endif %}
-                            </p>
+                            <div class="pt-2 bg-light ">
+                                <h5
+                                    class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-primary {% else %} text-warning {% endif %} ">
+                                    {{ event.title }} </h5>
+                                <p class="mb-1"> {{ event.author.user.username }} </p>
+                                <p> Cost :
+                                    <!-- Display cost based on event author's role -->
+                                    {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                    {% else %} £0.00
+                                    {% endif %}
+                                </p>
                                 <!-- Handling user booking status -->
                                 {% if event.id in user_bookings %}
                                 <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
-
-
-                                {% elif user.profile.role  in 'INSTRUCTOR,GOVERNMENT_OFFICIAL' %}
-                                <button class="btn btn-secondary btn-sm  disabled"> No Access </button>
                                 {% else %}
-                                <a href="{% url 'join_event' event.id %}" class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm"
-                                onclick="return confirmJoinEvent()"> Join Event </a>
-                            {% endif %}
-                                <!-- Info button to zoom in and display details of th event upon clicking -->
-                                <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">Read More</button>
-                                <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                           <span> Event by {{ event.author.user.username }} <br> </span>
-                                            <p> {{ event.description }} </p> <!-- Display event description -->
-                                            <p>Date: {{ event.date }}</p> <!-- Display event date -->
-                                            <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
-                                            <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
-                                            Cost :
-                                <!-- Display cost based on event author's role -->
-                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-                                {% else  %} £0.00
-                                {% endif %} 
-                                        </p> <!-- Placeholder for event cost -->
-                                            
-                                           
-                                        </div>
-                                        <div class="modal-footer">
-                                          
-                                          <a href="{% url 'join_event' event.id %}" class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm {% endif %}"
+                                <a href="{% url 'join_event' event.id %}"
+                                    class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm"
                                     onclick="return confirmJoinEvent()"> Join Event </a>
+                                {% endif %}
+                                <!-- Info button to zoom in and display details of th event upon clicking -->
+                                <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                                    data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                                <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span> Event by {{ event.author.user.username }} <br> </span>
+                                                <p> {{ event.description }} </p> <!-- Display event description -->
+                                                <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                                <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
+                                                <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
+                                                Cost :
+                                                <!-- Display cost based on event author's role -->
+                                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                                {% else  %} £0.00
+                                                {% endif %}
+                                                </p> <!-- Placeholder for event cost -->
+
+
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <a href="{% url 'join_event' event.id %}"
+                                                    class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm {% endif %}"
+                                                    onclick="return confirmJoinEvent()"> Join Event </a>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                  </div>
+                                </div>
                                 <!-- Join event link with onclick event for confirmation -->
-                        
-                            </div>
-                            </div>
-                        
-                            {% else %}
-                            <!-- Displaying 'Available' if no event is scheduled -->
-                            <div class="carousel-inner pt-1 pb-1"><span class="status-available">
-                                    {% trans "Available" %}
-                                </span>
-                            </div>
-                            {% endif %}
 
-                            {% if forloop.counter|divisibleby:2 %}
-                            <!-- Adding a cleaning break after every two time slots -->
-                            <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
-                            {% endif %}
-
-                            {% endfor %}
+                            </div>
                         </div>
+
+                        {% endfor %}
+                        {% endif %}
+                        <!-- Displaying 'Available' if no event is scheduled -->
+                        {% if user.profile.role == 'INSTRUCTOR' and slot_data.available or user.profile.role == 'GOVERNMENT_OFFICIAL' and slot_data.available %}
+                        <div class="status-available"> {{ 'Available' }}</div>
+                        {% endif %}
+                        {% if forloop.counter|divisibleby:2 %}
+                        <!-- Adding a cleaning break after every two time slots -->
+                        <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
+                        {% endif %}
+
+                        {% endfor %}
                     </div>
                 </div>
-           
-                {% endfor %}
             </div>
+
+            {% endfor %}
         </div>
-        
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first </a>
+                <a href="?page={{ page_obj.previous_page_number }}"> previous </a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+
+                </span>
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number}}"> next </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}"> last &raquo; </a>
+                {% endif %}
+
+            </span>
+        </div>
+    </div>
+</div>
+
+    </div>
+
 </main>
 
 

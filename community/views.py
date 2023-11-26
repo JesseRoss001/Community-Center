@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from decimal import Decimal
 from django.db import transaction
+from django.core.paginator import Paginator
 import json
 
 
@@ -69,20 +70,35 @@ def gallery(request):
 
 # booking view 
 def booking(request):
+    total_days = 90
+    days_per_page = 14
+    #start and end dates for the whole period
     start_date= timezone.now().date()
-    end_date = start_date + timedelta(days=13)
-    all_events = Event.objects.filter(date__range=[start_date,end_date])
-
+    date_list = [start_date +timedelta(days=x) for x in range(total_days)]
     
+
+
+
+    # Paginating the events 
+    paginator = Paginator(date_list, days_per_page)
+    page_number = request.GET.get('page', 1) 
+    page_obj = paginator.get_page(page_number)
     schedule = {}
-    for single_date in (start_date + timedelta(n) for n in range((end_date - start_date).days +1)):
-        day_events = all_events.filter(date=single_date)
-        day_schedule={slot[0]:None for slot in TIME_SLOTS}
-        for event in day_events:
-            day_schedule[event.time] = event
+    for single_date in page_obj:
+        day_schedule ={slot[0]: {'events': [] ,'available':True} for slot in TIME_SLOTS}
+        events_on_date =Event.objects.filter(date=single_date)
+        for event in events_on_date:
+            day_schedule[event.time]['events'].append(event)
+            day_schedule[event.time]['available'] = False
         schedule[single_date] = day_schedule
-    user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id',flat=True)
-    return render(request, 'community/booking.html',{'schedule':schedule, 'time_slots':TIME_SLOTS , 'user_bookings': user_bookings})
+    
+       
+    user_bookings = []
+    if request.user.is_authenticated:
+        user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id',flat=True)
+
+
+    return render(request, 'community/booking.html',{'schedule':schedule,'page_obj':page_obj , 'user_bookings': user_bookings})
 
 
    

@@ -1,11 +1,55 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Event, UserProfile ,Booking,BalanceChange
+from .models import Event, UserProfile ,Booking,BalanceChange,GENERAL_PUBLIC
 from django.utils import timezone
 import datetime
 # Developed with assistance from ChatGPT, Stack Overflow to test various functionalities in a Django web application
 #Django's official documentation on testing: https://docs.djangoproject.com/en/4.0/topics/testing/
+
+class EventPermissionsTests(TestCase):
+    # Tests to ensure that only authorized users can create, update, or delete events
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user('generaluser', 'general@example.com', 'password')
+        self.instructor_user = User.objects.create_user('instructoruser', 'instructor@example.com', 'password')
+        self.user_profile = UserProfile.objects.create(user=self.user, role=GENERAL_PUBLIC)
+        self.instructor_profile = UserProfile.objects.create(user=self.instructor_user, role=INSTRUCTOR)
+        self.date = datetime.date.today() + datetime.timedelta(days=1)
+        self.event = Event.objects.create(
+            title='Test Event',
+            description='Test Description',
+            date=self.date,
+            time='08:00',
+            capacity=60,
+            author=self.instructor_profile,
+        )
+    
+
+    def test_general_user_cannot_create_event(self):
+        self.client.login(username='generaluser', password='password')
+        response = self.client.post(reverse('create_event'), {
+            'title': 'Unauthorized Event',
+            'description': 'Should not be allowed',
+            'date': self.date,
+            'time': '10:00',
+            'capacity': 50
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_instructor_can_create_event(self):
+        self.client.login(username='instructoruser', password='password')
+        response = self.client.post(reverse('create_event'), {
+            'title': 'New Instructor Event',
+            'description': 'Instructor should be allowed',
+            'date': self.date,
+            'time': '10:00',
+            'capacity': 50
+        })
+        self.assertIn(response.status_code, [200, 302])
+
+
+
 class EventTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -138,4 +182,27 @@ class UserAccountTests(TestCase):
         self.client.login(username='testuser2', password='password')
         response = self.client.get(reverse('home'))
         self.assertContains(response, '500.00', status_code=200)
+
+class EventCapacityTests(TestCase):
+    # Tests to ensure that an event cannot be overbooked
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user('testuser', 'test@example.com', 'password')
+        self.user_profile = UserProfile.objects.create(user=self.user, role='INSTRUCTOR', balance=Decimal('500.00'))
+        self.event = Event.objects.create(
+            title='Capacity Test Event',
+            description='Event for testing capacity',
+            date=timezone.now().date() + datetime.timedelta(days=1),
+            time='08:00',
+            capacity=1,
+            author=self.user_profile,
+        )
+
+    def test_event_overbooking(self):
+        self.client.login(username='testuser', password='password')
+        # Fill the event to its capacity
+        Booking.objects.create(event=self.event, user_profile=self.user_profile)
+        # Try to book again
+        response = self.client.post(reverse('join_event', args=[self.event.id]))
+        self.assertEqual(response.status_code, 400)  # Bad Request due to overbooking
 

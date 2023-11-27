@@ -13,11 +13,13 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user','role','balance')
     search_fields = ['user__username','role']
     list_filter = ('role',)
+    readonly_fields = ('balance',)
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('event','user_profile','booking_time')
     search_fields = ['event__title', 'user_profile__user__username']
     list_filter = ('event',)
+    readonly_fields = ('booking_time',) 
 
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Event, EventAdmin)

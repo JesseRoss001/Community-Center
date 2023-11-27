@@ -1,7 +1,8 @@
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,UserManager
 from django.db import models
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 ADMIN = 'ADMIN'
@@ -81,3 +82,22 @@ class BalanceChange(models.Model):
 
     def __str__(self):
         return f"{self.change_amount} on {self.change_date} ({self.get_transaction_type_display()})"
+class CustomUserManager(UserManager):
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
+        superuser = super().create_superuser(username, email, password, **extra_fields)
+        UserProfile.objects.create(user=superuser, role=ADMIN)
+        return superuser
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created or not hasattr(instance, 'profile'):
+            user=instance, 
+            defaults={'role': ADMIN if instance.is_superuser else GENERAL_PUBLIC}
+    
+    else:
+        if not UserProfile.objects.filter(user=instance).exists():
+            UserProfile.objects.create(
+                user=instance, 
+                role=ADMIN if instance.is_superuser else GENERAL_PUBLIC
+            )
+
+User.add_to_class('objects', CustomUserManager())

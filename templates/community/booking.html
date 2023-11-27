@@ -25,12 +25,14 @@
 
                         <p> {{ time_slot }} </p>
                         {% if slot_data.available %}
-                        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT_OFFICIAL' %}
+                        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
                         <a href="{% url 'create_event' %}" class="btn btn-success btn-sm">Book Event</a>
                         <!-- Adding a booking button -->
                         {% endif %}
 
                         {% else %}
+
+
                         {% for event in slot_data.events %}
                         <!-- Check if there is an event in this time slot -->
 
@@ -52,7 +54,7 @@
                                 <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
                                 {% else %}
                                 <a href="{% url 'join_event' event.id %}"
-                                    class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-info {% else %} btn-warning {% endif %} btn-sm"
+                                    class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
                                     onclick="return confirmJoinEvent()"> Join Event </a>
                                 {% endif %}
                                 <!-- Info button to zoom in and display details of th event upon clicking -->
@@ -86,7 +88,7 @@
                                             <div class="modal-footer">
 
                                                 <a href="{% url 'join_event' event.id %}"
-                                                    class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-primary {% else %} btn-warning {% endif %} btn-sm {% endif %}"
+                                                    class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
                                                     onclick="return confirmJoinEvent()"> Join Event </a>
                                             </div>
                                         </div>

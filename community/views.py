@@ -167,14 +167,14 @@ def create_event(request, event_id=None):
 
             if event.date > three_months_ahead or event.date < timezone.now().date():
                 messages.error(request, 'Event date must be within 3 months and not in the past.')
-                return render(request, 'community/events/create_update_event.html', {'form': form})
+                return render(request, 'community/events/create_event.html', {'form': form})
 
             critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
             overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
 
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
-                return render(request, 'community/events/create_update_event.html', {'form': form})
+                return render(request, 'community/events/create_event.html', {'form': form})
 
             # Save the event before creating BalanceChange
             event.save()
@@ -191,7 +191,7 @@ def create_event(request, event_id=None):
                     )
                 else:
                     messages.error(request, "Insufficient fund balance to book an event.")
-                    return render(request, 'community/events/create_update_event.html', {'form': form})
+                    return render(request, 'community/events/create_event.html', {'form': form})
 
             elif not event_id and user_profile.role == GOVERNMENT_OFFICIAL:
                 user_profile.balance = 0
@@ -215,6 +215,8 @@ def update_event(request, event_id):
     if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
         messages.error(request, "You are not authorised to update this event.")
         return redirect('home')
+    if event.author != request.user.profile:
+        return HttpResponseForbidden("You are not authorized to update this event.")
 
     if request.method == 'POST':
         form = EventUpdateForm(request.POST, request.FILES, instance=event)
@@ -236,7 +238,8 @@ def update_event(request, event_id):
 @login_required
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id , author=request.user.profile)
-    
+    if event.author != request.user.profile:
+        return HttpResponseForbidden("You are not authorized to delete this event.")
     
     if request.method == 'POST':
         with transaction.atomic():
@@ -248,9 +251,14 @@ def delete_event(request, event_id):
                     change_amount=200,
                     transaction_type="Event Deletion Refund"
                 )
+            elif event.author.role == GOVERNMENT_OFFICIAL:
+                pass
         event.delete()
         messages.success(request, ' Event deleted successfully ')
         return redirect('home')
+    
+
+    
     return render(request, 'community/events/confirm_delete.html',{'event': event})            
 
 def event_detail(request,event_id):
@@ -261,8 +269,8 @@ def event_detail(request,event_id):
 def delete_event_image(request,event_id):
     event =get_object_or_404(Event,pk=event_id , author=request.user.profile)
 
-    if request.user != event.author.user:
-        return HttpResponseForbidden()
+    if event.author != request.user.profile:
+        return HttpResponseForbidden("You are not authorized to delete this event.")
 
     if request.method == 'POST':
      event.image.delete()
@@ -276,6 +284,9 @@ def delete_event_image(request,event_id):
 def join_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
+    if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('28.00'):
+        messages.error(request, "Your balance is too low to join this event.")
+        return redirect('event_detail', event_id=event_id)
     if user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
         messages.error(request,'Instructors and officials are not allowed to join booking classes')
     existing_booking=Booking.objects.filter(event=event,user_profile=user_profile).exists()

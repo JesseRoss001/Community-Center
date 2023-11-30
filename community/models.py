@@ -3,6 +3,7 @@ from django.contrib.auth.models import User,UserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 # Create your models here.
 ADMIN = 'ADMIN'
@@ -30,6 +31,10 @@ class UserProfile(models.Model):
             raise ValidationError({'badge_number': 'This field is required for government officials '})
         if self.role == INSTRUCTOR and not self.card_number:
             raise ValidationError({'card_number': 'This field is required for instructors '})
+        if self.role != GOVERNMENT_OFFICIAL:
+            self.badge_number = ''
+        if self.role != INSTRUCTOR:
+            self.card_number = ''
     
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
@@ -52,7 +57,11 @@ class Event(models.Model):
     time = models.CharField(max_length=10, choices=TIME_SLOTS)
     capacity =models.IntegerField(default=60)
     image = models.ImageField(upload_to='event_images/',blank=True , null=True)
-
+    def clean(self):
+        if self.date is None:
+            raise ValidationError("Event date is required.")
+        if self.date < timezone.now().date():
+            raise ValidationError("Event date cannot be in the past.")
     class Meta:
         unique_together = ('date','time')
     def __str__(self):
@@ -63,7 +72,12 @@ class Booking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     booking_time = models.DateTimeField(auto_now_add=True)
-
+    def save(self, *args, **kwargs):
+        if self.event.date < timezone.now().date():
+            raise ValidationError("Cannot book a past event.")
+        if Booking.objects.filter(event=self.event).count() >= self.event.capacity:
+            raise ValidationError("This event is fully booked.")
+        super(Booking, self).save(*args, **kwargs)
     def __str__(self):
         return f'{self.user_profile.user.username} booking for {self.event.title}'
 

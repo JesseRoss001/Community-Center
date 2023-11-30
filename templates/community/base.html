@@ -19,6 +19,17 @@
 <body>
     <!-- Navbar structure with links to different pages -->
     <!-- ... Navbar content ... -->
+    {% if messages %}
+    <section id="alerts">
+        {% for msg in messages %}
+            <!-- all django message tags mirror bootstrap, except error/danger -->
+            <aside class="alert {% if msg.tags == 'error' %}alert-danger{% else %}alert-{{ msg.tags }}{% endif %} text-center" role="alert">
+                <h3>{{ msg }}</h3>
+            </aside>
+        {% endfor %}
+    </section>
+{% endif %}
+
     <header class="navbar-heading bg-light z-3 ">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light ">

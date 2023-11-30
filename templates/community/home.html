@@ -13,29 +13,29 @@
         <div class="col-8 container mt-4 d-flex d-md-none justify-content-center ">
             <h1 class="h1 text-center"> Welcome to <br> the Community <br> Center</h1>
         </div>
-            <div class="col-8 container mt-4 d-flex d-md-none justify-content-center ">
+        <div class="col-8 container mt-4 d-flex d-md-none justify-content-center ">
             <h3 class="h3 leading ">
                 <!-- Check if user is authenticated -->
-                
+
 
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
-                 </h3>
+            </h3>
         </div>
 
         <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
             <h1 class="h1 text-center"> Welcome to the Community Center</h1>
         </div>
-            <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
+        <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
             <h3 class="h3 leading ">
                 <!-- Check if user is authenticated -->
-                
+
 
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
-                 </h3>
-            </div>
-        
+            </h3>
+        </div>
+
 
 
     </div>
@@ -104,63 +104,7 @@
     </div>
 
 
-    <div class="col-12 pb-4 d-flex justify-content-between align-items-center d-md-none">
-        <div class="col-12  align-items-center text-center mt-3">
-            <p class="leading ">
-                <!-- Check if user is authenticated -->
-                {% if user.is_authenticated %}
-
-                Hi , {{ user.profile }}
-                <!-- Display 'Create an Event' option for certain user roles -->
-                {% endif %}
-                {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-                <div class="mt-4 col-12 row  d-flex justify-content-center align-items-center d-md-none ">
-                    <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
-                        <a href="{% url 'create_event' %}"><button>
-                                <span class="button_top"> Create an Event </span>
-                            </button> </a>
-                    </div>
-
-                    <div
-                        class=" mt-4  mb-4 col-12 col-md-6 d-flex justify-content-center align-items-center d-md-none ">
-                        <a href="{% url 'logout' %}"> <button>
-                                <span class="button_top"> Logout </span>
-                            </button> </a>
-                    </div>
-                </div>
-
-
-                {% else %}
-                <!-- Login and sign up options for unauthenticated users -->
-                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-
-                    <a href="{% url 'login' %}"> <button>
-                            <span class="button_top"> Login </span>
-                        </button>
-                    </a>
-                </div>
-                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-                    <a href="{% url 'register_public' %}"><button>
-                            <span class="button_top"> Sign up </span>
-                        </button>
-                    </a>
-                </div>
-                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none ">
-
-                    <a href="{% url 'register_instructor'  %}"><button>
-                            <span class="button_top"> Sign up as an Instructor </span>
-                        </button>
-                    </a>
-                </div>
-                <div class="mt-4 col-12   d-flex justify-content-center align-items-center d-md-none "></div>
-                <a href="{% url  'register_government' %}"><button>
-                        <span class="button_top"> Sign up as an Official </span>
-                    </button>
-                </a>
-                {% endif %}
-
-        </div>
-    </div>
+    
     </div>
     <div class="d-none row  pb-4 d-md-flex justify-content-around">
         <!-- Section displaying event categories and a carousel of event images -->
@@ -224,69 +168,7 @@
             </div>
         </div>
     </div>
-    {% if user.is_authenticated %}
-    <div class="col-12 row pb-4 d-none d-md-flex justify-content-center align-items-center ">
-       
-        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-        <div class="mt-4 col-6   d-flex justify-content-end align-items-center  ">
-
-            <a href="{% url 'create_event' %}"><button>
-                    <span class="button_top"> Create an Event </span>
-                </button> </a>
-        </div>
-
-        <div class=" mt-4   col-6 d-flex justify-content-start align-items-center ">
-            <a href="{% url 'logout' %}"> <button>
-                    <span class="button_top"> Logout </span>
-                </button> </a>
-        </div>
-
-        {% else %}
-        <div class=" mt-4   col-6 d-flex justify-content-center align-items-center ">
-            <a href="{% url 'logout' %}"> <button>
-                    <span class="button_top"> Logout </span>
-                </button> </a>
-        </div>
-
-        {% endif %}
-
-        {% else %}
-        <!-- Login and sign up options for unauthenticated users -->
-        <div class="col-12 row pb-4 d-none d-md-flex justify-content-center align-items-center ">
-        <div class="mt-4 col-5 col-lg-3  d-flex justify-content-center align-items-center  ">
-
-            <a href="{% url 'login' %}"> <button>
-                    <span class="button_top"> Login </span>
-                </button>
-            </a>
-        </div>
-
-        <div class="mt-4 col-5  col-lg-3  d-flex justify-content-center align-items-center  ">
-
-            <a href="{% url 'register_instructor'  %}"><button>
-                    <span class="button_top"> Sign up as an Instructor </span>
-                </button>
-            </a>
-        </div>
-
-        <div class="mt-4 col-5  col-lg-3  d-flex justify-content-center align-items-center  ">
-            <a href="{% url 'register_public' %}"><button>
-                    <span class="button_top"> Sign up </span>
-                </button>
-            </a>
-        </div>
-
-        <div class="mt-4 col-5 col-lg-3   d-flex justify-content-center align-items-center  ">
-            <a href="{% url  'register_government' %}"><button>
-                    <span class="button_top"> Sign up as an Official </span>
-                </button>
-            </a>
-        </div>
-        {% endif %}
-
-
-    </div>
-    </div>
+   
     </div>
 
 
@@ -344,7 +226,8 @@
                     <div class="row p-1 d-flex justify-content-center  ">
                         <div class="col-6  ">
                             {% if event.capacity < 60 %}
-                            <a href="{% url  'update_event' event.id %}"> <button class=" mt-4 ms-md-1 ms-lg-4 standard">
+                            <a href="{% url  'update_event' event.id %}"> <button
+                                    class=" mt-4 ms-md-1 ms-lg-4 standard">
                                     Update
                                 </button> </a>
                             {% else %}
@@ -388,28 +271,31 @@
                     </div>
                     <div class="card-body">
                         <p> {{ event.date|date:"l, F j , Y" }}-{{ event.time }} </p>
-                        <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">Read More</button>
-                        <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                            data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                        <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                   <span> Event by {{ event.author.user.username }} <br> </span>
-                                    <p> {{ event.description }} </p> <!-- Display event description -->
-                                    <p>Date: {{ event.date }}</p> <!-- Display event date -->
-                                   
-                                    
-                                   
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span> Event by {{ event.author.user.username }} <br> </span>
+                                        <p> {{ event.description }} </p> <!-- Display event description -->
+                                        <p>Date: {{ event.date }}</p> <!-- Display event date -->
+
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
             {% endfor %}
 
         </div>

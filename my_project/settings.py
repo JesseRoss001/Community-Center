@@ -15,6 +15,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 import os
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:  
+        error_msg = f"Set the {var_name} environment variable"
+        raise ImproperlyConfigured(error_msg)
 if os.path.isfile('env.py'):
     import env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +33,8 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jr^d+rwrfk%n&^sx+rxmgv$=6$acc50#6#_q@oba9udm2ig^^#'
+SECRET_KEY = get_env_variable('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -70,8 +79,8 @@ MIDDLEWARE = [
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dwz6t9jry',
-    'API_KEY': '629932736212655',
-    'API_SECRET': 'Adw50D56Q19cAE8qr3UnoUp-5iU'
+    'API_KEY': get_env_variable('CLOUDINARY_API_KEY'),
+    'API_SECRET': get_env_variable('CLOUDINARY_API_SECRET')
 }
 
 ROOT_URLCONF = 'my_project.urls'

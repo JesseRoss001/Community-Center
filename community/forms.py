@@ -44,11 +44,19 @@ class GeneralPublicForm(UserCreationForm):
 #Event Form 
 class EventForm(forms.ModelForm):
     time = forms.ChoiceField(choices=TIME_SLOTS)
+    
     def clean_date(self):
         event_date = self.cleaned_data.get('date')
+        if event_date is None:
+            raise forms.ValidationError("This field is required.")
         if event_date < timezone.now().date():
-            raise ValidationError("Event date cannot be in the past.")
+            raise forms.ValidationError("Event date cannot be in the past.")
         return event_date 
+    def clean_capacity(self):
+        capacity = self.cleaned_data.get('capacity')
+        if capacity > 60:
+            raise ValidationError("The capacity cannot exceed 60.")
+        return capacity
 
     class Meta:
         model = Event
@@ -56,6 +64,11 @@ class EventForm(forms.ModelForm):
         widgets = {'date':DateInput(attrs={'type':'date'}),}
 
 class EventUpdateForm(forms.ModelForm):
+    def clean_capacity(self):
+        capacity = self.cleaned_data.get('capacity')
+        if capacity > 60:
+            raise ValidationError("The capacity cannot exceed 60.")
+        return capacity
     class Meta:
         model = Event
         exclude = ['author','date','time']

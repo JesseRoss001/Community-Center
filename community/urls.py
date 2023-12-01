@@ -4,7 +4,7 @@ from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from .views import like_event,rate_instructor
+from .views import like_event,submit_rating
 from django.contrib.auth import views as auth_views
 
 
@@ -29,7 +29,7 @@ urlpatterns = [
     path('event/delete_image/<int:event_id>/', views.delete_event_image, name='delete_event_image'),
     path('summernote/', include('django_summernote.urls')),
     path('like_event/<int:event_id>/', views.like_event, name='like_event'),
-    path('rate_instructor/<int:event_id>/', views.rate_instructor, name='rate_instructor'),
+    path('submit_rating/<int:instructor_id>/', submit_rating, name='submit_rating'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 

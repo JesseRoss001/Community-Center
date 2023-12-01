@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.conf import settings
 from django.db.models import Avg
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 # Create your models here.
 ADMIN = 'ADMIN'
 INSTRUCTOR = 'INSTRUCTOR'
@@ -41,9 +43,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
     
-    def save(self, *args, **kwargs):
-        self.average_rating = self.ratings.aggregate(Avg('score'))['score__avg'] or 0
-        super().save(*args, **kwargs)
+    def update_average_rating(self):
+        if self.role == INSTRUCTOR:
+            aggregate_rating = self.ratings.aggregate(Avg('score'))['score__avg'] or 0
+            self.average_rating = round(aggregate_rating, 2)  # Rounding to two decimal places
+            self.save()
 
 #globally define time slot constant
 TIME_SLOTS = (
@@ -132,11 +136,16 @@ class Like(models.Model):
         unique_together = ('user', 'event')
 
 class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_ratings')
     instructor = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ratings')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    score = models.IntegerField(default=1, choices=[(i, i) for i in range(1, 6)])
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)  # For reference to the rated event
+    score = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Rating from 1 to 5"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'event')
+        unique_together = ('user', 'instructor')
+
+    def __str__(self):
+        return f"Rating for {self.instructor.user.username} by {self.user.username}: {self.score}"

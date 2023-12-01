@@ -68,3 +68,13 @@ class EventUpdateForm(forms.ModelForm):
     class Meta:
         model = Event
         exclude = ['author','date','time','capacity']
+from .models import Rating
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['score']
+        labels = {'score': 'Rate this instructor:'}
+        widgets = {
+            'score': forms.Select(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]),
+        }

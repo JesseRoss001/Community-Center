@@ -1,6 +1,6 @@
 {% extends 'community/base.html' %}
 {% load dict_key %}
-{% load custom_filters %}
+
 <!-- Custom template tag for handling dictionaries -->
 {% load i18n %}
 <!-- Load internationalization tag for language translation -->
@@ -42,17 +42,21 @@
                             <div class="pt-2 bg-light ">
                                 <h5
                                     class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
-                                    {{ event.title }} 
-                               <span>Likes:</span>
-                                    <span class="like-count" data-event-id="{{ event.id }}">  {{ event.like_set.count }}</span>
+                                    {{ event.title }}
+                                    <span>Likes:</span>
+                                    <span class="like-count" data-event-id="{{ event.id }}">
+                                        {{ event.like_set.count }}</span>
                                 </h5>
-                                    <p class="mb-1">
-                                        {{ event.author.user.username }}
-                                        <span class="instructor-rating" data-instructor-id="{{ event.author.id }}">
-                                            Rating: {{ event.author.average_rating|default:"Not rated yet" }}
-                                        </span>
-                                    </p>
-                                
+                                <p class="mb-1">
+                                    {{ event.author.user.username }} </p>
+                                    {% if event.author.role == 'INSTRUCTOR' %}
+                                    <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
+                                   {% endif %}
+ <!-- Display the instructor's rating -->
+ 
+
+
+
                                 <p> Cost :
                                     <!-- Display cost based on event author's role -->
                                     {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
@@ -84,6 +88,9 @@
                                             </div>
                                             <div class="modal-body">
                                                 <span> Event by {{ event.author.user.username }} <br> </span>
+                                                {% if event.author.role == 'INSTRUCTOR' %}
+                                                <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
+                                               {% endif %}
                                                 <p> {{ event.description }} </p> <!-- Display event description -->
                                                 <p>Date: {{ event.date }}</p> <!-- Display event date -->
                                                 <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
@@ -94,19 +101,40 @@
                                                 {% else  %} £0.00
                                                 {% endif %}
                                                 </p> <!-- Placeholder for event cost -->
-                                <!-- Inside your event loop in the template -->
-                                <button class="btn btn-info like-btn" data-event-id="{{ event.id }}">Like</button>
+                                                <!-- Inside your event loop in the template -->
+                                                <button class="btn btn-info like-btn"
+                                                    data-event-id="{{ event.id }}">Like</button>
 
-                                <!-- Rating system -->
+                                                <!-- Rating system -->
 
 
                                             </div>
                                             <div class="modal-footer">
-
+                                                <div class="d-flex col-10 row justify-content-center align-items-center">
+                                              
+                                                    {% if event.author.role == 'INSTRUCTOR' and  event.id in user_bookings %}
+                                                <!-- ... event details ... -->
+                                                <form method="post" action="{% url 'submit_rating' instructor_id=event.author.id %}">
+                                                   {% csrf_token %}
+                                                   <label for="rating">Rate this instructor:</label>
+                                                   <select name="score" id="rating">
+                                                       <option value="1">1</option>
+                                                       <option value="2">2</option>
+                                                       <option value="3">3</option>
+                                                       <option value="4">4</option>
+                                                       <option value="5">5</option>
+                                                   </select>
+                                                   <input type="submit" value="Submit Rating">
+                                               </form>
+                                               {% endif %}
+                                           
+                                            
                                                 <a href="{% url 'join_event' event.id %}"
                                                     class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
                                                     onclick="return confirmJoinEvent()"> Join Event </a>
-                                            </div>
+                                            
+                                        </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -184,41 +212,67 @@
 
 
 <script>
-  // JavaScript function for confirming event join action
-  function confirmJoinEvent() {
-      return confirm('Are you sure you want to join this event? This will deduct the cost from your wallet. Refunds are not eligible for events.');
-  }
+    // JavaScript function for confirming event join action
+    function confirmJoinEvent() {
+        return confirm(
+            'Are you sure you want to join this event? This will deduct the cost from your wallet. Refunds are not eligible for events.'
+            );
+    }
 </script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    // Like button event listener
-    $('.like-btn').on('click', function () {
-      var eventId = $(this).data('event-id');
-      $.ajax({
-          url: '/community/like_event/' + eventId + '/',
-          type: 'POST',
-          data: {
-              csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          dataType: 'json',
-          success: function (response) {
-              if (response.liked) {
-                  alert('Event liked!');
-                  $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
-              } else {
-                  alert('Like removed.');
-                  $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
-              }
-          },
-          error: function(xhr, status, error) {
-              console.error(error);
-          }
-      });
+    $(document).ready(function () {
+        // Like button event listener
+        $('.like-btn').on('click', function () {
+            var eventId = $(this).data('event-id');
+            $.ajax({
+                url: '/community/like_event/' + eventId + '/',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.liked) {
+                        alert('Event liked!');
+                        $('.like-count[data-event-id="' + eventId + '"]').text(response
+                            .like_count);
+                    } else {
+                        alert('Like removed.');
+                        $('.like-count[data-event-id="' + eventId + '"]').text(response
+                            .like_count);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
     });
-
-
-  });
+</script>
+<script>
+$(document).ready(function() {
+    $('form.rating-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+    url: form.attr('action'),
+    type: 'POST',
+    data: form.serialize(),
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+    },
+    success: function(response) {
+        // handle success
+    },
+    error: function(xhr, status, error) {
+        // handle error
+    }
+        });
+    });
+});
 </script>
 
 {% endblock %}

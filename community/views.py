@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm , EventUpdateForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS , BalanceChange
+from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm , EventUpdateForm, RatingForm
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS , BalanceChange, Rating
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
@@ -20,8 +20,9 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import JsonResponse
-from .models import Like, Rating
+from .models import Like
 from django.db.models import Avg
+
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -93,36 +94,46 @@ def gallery(request):
 
 
 # booking view 
+
+
+# booking view 
 def booking(request):
     total_days = 90
     days_per_page = 14
-    #start and end dates for the whole period
-    start_date= timezone.now().date()
-    date_list = [start_date +timedelta(days=x) for x in range(total_days)]
+    # start and end dates for the whole period
+    start_date = timezone.now().date()
+    date_list = [start_date + timedelta(days=x) for x in range(total_days)]
     
-
-
-
     # Paginating the events 
     paginator = Paginator(date_list, days_per_page)
-    page_number = request.GET.get('page', 1) 
+    page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
+    
     schedule = {}
     for single_date in page_obj:
-        day_schedule ={slot[0]: {'events': [] ,'available':True} for slot in TIME_SLOTS}
-        events_on_date =Event.objects.filter(date=single_date)
+        day_schedule = {slot[0]: {'events': [], 'available': True} for slot in TIME_SLOTS}
+        events_on_date = Event.objects.filter(date=single_date)
         for event in events_on_date:
             day_schedule[event.time]['events'].append(event)
             day_schedule[event.time]['available'] = False
         schedule[single_date] = day_schedule
     
-       
     user_bookings = []
     if request.user.is_authenticated:
-        user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id',flat=True)
+        user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id', flat=True)
+    
+    rating_form = RatingForm()
+    context = {
+        'schedule': schedule,
+        'page_obj': page_obj,
+        'user_bookings': user_bookings,
+        'rating_form': rating_form,  # Add this line
+    }
+    
+    return render(request, 'community/booking.html', context)
+    
+    
 
-
-    return render(request, 'community/booking.html',{'schedule':schedule,'page_obj':page_obj , 'user_bookings': user_bookings})
 
 
    
@@ -364,27 +375,38 @@ def like_event(request, event_id):
 
     # Return the updated like count and like status in the response.
     return JsonResponse({'liked': liked, 'like_count': like_count})
+
+
+
+from django.http import Http404
+
 @login_required
-def rate_instructor(request, event_id):
+def submit_rating(request, instructor_id):
+    existing_rating = Rating.objects.filter(user=request.user, instructor_id=instructor_id).exists()
+
+    if existing_rating:
+        messages.error(request, 'You have already submitted a rating for this instructor.')
+        return redirect('booking')
     if request.method == 'POST':
-        try:
-            score = int(request.POST.get('score'))
-            event = get_object_or_404(Event, id=event_id)
-            instructor = event.author
-
-            # Create or update the rating
-            Rating.objects.update_or_create(
-                user=request.user, 
-                instructor=instructor, 
-                event=event, 
-                defaults={'score': score}
-            )
-             # Recalculate the instructor's average rating
-            average_rating = instructor.ratings.aggregate(Avg('score'))['score__avg']
-            instructor.average_rating = average_rating
-            instructor.save()
-
-            return JsonResponse({'success': True, 'average_rating': average_rating})
-        except (ValueError, TypeError):
-            return JsonResponse({'success': False, 'error': 'Invalid score'}, status=400)
-    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rating_instance = form.save(commit=False)
+            rating_instance.user = request.user
+            instructor_profile = UserProfile.objects.get(pk=instructor_id)
+            rating_instance.instructor = instructor_profile
+            rating_instance.save()
+            instructor = rating_instance.instructor
+             # After saving the rating, update the instructor's average rating
+            instructor_profile.update_average_rating()
+            
+            messages.success(request, 'Thank you for your rating.')
+            return redirect('booking')  # Replace 'booking' with the name of your URL pattern for the booking page
+        else:
+            # Add form errors to messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}")
+            return redirect('booking')  # Replace 'booking' with the name of your URL pattern for the booking page
+    else:
+        messages.error(request, 'This method is not allowed.')
+        return redirect('booking') 

@@ -35,7 +35,7 @@
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
             </h3>
-        
+
         </div>
         {% endif %}
 
@@ -107,7 +107,7 @@
     </div>
 
 
-    
+
     </div>
     <div class="d-none row  pb-4 d-md-flex justify-content-around">
         <!-- Section displaying event categories and a carousel of event images -->
@@ -171,7 +171,7 @@
             </div>
         </div>
     </div>
-   
+
     </div>
 
 
@@ -325,70 +325,119 @@
                 </ul>
 
             </div>
-            
+
             <div class="d-none d-md-inline-block col-8">
                 <canvas id="transactionGraph" width='300' height="150"></canvas>
             </div>
-            
+
         </div>
     </div>
     {% endif %}
     {% endif %}
     </div>
+
+    {% if user.is_authenticated and user.profile.role == 'GOVERNMENT' %}
+    <div class="container mt-5 mb-3 pb-4 ">
+        <div class="row align-items-start carousel-inner border-0 rounded m-1">
+            <div class="col-12">
+                <h2 class="text-center">Event Participation Overview</h2>
+                <canvas id="eventParticipationGraph" width="400" height="200"></canvas>
+            </div>
+        </div>
     </div>
+    {% endif %}
 </main><!-- ... Script for initializing the chart ... -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- JavaScript for Chart.js to display transaction history graphically -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const transactionDates = JSON.parse('{{ transaction_dates|safe }}');
-        let transactionAmounts = JSON.parse('{{ transaction_amounts|safe }}');
-        for (let i = 1; i < transactionAmounts.length; i++) {
-        transactionAmounts[i] += transactionAmounts[i - 1];
-    }
-        const ctx = document.getElementById('transactionGraph').getContext('2d');
-        const transactionGraph = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: transactionDates,
-                datasets: [{
-                    label: 'Cumulative Transaction History',
-                    data: transactionAmounts,
-                    backgroundColor: 'rgba(54,162,235,0.2)',
-                    borderColor: 'rgba(54,162,235,1)',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: 'rgba(54,162,235,1)',
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    fill: true,
+        // Parse the JSON from the Django template into JavaScript variables
+        let transactionDates = JSON.parse('{{ transaction_dates|safe }}' || '[]');
+        let transactionAmounts = JSON.parse('{{ transaction_amounts|safe }}' || '[]');
+        let eventTitles = JSON.parse('{{ event_titles|safe }}' || '[]');
+        let participationCounts = JSON.parse('{{ participation_counts|safe }}' || '[]');
 
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false
-                    }
+        // Initialize the transaction graph if the canvas exists
+        const transactionGraphCanvas = document.getElementById('transactionGraph');
+        if (transactionGraphCanvas) {
+            const ctx = transactionGraphCanvas.getContext('2d');
+            const transactionGraph = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: transactionDates,
+                    datasets: [{
+                        label: 'Cumulative Transaction History',
+                        data: transactionAmounts,
+                        backgroundColor: 'rgba(54,162,235,0.2)',
+                        borderColor: 'rgba(54,162,235,1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: 'rgba(54,162,235,1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        fill: true,
+                    }]
                 },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            font: {
-                                size: 14
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
                             }
                         }
-                    }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Initialize the event participation graph if the canvas exists
+
+        // Initialize the event participation graph if the canvas exists
+        const eventParticipationGraphCanvas = document.getElementById('eventParticipationGraph');
+        if (eventParticipationGraphCanvas) {
+            const ctx = eventParticipationGraphCanvas.getContext('2d');
+            const eventParticipationGraph = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: eventTitles,
+                    datasets: [{
+                        label: 'Event Participation',
+                        data: bookingCounts,
+                        backgroundColor: 'rgba(54,162,235,0.2)',
+                        borderColor: 'rgba(54,162,235,1)',
+                        borderWidth: 1
+                    }]
                 },
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1 // Ensures that even zero counts are shown
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
     });
 </script>
+
+
 
 
 {% endblock content %}

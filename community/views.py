@@ -15,6 +15,10 @@ from decimal import Decimal
 from django.db import transaction
 from django.core.paginator import Paginator
 import json
+import logging
+from django.db.models import Count
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your views here.
@@ -27,7 +31,9 @@ def home(request):
     'balance_transactions' : None,
     'transaction_dates':'[]',
     'transaction_amounts':'[]',
-    'user_balance':0
+    'user_balance':0,
+    'event_titles': '[]',  
+    'booking_counts': '[]'  
 
     }
     if request.user.is_authenticated:
@@ -39,13 +45,28 @@ def home(request):
         ).order_by('-change_date')
         transaction_dates =[transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
         transaction_amounts =[float(transaction.change_amount) for transaction in balance_transactions]
-
-        context['transaction_dates'] = json.dumps(transaction_dates)
-        context['transaction_amounts'] = json.dumps(transaction_amounts)
         context['created_events'] = created_events
         context['joined_events'] = joined_events
         context['balance_transactions'] = balance_transactions
+        context['transaction_dates'] = json.dumps(transaction_dates)
+        context['transaction_amounts'] = json.dumps(transaction_amounts)
+
         context['user_balance'] = request.user.profile.balance
+
+    if request.user.is_authenticated:
+        user_events = Event.objects.filter(author=request.user.profile)
+        event_participation_data = user_events.annotate(
+            total_participants=Count('booking')
+        ).values('title', 'total_participants')
+
+        event_titles = [event['title'] for event in event_participation_data]
+        participation_counts = [event['total_participants'] for event in event_participation_data]
+
+        context.update({
+            'event_titles': json.dumps(event_titles),
+            'participation_counts': json.dumps(participation_counts)
+        })
+
     return render(request, 'community/home.html', context)
 
 def events(request):
@@ -109,13 +130,13 @@ def register_government(request):
         form = GovernmentOfficialForm(request.POST)
         if form.is_valid():
             user = form.save()
-            badge_number = form.cleaned_data['badge_number']
-            UserProfile.objects.create(user=user , role=GOVERNMENT_OFFICIAL, badge_number= badge_number)
-            auth_login(request,user)
+            badge_number = form.cleaned_data.get('badge_number')
+            UserProfile.objects.create(user=user, role=GOVERNMENT_OFFICIAL, badge_number=badge_number)
+            auth_login(request, user)
             return redirect('home')
-    else: 
+    else:
         form = GovernmentOfficialForm()
-    return render(request,'community/register_government.html', {'form':form})
+    return render(request, 'community/register_government.html', {'form':form})
 
 def register_instructor(request):
     if request.method == 'POST':
@@ -322,3 +343,4 @@ def join_event(request, event_id):
         messages.success(request, "You have successfully joined the event ")
         return redirect('home')
     return render(request, 'community/join_event.html', {'event': event})
+

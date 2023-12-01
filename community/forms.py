@@ -18,7 +18,7 @@ class GovernmentOfficialForm(UserCreationForm):
     class Meta:
         model=User
         fields = ('username', 'email', 'password1','password2')
-
+        
 class InstructorForm(UserCreationForm):
     card_number = forms.CharField(max_length=4)
     def clean_username(self):
@@ -64,11 +64,7 @@ class EventForm(forms.ModelForm):
         widgets = {'date':DateInput(attrs={'type':'date'}),}
 
 class EventUpdateForm(forms.ModelForm):
-    def clean_capacity(self):
-        capacity = self.cleaned_data.get('capacity')
-        if capacity > 60:
-            raise ValidationError("The capacity cannot exceed 60.")
-        return capacity
+
     class Meta:
         model = Event
-        exclude = ['author','date','time']
+        exclude = ['author','date','time','capacity']

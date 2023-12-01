@@ -364,24 +364,27 @@ def like_event(request, event_id):
 
     # Return the updated like count and like status in the response.
     return JsonResponse({'liked': liked, 'like_count': like_count})
-
 @login_required
 def rate_instructor(request, event_id):
     if request.method == 'POST':
-        score = request.POST.get('score')
-        event = get_object_or_404(Event, id=event_id)
-        instructor = event.author
+        try:
+            score = int(request.POST.get('score'))
+            event = get_object_or_404(Event, id=event_id)
+            instructor = event.author
 
-        # Update or create a new rating.
-        Rating.objects.update_or_create(user=request.user, instructor=instructor, event=event, defaults={'score': score})
+            # Create or update the rating
+            Rating.objects.update_or_create(
+                user=request.user, 
+                instructor=instructor, 
+                event=event, 
+                defaults={'score': score}
+            )
+             # Recalculate the instructor's average rating
+            average_rating = instructor.ratings.aggregate(Avg('score'))['score__avg']
+            instructor.average_rating = average_rating
+            instructor.save()
 
-        # Calculate the average rating for the instructor.
-        average_rating = instructor.ratings.aggregate(Avg('score'))['score__avg'] or 0
-        instructor.average_rating = average_rating
-        instructor.save()
-
-        # Return the updated average rating and instructor's ID in the response.
-        return JsonResponse({'success': True, 'average_rating': average_rating, 'instructor_id': instructor.id})
-
-    # If the request method is not POST, return an error.
-    return JsonResponse({'success': False})
+            return JsonResponse({'success': True, 'average_rating': average_rating})
+        except (ValueError, TypeError):
+            return JsonResponse({'success': False, 'error': 'Invalid score'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)

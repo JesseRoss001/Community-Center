@@ -1,5 +1,6 @@
 {% extends 'community/base.html' %}
 {% load dict_key %}
+{% load custom_filters %}
 <!-- Custom template tag for handling dictionaries -->
 {% load i18n %}
 <!-- Load internationalization tag for language translation -->
@@ -95,16 +96,20 @@
                                                 </p> <!-- Placeholder for event cost -->
                                 <!-- Inside your event loop in the template -->
                                 <button class="btn btn-info like-btn" data-event-id="{{ event.id }}">Like</button>
+
                                 <!-- Rating system -->
                                 <div class="col-12 bg-light">
-                                <form class="rating-form col-12 bg-light" data-event-id="{{ event.id }}">
-                                    {% for i in ratings_range %}
-                                    <label class="btn btn-secondary">
-                                        <input type="radio" name="score" value="{{ i }}" id="star{{ i }}-{{ event.id }}" autocomplete="off"> {{ i }} Stars
-                                    </label>
-                                    {% endfor %}
-                                    <button  class="btn btn-small btn-warning" type="submit">Rate</button>
-                                </form>
+                                    <form class="rating-form col-12" data-event-id="{{ event.id }}">
+                                        <form class="rating-form" data-event-id="{{ event.id }}" method="post" action="{% url 'rate_instructor' event.id %}">
+                                            {% csrf_token %}
+                                            {% for i in 1|get_range:5 %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio{{ i }}-{{ event.id }}" value="{{ i }}">
+                                                <label class="form-check-label" for="inlineRadio{{ i }}-{{ event.id }}">{{ i }}</label>
+                                            </div>
+                                            {% endfor %}
+                                            <button class="btn btn-small btn-warning" type="submit">Rate</button>
+                                        </form>
                             </div>
 
                                             </div>
@@ -189,67 +194,67 @@
 </main>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
   // JavaScript function for confirming event join action
   function confirmJoinEvent() {
       return confirm('Are you sure you want to join this event? This will deduct the cost from your wallet. Refunds are not eligible for events.');
   }
-
+</script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
   $(document).ready(function() {
     // Like button event listener
     $('.like-btn').on('click', function () {
-    var eventId = $(this).data('event-id');
-    $.ajax({
-        url: '/community/like_event/' + eventId + '/', 
-        type: 'POST',
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        },
-        dataType: 'json',
-        success: function (response) {
-            if (response.liked) {
-                alert('Event liked!');
-                $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
-            } else {
-                alert('Like removed.');
-                $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
-            }
-        },
-        error: function(xhr, status, error) {
-            // Handle errors here
-            console.error(error);
-        }
+      var eventId = $(this).data('event-id');
+      $.ajax({
+          url: '/community/like_event/' + eventId + '/',
+          type: 'POST',
+          data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          dataType: 'json',
+          success: function (response) {
+              if (response.liked) {
+                  alert('Event liked!');
+                  $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
+              } else {
+                  alert('Like removed.');
+                  $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(error);
+          }
+      });
     });
-});
 
     // Rating form submission event listener
-    $('.rating-form').on('submit', function (e) {
-        e.preventDefault();
-        var form = $(this);
-        var eventId = form.data('event-id');
-        var score = form.find('input[name="score"]:checked').val();
-        $.ajax({
-            url: '/rate_instructor/' + eventId + '/',
-            type: 'POST',
-            data: {
-                score: score,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    // Update the instructor's rating display
-                    $('.instructor-rating[data-instructor-id="' + response.instructor_id + '"]').text('Rating: ' + response.average_rating);
-                }
-            },
-            error: function(xhr, status, error) {
-                // Handle errors here
-                console.error(error);
-            }
-        });
+    $('.rating-form').on('submit', function(e) {
+      e.preventDefault();
+      var eventId = $(this).data('event-id');
+      var score = $(this).find('input[name="score"]:checked').val();
+
+      $.ajax({
+          url: '/community/rate_instructor/' + eventId + '/',
+          type: 'POST',
+          data: {
+              score: score,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(response) {
+              if (response.success) {
+                  alert('Rating submitted successfully!');
+                  $('.instructor-rating[data-instructor-id="' + response.instructor_id + '"]').text('Rating: ' + response.average_rating.toFixed(2));
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(error);
+              alert('An error occurred while submitting the rating.');
+          }
+      });
     });
   });
-</script
+</script>
 
-{% endblock%}
+{% endblock %}

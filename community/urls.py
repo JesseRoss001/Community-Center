@@ -28,8 +28,8 @@ urlpatterns = [
     path('event/<int:event_id>/',views.event_detail, name= "event_detail"),
     path('event/delete_image/<int:event_id>/', views.delete_event_image, name='delete_event_image'),
     path('summernote/', include('django_summernote.urls')),
-    path('like_event/<int:event_id>/', like_event, name='like_event'),
-    path('rate_instructor/<int:event_id>/', rate_instructor, name='rate_instructor'),
+    path('like_event/<int:event_id>/', views.like_event, name='like_event'),
+    path('rate_instructor/<int:event_id>/', views.rate_instructor, name='rate_instructor'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 

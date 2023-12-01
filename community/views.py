@@ -26,53 +26,46 @@ from django.dispatch import receiver
 
 def home(request):
     context = {
-    'created_events' : None,
-    'joined_events' : None,
-    'balance_transactions' : None,
-    'transaction_dates':'[]',
-    'transaction_amounts':'[]',
-    'user_balance':0,
-    'event_titles': '[]',  
-    'booking_counts': '[]'  
-
+        'created_events': None,
+        'joined_events': None,
+        'balance_transactions': None,
+        'transaction_dates': '[]',
+        'transaction_amounts': '[]',
+        'user_balance': 0,
+        'event_titles': '[]',
+        'booking_counts': '[]'
     }
+
     if request.user.is_authenticated:
+        # Fetch events created and joined by the user
         created_events = Event.objects.filter(author=request.user.profile)
         joined_bookings = Booking.objects.filter(user_profile=request.user.profile)
         joined_events = [booking.event for booking in joined_bookings]
+
+        # Fetch balance transactions for the user
         balance_transactions = BalanceChange.objects.filter(
-            user_profile=request.user.profile 
+            user_profile=request.user.profile
         ).order_by('-change_date')
-        transaction_dates =[transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
-        transaction_amounts =[float(transaction.change_amount) for transaction in balance_transactions]
-        user_events = Event.objects.filter(author=request.user.profile).annotate(
+        transaction_dates = [transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
+        transaction_amounts = [float(transaction.change_amount) for transaction in balance_transactions]
+
+        # Fetch the created events with booking counts
+        user_events_with_booking_counts = created_events.annotate(
             total_bookings=Count('booking')
         )
-        event_titles = [event.title for event in user_events]
-        booking_counts = [event.total_bookings for event in user_events]
-        context['created_events'] = created_events
-        context['joined_events'] = joined_events
-        context['balance_transactions'] = balance_transactions
-        context['transaction_dates'] = json.dumps(transaction_dates)
-        context['transaction_amounts'] = json.dumps(transaction_amounts)
+        event_titles = [event.title for event in user_events_with_booking_counts]
+        booking_counts = [event.total_bookings for event in user_events_with_booking_counts]
+
+        # Update context
         context.update({
+            'created_events': created_events,
+            'joined_events': joined_events,
+            'balance_transactions': balance_transactions,
+            'transaction_dates': json.dumps(transaction_dates),
+            'transaction_amounts': json.dumps(transaction_amounts),
+            'user_balance': request.user.profile.balance,
             'event_titles': json.dumps(event_titles),
             'booking_counts': json.dumps(booking_counts)
-        })
-        context['user_balance'] = request.user.profile.balance
-
-    if request.user.is_authenticated:
-        user_events = Event.objects.filter(author=request.user.profile)
-        event_participation_data = user_events.annotate(
-            total_participants=Count('booking')
-        ).values('title', 'total_participants')
-
-        event_titles = [event['title'] for event in event_participation_data]
-        participation_counts = [event['total_participants'] for event in event_participation_data]
-
-        context.update({
-            'event_titles': json.dumps(event_titles),
-            'participation_counts': json.dumps(participation_counts)
         })
 
     return render(request, 'community/home.html', context)
@@ -313,7 +306,7 @@ def delete_event_image(request,event_id):
 def join_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
-    if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('28.00'):
+    if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('-28.00'):
         messages.error(request, "Your balance is too low to join this event.")
         return redirect('event_detail', event_id=event_id)
     if user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:

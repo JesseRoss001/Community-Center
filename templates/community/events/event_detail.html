@@ -5,4 +5,6 @@
 <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
 <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
 <p> Cost:  </p> <!-- Placeholder for event cost -->
+{% if event.image %}
 <img src="{{ event.image.url }}" alt="Event Iamge"> <!-- Display event image -->
+{% endif %}

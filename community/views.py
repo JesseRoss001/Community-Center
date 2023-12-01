@@ -19,7 +19,9 @@ import logging
 from django.db.models import Count
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.http import JsonResponse
+from .models import Like, Rating
+from django.db.models import Avg
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
@@ -344,4 +346,42 @@ def join_event(request, event_id):
         messages.success(request, "You have successfully joined the event ")
         return redirect('home')
     return render(request, 'community/join_event.html', {'event': event})
+@login_required
+def like_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    user_profile = request.user.profile
 
+    # Toggle the like status for the event and user.
+    like, created = Like.objects.get_or_create(user=request.user, event=event)
+    if not created:
+        like.delete()
+        liked = False
+    else:
+        liked = True
+
+    # Get the updated like count for the event.
+    like_count = event.like_set.count()
+
+    # Return the updated like count and like status in the response.
+    return JsonResponse({'liked': liked, 'like_count': like_count})
+
+@login_required
+def rate_instructor(request, event_id):
+    if request.method == 'POST':
+        score = request.POST.get('score')
+        event = get_object_or_404(Event, id=event_id)
+        instructor = event.author
+
+        # Update or create a new rating.
+        Rating.objects.update_or_create(user=request.user, instructor=instructor, event=event, defaults={'score': score})
+
+        # Calculate the average rating for the instructor.
+        average_rating = instructor.ratings.aggregate(Avg('score'))['score__avg'] or 0
+        instructor.average_rating = average_rating
+        instructor.save()
+
+        # Return the updated average rating and instructor's ID in the response.
+        return JsonResponse({'success': True, 'average_rating': average_rating, 'instructor_id': instructor.id})
+
+    # If the request method is not POST, return an error.
+    return JsonResponse({'success': False})

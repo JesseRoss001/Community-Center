@@ -3,7 +3,7 @@
 <!-- Custom template tag for handling dictionaries -->
 {% load i18n %}
 <!-- Load internationalization tag for language translation -->
-
+{% load static %}
 {% block content %}
 <main id="main-background">
     <!-- Container for the booking section -->
@@ -41,14 +41,25 @@
                             <div class="pt-2 bg-light ">
                                 <h5
                                     class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
-                                    {{ event.title }} </h5>
-                                <p class="mb-1"> {{ event.author.user.username }} </p>
+                                    {{ event.title }} 
+                               <span>Likes:</span>
+                                    <span class="like-count" data-event-id="{{ event.id }}">  {{ event.like_set.count }}</span>
+                                </h5>
+                                    <p class="mb-1">
+                                        {{ event.author.user.username }}
+                                        <span class="instructor-rating" data-instructor-id="{{ event.author.id }}">
+                                            Rating: {{ event.author.average_rating|default:"Not rated yet" }}
+                                        </span>
+                                    </p>
+                                
                                 <p> Cost :
                                     <!-- Display cost based on event author's role -->
                                     {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
                                     {% else %} £0.00
                                     {% endif %}
                                 </p>
+
+
                                 <!-- Handling user booking status -->
                                 {% if event.id in user_bookings %}
                                 <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
@@ -82,7 +93,19 @@
                                                 {% else  %} £0.00
                                                 {% endif %}
                                                 </p> <!-- Placeholder for event cost -->
-
+                                <!-- Inside your event loop in the template -->
+                                <button class="btn btn-info like-btn" data-event-id="{{ event.id }}">Like</button>
+                                <!-- Rating system -->
+                                <div class="col-12 bg-light">
+                                <form class="rating-form col-12 bg-light" data-event-id="{{ event.id }}">
+                                    {% for i in ratings_range %}
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="score" value="{{ i }}" id="star{{ i }}-{{ event.id }}" autocomplete="off"> {{ i }} Stars
+                                    </label>
+                                    {% endfor %}
+                                    <button  class="btn btn-small btn-warning" type="submit">Rate</button>
+                                </form>
+                            </div>
 
                                             </div>
                                             <div class="modal-footer">
@@ -130,7 +153,7 @@
                 <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> previous
                     </a> </li>
                 {% else %}
-              
+
                 {% endif %}
                 <li class="page-item active" aria-current="page">
                     <span class="page-link ">
@@ -149,30 +172,84 @@
 
                 </li>
                 <li class="page-item">
-                    <a  class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"> last &raquo; </span>
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"> last
+                            &raquo; </span>
                     </a>
 
                 </li>
                 {% else %}
-              
+
                 {% endif %}
             </ul>
         </nav>
 
     </div>
-    
+
 
 </main>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // JavaScript function for confirming event join action
-    function confirmJoinEvent() {
-        return confirm(
-            'Are you sure you want to join this event ? This will deduct the cost from your wallet. Refunds are not eligible for events '
-        );
-    }
-</script>
+  // JavaScript function for confirming event join action
+  function confirmJoinEvent() {
+      return confirm('Are you sure you want to join this event? This will deduct the cost from your wallet. Refunds are not eligible for events.');
+  }
 
+  $(document).ready(function() {
+    // Like button event listener
+    $('.like-btn').on('click', function () {
+    var eventId = $(this).data('event-id');
+    $.ajax({
+        url: '/community/like_event/' + eventId + '/', 
+        type: 'POST',
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: 'json',
+        success: function (response) {
+            if (response.liked) {
+                alert('Event liked!');
+                $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
+            } else {
+                alert('Like removed.');
+                $('.like-count[data-event-id="' + eventId + '"]').text(response.like_count);
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle errors here
+            console.error(error);
+        }
+    });
+});
+
+    // Rating form submission event listener
+    $('.rating-form').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var eventId = form.data('event-id');
+        var score = form.find('input[name="score"]:checked').val();
+        $.ajax({
+            url: '/rate_instructor/' + eventId + '/',
+            type: 'POST',
+            data: {
+                score: score,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    // Update the instructor's rating display
+                    $('.instructor-rating[data-instructor-id="' + response.instructor_id + '"]').text('Rating: ' + response.average_rating);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors here
+                console.error(error);
+            }
+        });
+    });
+  });
+</script
 
 {% endblock%}

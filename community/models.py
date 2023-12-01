@@ -4,7 +4,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
-
+from django.conf import settings
+from django.db.models import Avg
 # Create your models here.
 ADMIN = 'ADMIN'
 INSTRUCTOR = 'INSTRUCTOR'
@@ -24,6 +25,7 @@ class UserProfile(models.Model):
     card_number = models.CharField(max_length=4,blank=True) # card number required for instructors 
     created_events = models.ManyToManyField('Event', related_name='creators', blank=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
 
     def clean(self):
         #validation for card + badge 
@@ -38,6 +40,10 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
+    
+    def save(self, *args, **kwargs):
+        self.average_rating = self.ratings.aggregate(Avg('score'))['score__avg'] or 0
+        super().save(*args, **kwargs)
 
 #globally define time slot constant
 TIME_SLOTS = (
@@ -115,3 +121,22 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
             )
 
 User.add_to_class('objects', CustomUserManager())
+
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'event')
+
+class Rating(models.Model):
+    instructor = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    score = models.IntegerField(default=1, choices=[(i, i) for i in range(1, 6)])
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)  # For reference to the rated event
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'event')

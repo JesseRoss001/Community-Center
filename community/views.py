@@ -45,12 +45,20 @@ def home(request):
         ).order_by('-change_date')
         transaction_dates =[transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
         transaction_amounts =[float(transaction.change_amount) for transaction in balance_transactions]
+        user_events = Event.objects.filter(author=request.user.profile).annotate(
+            total_bookings=Count('booking')
+        )
+        event_titles = [event.title for event in user_events]
+        booking_counts = [event.total_bookings for event in user_events]
         context['created_events'] = created_events
         context['joined_events'] = joined_events
         context['balance_transactions'] = balance_transactions
         context['transaction_dates'] = json.dumps(transaction_dates)
         context['transaction_amounts'] = json.dumps(transaction_amounts)
-
+        context.update({
+            'event_titles': json.dumps(event_titles),
+            'booking_counts': json.dumps(booking_counts)
+        })
         context['user_balance'] = request.user.profile.balance
 
     if request.user.is_authenticated:

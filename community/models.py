@@ -13,11 +13,13 @@ ADMIN = 'ADMIN'
 INSTRUCTOR = 'INSTRUCTOR'
 GOVERNMENT_OFFICIAL = 'GOVERNMENT'
 GENERAL_PUBLIC = 'PUBLIC'
+STAFF='STAFF'
 USER_ROLES = [
     (ADMIN,'Admin'),
     (INSTRUCTOR,'Instructor'),
     (GOVERNMENT_OFFICIAL,'Government Official'),
     (GENERAL_PUBLIC,'General Public User'),
+    (STAFF,'Staff'),
 ]
 
 class UserProfile(models.Model):
@@ -25,6 +27,7 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=30,choices=USER_ROLES,default=GENERAL_PUBLIC)
     badge_number = models.CharField(max_length=5,blank=True) #required badgeg number for government offic
     card_number = models.CharField(max_length=4,blank=True) # card number required for instructors 
+    staff_id = models.CharField(max_length=6, blank=True)
     created_events = models.ManyToManyField('Event', related_name='creators', blank=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
@@ -35,6 +38,10 @@ class UserProfile(models.Model):
             raise ValidationError({'badge_number': 'This field is required for government officials '})
         if self.role == INSTRUCTOR and not self.card_number:
             raise ValidationError({'card_number': 'This field is required for instructors '})
+        if self.role == STAFF and not self.staff_id:
+            raise ValidationError({'staff_id': 'This field is required for staff members'})
+        if self.role != STAFF:
+            self.staff_id = ''
         if self.role != GOVERNMENT_OFFICIAL:
             self.badge_number = ''
         if self.role != INSTRUCTOR:
@@ -48,6 +55,18 @@ class UserProfile(models.Model):
             aggregate_rating = self.ratings.aggregate(Avg('score'))['score__avg'] or 0
             self.average_rating = round(aggregate_rating, 2)  # Rounding to two decimal places
             self.save()
+    def update_balance_by_staff(self, staff_member, change_amount):
+        if staff_member.role != STAFF:
+            raise ValidationError("Only staff members can update balances")
+        self.balance += change_amount
+        self.save()
+        BalanceChange.objects.create(
+            user_profile=self,
+            change_amount=change_amount,
+            transaction_type='CREDIT_ISSUED',  
+            staff_member=staff_member
+        )
+
 
 #globally define time slot constant
 TIME_SLOTS = (
@@ -96,6 +115,7 @@ class BalanceChange(models.Model):
     TRANSACTION_TYPES = [
         ('CREATE_EVENT',' Created Event'),
         ('JOIN_EVENT',' Joined Event'),
+        ('CREDIT_ISSUED', 'Credit Issued'),
     ]
 
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='balance_changes')
@@ -103,9 +123,11 @@ class BalanceChange(models.Model):
     change_date = models.DateTimeField(auto_now_add=True)
     transaction_type = models.CharField(max_length=90, choices=TRANSACTION_TYPES)
     event = models.ForeignKey(Event, on_delete=models.SET_NULL,null=True, blank=True)
-
+    staff_member = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='initiated_balance_changes')
     def __str__(self):
         return f"{self.change_amount} on {self.change_date} ({self.get_transaction_type_display()})"
+
+
 class CustomUserManager(UserManager):
     def create_superuser(self, username, email=None, password=None, **extra_fields):
         superuser = super().create_superuser(username, email, password, **extra_fields)

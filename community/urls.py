@@ -6,8 +6,8 @@ from django.conf.urls.static import static
 from . import views
 from .views import like_event,submit_rating
 from django.contrib.auth import views as auth_views
-
-
+from .views import issue_credit 
+app_name = 'community'
 urlpatterns = [
     path('',views.home , name='home'),
     path('events/',views.events,name ='events'),
@@ -20,7 +20,7 @@ urlpatterns = [
     path('register_public/', views.general_public, name='register_public'),
     path('register_instructor/', views.register_instructor, name='register_instructor'),
     path('register_government/', views.register_government, name='register_government'),
-    #Event Url 
+    path('register_staff/', views.register_staff,name='register_staff'),
     path('event/create/', views.create_event, name="create_event"),
     path('event/update/<int:event_id>/', views.update_event, name='update_event'),
     path('event/delete/<int:event_id>/', views.delete_event, name='delete_event'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path('like_event/<int:event_id>/', views.like_event, name='like_event'),
     path('submit_rating/<int:instructor_id>/', submit_rating, name='submit_rating'),
-
+    path('issue-credit/', issue_credit, name='issue-credit'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 
 

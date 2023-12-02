@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,EventForm , EventUpdateForm, RatingForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , Event , Booking , TIME_SLOTS , BalanceChange, Rating
+from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,StaffForm ,EventForm , EventUpdateForm, RatingForm , CreditIssueForm
+from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , STAFF, Event , Booking , TIME_SLOTS , BalanceChange, Rating
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
@@ -71,6 +71,12 @@ def home(request):
             'booking_counts': json.dumps(booking_counts)
         })
 
+        if request.user.is_authenticated and request.user.profile.role == STAFF:
+            public_users = UserProfile.objects.filter(role=GENERAL_PUBLIC).order_by('balance')
+            context['public_users'] = public_users
+        else:
+            context['public_users'] = None
+
     return render(request, 'community/home.html', context)
 
 def events(request):
@@ -132,7 +138,19 @@ def booking(request):
     
     return render(request, 'community/booking.html', context)
     
-    
+def register_staff(request):
+    # You can add your login logic here
+    if request.method == 'POST':
+        form = StaffForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            staff_id = form.cleaned_data.get('staff_id')
+            UserProfile.objects.create(user=user, role=STAFF, staff_id=staff_id)
+            auth_login(request, user)
+            return redirect('home')
+    else:
+        form = StaffForm()
+    return render(request, 'community/register_staff.html',{'form':form})
 
 
 
@@ -410,3 +428,32 @@ def submit_rating(request, instructor_id):
     else:
         messages.error(request, 'This method is not allowed.')
         return redirect('booking') 
+@login_required
+def issue_credit(request):
+    # Check if the user is a staff member
+    if request.user.profile.role != STAFF:
+        messages.error(request, "You are not authorized to issue credits.")
+        return redirect('home')
+    initial_data = {}
+    user_id = request.GET.get('user_id')
+    if user_id:
+        initial_data['user_id'] = user_id
+
+    if request.method == 'POST':
+        form = CreditIssueForm(request.POST or None, initial=initial_data)
+        if form.is_valid():
+            user_id = form.cleaned_data['user_id']
+            credit_amount = form.cleaned_data['credit_amount']
+
+            try:
+                user_profile = UserProfile.objects.get(user__id=user_id)
+                staff_profile = request.user.profile
+                user_profile.update_balance_by_staff(staff_profile, credit_amount)
+                messages.success(request, f"Successfully issued £{credit_amount} credit to {user_profile.user.username}.")
+                return redirect('home')
+            except UserProfile.DoesNotExist:
+                messages.error(request, "User not found.")
+    else:
+        form = CreditIssueForm()
+
+    return render(request, 'community/issue_credit.html', {'user_id': user_id})

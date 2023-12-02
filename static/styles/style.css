@@ -355,4 +355,14 @@ padding: 30px;
 }
 
 
+.scrollable-section {
+  height: 200px; /* Adjust height as needed */
+  overflow-y: scroll;
+}
+
+.user-item {
+  cursor: pointer;
+}
+
+
 

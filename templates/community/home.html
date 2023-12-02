@@ -173,7 +173,20 @@
     </div>
 
     </div>
-
+    {% if public_users %}
+    <div class="scrollable-section mt-5 border-0 rounded">
+        <h3>Public Users</h3>
+        <ul>
+            {% for user_profile in public_users %}
+            <li class="user-item" data-user-id="{{ user_profile.user.id }}">
+                <a href="{% url 'community:issue-credit' user_id=user_profile.user.id %}">
+                    Username: {{ user_profile.user.username }}, Balance: £{{ user_profile.balance }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 
 
     {% if created_events %}
@@ -441,7 +454,14 @@
     });
 
 </script>
-
+<script>
+document.querySelectorAll('.user-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const userId = this.getAttribute('data-user-id');
+        window.location.href = `/community/issue-credit/?user_id=${userId}`; // Update the URL path here
+    });
+});
+</script>
 
 
 

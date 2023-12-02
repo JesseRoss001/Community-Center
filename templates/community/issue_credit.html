@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends 'community/base.html' %}
+{% load static %}
 
 {% block content %}
   <h2>Issue Credit</h2>
   <form method="post">
+    
     {% csrf_token %}
+    <input type="hidden" name="user_id" value="the_user_id_value">
     {{ form.as_p }}
-    <button type="submit">Issue Credit</button>
+    <button type="submit" class="standard">Issue Credit</button>
   </form>
 {% endblock %}

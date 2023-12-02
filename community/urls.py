@@ -7,7 +7,7 @@ from . import views
 from .views import like_event,submit_rating
 from django.contrib.auth import views as auth_views
 from .views import issue_credit 
-app_name = 'community'
+
 urlpatterns = [
     path('',views.home , name='home'),
     path('events/',views.events,name ='events'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path('like_event/<int:event_id>/', views.like_event, name='like_event'),
     path('submit_rating/<int:instructor_id>/', submit_rating, name='submit_rating'),
-    path('issue-credit/', issue_credit, name='issue-credit'),
+    path('issue-credit/', issue_credit, name='issue_credit'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 
 

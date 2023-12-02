@@ -430,30 +430,45 @@ def submit_rating(request, instructor_id):
         return redirect('booking') 
 @login_required
 def issue_credit(request):
-    # Check if the user is a staff member
-    if request.user.profile.role != STAFF:
+    # Check if the logged-in user is a staff member
+    if request.user.profile.role != 'STAFF':
         messages.error(request, "You are not authorized to issue credits.")
         return redirect('home')
-    initial_data = {}
-    user_id = request.GET.get('user_id')
-    if user_id:
-        initial_data['user_id'] = user_id
 
-    if request.method == 'POST':
-        form = CreditIssueForm(request.POST or None, initial=initial_data)
-        if form.is_valid():
-            user_id = form.cleaned_data['user_id']
-            credit_amount = form.cleaned_data['credit_amount']
+    # Pre-populate the form with the user_id if it's present in the URL
+    user_id = request.GET.get('user_id', None)
+    initial_data = {'user_id': user_id} if user_id else None
+    form = CreditIssueForm(request.POST or None, initial={'user_id': user_id})
+    if request.method == 'POST' and form.is_valid():
+        user_id = form.cleaned_data['user_id']
+        credit_amount = form.cleaned_data['credit_amount']
 
-            try:
-                user_profile = UserProfile.objects.get(user__id=user_id)
-                staff_profile = request.user.profile
-                user_profile.update_balance_by_staff(staff_profile, credit_amount)
+        try:
+            # Use a transaction to ensure atomicity of the balance update
+            with transaction.atomic():
+                # Lock the user profile row for update and check for the existence
+                user_profile = UserProfile.objects.select_for_update().get(user__id=user_id)
+                
+                # Update the user's balance
+                user_profile.balance += credit_amount
+                user_profile.save(update_fields=['balance'])
+
+                # Create a record of this transaction
+                BalanceChange.objects.create(
+                    user_profile=user_profile,
+                    change_amount=credit_amount,
+                    transaction_type='CREDIT_ISSUED',
+                    staff_member=request.user.profile
+                )
+
                 messages.success(request, f"Successfully issued £{credit_amount} credit to {user_profile.user.username}.")
                 return redirect('home')
-            except UserProfile.DoesNotExist:
-                messages.error(request, "User not found.")
-    else:
-        form = CreditIssueForm()
 
-    return render(request, 'community/issue_credit.html', {'user_id': user_id})
+        except UserProfile.DoesNotExist:
+            messages.error(request, "User not found.")
+        except Exception as e:
+            # If any error occurs, show an error message
+            messages.error(request, f"An error occurred: {str(e)}")
+    
+    # Render the issue credit page with the form
+    return render(request, 'community/issue_credit.html', {'form': form, 'user_id': user_id})

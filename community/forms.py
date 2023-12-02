@@ -89,5 +89,10 @@ class RatingForm(forms.ModelForm):
             'score': forms.Select(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]),
         }
 class CreditIssueForm(forms.Form):
-    user_id = forms.IntegerField(label='User ID')
+    user_id = forms.IntegerField(label='User ID', widget=forms.HiddenInput())
     credit_amount = forms.DecimalField(max_digits=10, decimal_places=2, label='Credit Amount')
+
+    def __init__(self, *args, **kwargs):
+        super(CreditIssueForm, self).__init__(*args, **kwargs)
+        if 'initial' in kwargs:
+            self.fields['user_id'].initial = kwargs['initial'].get('user_id')

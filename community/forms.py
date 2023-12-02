@@ -94,5 +94,27 @@ class CreditIssueForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(CreditIssueForm, self).__init__(*args, **kwargs)
-        if 'initial' in kwargs:
+        if 'initial' in kwargs and 'user_id' in kwargs['initial']:
             self.fields['user_id'].initial = kwargs['initial'].get('user_id')
+            self.user_id = kwargs['initial'].get('user_id')
+
+    def clean_credit_amount(self):
+        credit_amount = self.cleaned_data['credit_amount']
+        # Check for two decimal places
+        if credit_amount and credit_amount.as_tuple().exponent != -2:
+            raise ValidationError("Please enter a credit amount with two decimal places.")
+        return credit_amount
+
+    def clean(self):
+        cleaned_data = super().clean()
+        user_id = cleaned_data.get('user_id')
+        credit_amount = cleaned_data.get('credit_amount')
+
+        if user_id and credit_amount:
+            # Fetch the user's profile
+            try:
+                user_profile = UserProfile.objects.get(user__id=user_id)
+                if credit_amount > user_profile.balance:
+                    self.add_error('credit_amount', "Credit amount cannot exceed the user's current balance.")
+            except UserProfile.DoesNotExist:
+                raise ValidationError("User not found.")

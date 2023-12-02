@@ -22,6 +22,10 @@ from django.dispatch import receiver
 from django.http import JsonResponse
 from .models import Like
 from django.db.models import Avg
+from django.db.models import Count, Sum, Case, When, IntegerField
+from django.db.models.functions import Coalesce
+from collections import defaultdict
+from itertools import accumulate
 
 
 # Create your views here.
@@ -472,3 +476,45 @@ def issue_credit(request):
     
     # Render the issue credit page with the form
     return render(request, 'community/issue_credit.html', {'form': form, 'user_id': user_id})
+
+def get_cumulative_graph_data(request):
+    # Query events created by instructors
+    instructor_events = Event.objects.filter(
+        author__role=INSTRUCTOR
+    ).annotate(
+        date_only=Cast('date', DateField())
+    ).values('date_only').annotate(
+        count=Count('id'),
+        total=Sum(Case(When(author__role=INSTRUCTOR, then=200), default=0, output_field=IntegerField()))
+    ).order_by('date_only')
+
+    # Query events created by government officials
+    government_events = Event.objects.filter(
+        author__role=GOVERNMENT_OFFICIAL
+    ).annotate(
+        date_only=Cast('date', DateField())
+    ).values('date_only').annotate(
+        count=Count('id'),
+        total=Sum(Case(When(author__role=GOVERNMENT_OFFICIAL, then=100), default=0, output_field=IntegerField()))
+    ).order_by('date_only')
+
+    # Combine the queries
+    combined_events = instructor_events.union(government_events).order_by('date_only')
+
+    # Accumulate the sums
+    instructor_cumulative = list(accumulate(event['total'] for event in instructor_events))
+    government_cumulative = list(accumulate(event['total'] for event in government_events))
+    combined_cumulative = list(accumulate(event['total'] for event in combined_events))
+
+    # Extract dates
+    dates = [event['date_only'].strftime('%Y-%m-%d') for event in combined_events]
+
+    context = {
+        'instructor_event_dates': json.dumps(dates),
+        'government_event_dates': json.dumps(dates),
+        'combined_event_dates': json.dumps(dates),
+        'instructor_event_amounts': json.dumps(instructor_cumulative),
+        'government_event_amounts': json.dumps(government_cumulative),
+        'combined_event_amounts': json.dumps(combined_cumulative),
+    }
+    return context

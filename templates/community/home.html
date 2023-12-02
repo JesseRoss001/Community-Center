@@ -186,6 +186,13 @@
             {% endfor %}
         </ul>
     </div>
+    <div class="mt-5 border-0 rounded">
+        <h1> Coming Soon with next update </h1>
+        <div class="d-none d-md-inline-block col-8">
+            
+            <canvas id="eventGraph" width='300' height="150"></canvas>
+        </div>
+    </div>
     {% endif %}
 
 
@@ -463,6 +470,88 @@ document.querySelectorAll('.user-item').forEach(item => {
 });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let instructorEventDates = JSON.parse('{{ instructor_event_dates|safe }}' || '[]');
+        let governmentEventDates = JSON.parse('{{ government_event_dates|safe }}' || '[]');
+        let combinedEventDates = JSON.parse('{{ combined_event_dates|safe }}' || '[]');
+
+        let instructorEventAmounts = JSON.parse('{{ instructor_event_amounts|safe }}' || '[]').map((val, i, arr) => arr.slice(0, i + 1).reduce((a, b) => a + b, 0));
+        let governmentEventAmounts = JSON.parse('{{ government_event_amounts|safe }}' || '[]').map((val, i, arr) => arr.slice(0, i + 1).reduce((a, b) => a + b, 0));
+        let combinedEventAmounts = instructorEventAmounts.map((val, index) => val + (governmentEventAmounts[index] || 0));
+        
+        const totalInstructorEvents = instructorEventAmounts.reduce((a, b) => a + b, 0);
+        const totalGovernmentEvents = governmentEventAmounts.reduce((a, b) => a + b, 0);
+        
+        const eventGraphCanvas = document.getElementById('eventGraph');
+        if (eventGraphCanvas) {
+            const ctx = eventGraphCanvas.getContext('2d');
+            const eventGraph = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: combinedEventDates,
+                    datasets: [
+                        {
+                            label: 'Instructor Events (£200 each)',
+                            data: instructorEventAmounts,
+                            backgroundColor: 'rgba(255,99,132,0.2)',
+                            borderColor: 'rgba(255,99,132,1)',
+                            borderWidth: 3,
+                            fill: false,
+                        },
+                        {
+                            label: 'Government Events (£100 each)',
+                            data: governmentEventAmounts,
+                            backgroundColor: 'rgba(54,162,235,0.2)',
+                            borderColor: 'rgba(54,162,235,1)',
+                            borderWidth: 3,
+                            fill: false,
+                        },
+                        {
+                            label: 'Combined Events',
+                            data: combinedEventAmounts,
+                            backgroundColor: 'rgba(75,192,192,0.2)',
+                            borderColor: 'rgba(75,192,192,1)',
+                            borderWidth: 3,
+                            fill: false,
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Historic Totals - Instructors: £${totalInstructorEvents}, Government: £${totalGovernmentEvents}`,
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            },
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    });
+</script>
 
 
 {% endblock content %}

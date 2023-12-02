@@ -37,7 +37,7 @@ SECRET_KEY = get_env_variable('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 ALLOWED_HOSTS = [
     '8000-jesseross00-communityce-zyjsz9taqgg.ws-eu106.gitpod.io','.herokuapp.com'

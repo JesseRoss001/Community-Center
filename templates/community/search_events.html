@@ -4,34 +4,35 @@
 {% block content %}
 <form method="get">
     {{ form.as_p }}
-    <button type="submit">Search</button>
+    <button class="btn btn-primary " type="submit">Search</button>
 </form>
+<div class="container mt-4">
+    <div class="row">
+        {% for event_detail in event_details_list %}
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <!-- Event Card -->
+                <div class="card schedule-card m-3 bg-light p-3 rounded">
+                    <h3>{{ event_detail.event.title }}</h3>
+                    <p>{{ event_detail.event.description }}</p>
+                    <p>Like Count: <span class="like-count">{{ event_detail.likes_count }}</span></p>
+                    {% if event_detail.event.author.role == 'INSTRUCTOR' %}
+                        <p>Instructor Rating: {{ event_detail.average_rating|default:"Not rated yet" }}</p>
+                    {% endif %}
+                    <p>Date: {{ event_detail.event.date }}</p>
+                    <p>{{ event.description }}</p>
+                    <p>Start Time: {{ event_detail.event.time }}</p>
+                    <p>Capacity: {{ event_detail.event.capacity }}</p>
+                    <p>Cost: {% if event_detail.cost == 0.00 %} Free {% else %} £{{ event_detail.cost }} {% endif %}</p>
+                    <p>Tags: {{ event_detail.tags }}</p>
 
-{% for event in events %}
-    <div class="event-card">
-        <h3>{{ event.title }}</h3>
-        <p>{{ event.description }}</p> <p> Like Count :   <span class="like-count" data-event-id="{{ event.id }}">
-            {{ event.like_set.count }}</span> </p>
-      
-        {% if event.author.role == 'INSTRUCTOR' %}
-        <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
-       {% endif %}
-       <p>Date: {{ event.date }}</p> <!-- Display event date -->
-       <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
-       <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
-       <p>Cost :
-       <!-- Display cost based on event author's role -->
-       {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-       {% else  %} £0.00
-       {% endif %}
-    </p>
-        <p>Tags: {{ event_details.event.id.tags }}</p>
-        {% if event_details.event.id.user_has_booked %}
-            <button class="btn btn-secondary disabled">Joined</button>
-        {% else %}
-            <a href="{% url 'join_event' event.id %}" class="btn btn-primary">Join Event</a>
-        {% endif %}
-        <a href="{% url 'event_detail' event.id %}" class="btn btn-secondary">View Details</a>
+                    <!-- Join Event Button -->
+                </div>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
-{% endblock content %}
+</div>
+
+<!-- JavaScript for Confirm Join Event -->
+
+
+{% endblock %}

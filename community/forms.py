@@ -192,7 +192,7 @@ LIKES_CHOICES = (
 )
 
 class EventSearchForm(forms.Form):
-    course_type = forms.ChoiceField(choices=[('', 'Any')] + list(Event.COURSE_TYPES), required=False)
+   
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
     instructor_ranking = forms.DecimalField(required=False, min_value=0, decimal_places=2, widget=forms.NumberInput(attrs={'type': 'number', 'step': "0.01"}))
     likes_order = forms.ChoiceField(choices=LIKES_CHOICES, required=False, label='Likes Order')

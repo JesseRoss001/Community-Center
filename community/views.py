@@ -531,7 +531,7 @@ def search_events(request):
 
     if form.is_valid():
         # Filtering logic
-        course_type = form.cleaned_data.get('course_type')
+      
         instructor_ranking = form.cleaned_data.get('instructor_ranking')
         likes_order = form.cleaned_data.get('likes_order')
         time_of_day = form.cleaned_data.get('time_of_day')
@@ -539,11 +539,7 @@ def search_events(request):
         tags = form.cleaned_data.get('tags')
 
         # Apply filters based on the course type
-        if course_type:
-            if course_type == 'Free':
-                events = events.filter(course_type='free')
-            elif course_type == 'Paid':
-                events = events.filter(course_type='instructor_led')
+  
 
         # Filter based on instructor ranking, if applicable
         if instructor_ranking is not None:
@@ -569,8 +565,9 @@ def search_events(request):
     events = events.annotate(likes_count=Count('like'))
 
     # Prepare additional details
-    event_details = {
-        event.id: {
+    event_details_list = [
+        {
+            'event': event,
             'likes_count': event.likes_count,
             'user_has_liked': event.like_set.filter(user=request.user).exists(),
             'average_rating': event.author.average_rating if event.author.role == 'INSTRUCTOR' else None,
@@ -579,12 +576,11 @@ def search_events(request):
             'user_has_booked': event.booking_set.filter(user_profile=request.user.profile).exists(),
         }
         for event in events
-    }
+    ]
 
     context = {
         'form': form,
-        'events': events,
-        'event_details': event_details,
+        'event_details_list': event_details_list,
     }
 
     return render(request, 'community/search_events.html', context)

@@ -55,10 +55,18 @@
                         <li class="nav-item">
                             {% if user.is_authenticated %}
                             <a class="nav-link" href="{% url 'booking' %}"> Booking </a>
-                            {% else %}
-
                             {% endif %}
                         </li>
+
+                            <li class="nav-item">
+                                {% if user.is_authenticated %}
+                                <a class="nav-link" href="{% url 'search_events' %}">Search Events</a>
+                                {% endif %}
+                            </li>
+                            
+
+                           
+                        
 
                         {% if user.is_authenticated %}
                         {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}

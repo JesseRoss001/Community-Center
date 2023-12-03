@@ -4,7 +4,7 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import like_event,submit_rating,issue_credit 
+from .views import like_event,submit_rating,issue_credit,search_events,issue_credit 
 
 from . import views
 
@@ -32,6 +32,7 @@ urlpatterns = [
     path('like_event/<int:event_id>/', views.like_event, name='like_event'),
     path('submit_rating/<int:instructor_id>/', submit_rating, name='submit_rating'),
     path('issue-credit/', issue_credit, name='issue_credit'),
+    path('search-events/', search_events, name='search_events'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 
 

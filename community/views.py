@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Avg, Count, Sum, Case, When, IntegerField
+from django.db.models import Avg, Count, Sum, Case, When, IntegerField, Q
 from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -22,7 +22,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 # Local application/library specific imports
 from .forms import (GovernmentOfficialForm, InstructorForm, GeneralPublicForm, StaffForm,
-                    EventForm, EventUpdateForm, RatingForm, CreditIssueForm)
+                    EventForm, EventUpdateForm, RatingForm, CreditIssueForm , EventSearchForm)
 from .models import (UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
                      Booking, TIME_SLOTS, BalanceChange, Rating, Like)
 # Create your views here.
@@ -32,6 +32,9 @@ def home(request):
     The view function for the home page of the community.
     Fetches and displays created and joined events, user balance transactions, and other relevant data for authenticated users.
     """
+    if not hasattr(request.user, 'profile'):
+        UserProfile.objects.create(user=request.user)
+    created_events = Event.objects.filter(author=request.user.profile, date__gte=timezone.now().date())
     context = {
         'created_events': None,
         'joined_events': None,
@@ -513,4 +516,17 @@ def get_cumulative_graph_data(request):
         'combined_event_amounts': json.dumps(combined_cumulative),
     }
     return context
+
+
+def search_events(request):
+    form = EventSearchForm(request.GET or None)
+    events = Event.objects.none()  
+
+    if form.is_valid():
+        events = form.search()
+
+    return render(request, 'community/search_events.html', {'form': form, 'events': events})
+
+for user in User.objects.all():
+    UserProfile.objects.get_or_create(user=user)
 # End-of-file (EOF)

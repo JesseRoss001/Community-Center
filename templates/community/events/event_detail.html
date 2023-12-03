@@ -7,4 +7,10 @@
 <p> Cost:  </p> <!-- Placeholder for event cost -->
 {% if event.image %}
 <img src="{{ event.image.url }}" alt="Event Iamge"> <!-- Display event image -->
+<p><strong>Course Type:</strong> {{ event.get_course_type_display }}</p>
+<p><strong>Tags:</strong> 
+    {% for tag in event.tags.all %}
+        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
 {% endif %}

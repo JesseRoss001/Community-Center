@@ -3,7 +3,7 @@ from django.forms.widgets import DateInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 from .models import (UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
-                     Booking, TIME_SLOTS, BalanceChange, Rating, Like)
+                     Booking, TIME_SLOTS, BalanceChange, Rating, Like,Tag)
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
@@ -89,6 +89,8 @@ class EventForm(forms.ModelForm):
     Includes custom validation for event date and capacity.
     """
     time = forms.ChoiceField(choices=TIME_SLOTS)
+    course_type = forms.ChoiceField(choices=Event.COURSE_TYPES, required=True)
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
     def clean_date(self):
         """
         Validates the 'date' field of the form.
@@ -116,8 +118,8 @@ class EventForm(forms.ModelForm):
         Specifies the model to use and the fields, widgets to be included in the form.
         """
         model = Event
-        fields = ['title','description','date','time', 'capacity', 'image' ]
-        widgets = {'date':DateInput(attrs={'type':'date'}),}
+        fields = ['title', 'description', 'date', 'time', 'capacity', 'image', 'course_type', 'tags']
+        widgets = {'date': DateInput(attrs={'type': 'date'})}
 
 class EventUpdateForm(forms.ModelForm):
     """
@@ -182,3 +184,51 @@ class CreditIssueForm(forms.Form):
                     self.add_error('credit_amount', "Credit amount cannot exceed the user's current balance.")
             except UserProfile.DoesNotExist:
                 raise ValidationError("User not found.")
+TIME_SLOTS_CHOICES = [('', 'Any Time of Day')] + list(TIME_SLOTS)
+LIKES_CHOICES = (
+    ('', 'Any Order'),
+    ('asc', 'Ascending'),
+    ('desc', 'Descending'),
+)
+
+class EventSearchForm(forms.Form):
+    course_type = forms.ChoiceField(choices=[('', 'Any')] + list(Event.COURSE_TYPES), required=False)
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+    instructor_ranking = forms.DecimalField(required=False, min_value=0, decimal_places=2, widget=forms.NumberInput(attrs={'type': 'number', 'step': "0.01"}))
+    likes_order = forms.ChoiceField(choices=LIKES_CHOICES, required=False, label='Likes Order')
+    day_of_week = forms.ChoiceField(choices=[('', 'Any Day')] + [('1', 'Monday'), ('2', 'Tuesday'), ('3', 'Wednesday'), ('4', 'Thursday'), ('5', 'Friday'), ('6', 'Saturday'), ('7', 'Sunday')], required=False)
+    time_of_day = forms.ChoiceField(choices=TIME_SLOTS_CHOICES, required=False)
+
+    def search(self):
+        events = Event.objects.all()
+
+        if self.cleaned_data.get('course_type'):
+            course_type = self.cleaned_data['course_type']
+            if course_type == 'Free':
+                events = events.filter(author__role=UserProfile.GOVERNMENT_OFFICIAL)
+            elif course_type == 'Paid':
+                events = events.filter(author__role=UserProfile.INSTRUCTOR)
+
+        if self.cleaned_data.get('instructor_ranking'):
+            min_ranking = self.cleaned_data['instructor_ranking']
+            events = events.filter(author__role=UserProfile.INSTRUCTOR, author__ranking__gte=min_ranking)
+
+        likes_order = self.cleaned_data.get('likes_order')
+        if likes_order:
+            order = '' if likes_order == 'asc' else '-'
+            events = events.annotate(likes_count=Count('likes')).order_by(f'{order}likes_count')
+
+        if self.cleaned_data.get('time_of_day'):
+            time_of_day = self.cleaned_data['time_of_day']
+            events = events.filter(time=time_of_day)
+
+        if self.cleaned_data.get('day_of_week'):
+            day_of_week = self.cleaned_data['day_of_week']
+            events = events.filter(date__week_day=day_of_week)
+
+        if self.cleaned_data.get('tags'):
+            tags = self.cleaned_data['tags']
+            events = events.filter(tags__in=tags).distinct()
+
+        return events
+#EOF

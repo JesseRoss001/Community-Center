@@ -101,6 +101,38 @@ class Event(models.Model):
     time = models.CharField(max_length=10, choices=TIME_SLOTS)
     capacity =models.IntegerField(default=60)
     image = models.ImageField(upload_to='event_images/',blank=True , null=True)
+    COURSE_TYPES = [
+        ('free', 'Free'),
+        ('instructor_led', 'Instructor-led'),
+    ]
+    course_type = models.CharField(max_length=20, choices=COURSE_TYPES, default='free')
+
+    TAG_CHOICES = [
+        ('education', 'Education'),
+        ('physical_fitness', 'Physical Fitness'),
+        ('wellbeing', 'Wellbeing'),
+        ('technology', 'Technology'),
+        ('art_culture', 'Art & Culture'),
+        ('science_innovation', 'Science & Innovation'),
+        ('environment', 'Environment'),
+        ('entrepreneurship', 'Entrepreneurship'),
+        ('community_service', 'Community Service'),
+        ('personal_development', 'Personal Development'),
+        ('health_nutrition', 'Health & Nutrition'),
+        # Add other tags as needed
+    ]
+    tags = models.ManyToManyField('Tag', blank=True)
+    @property
+    def instructor_ranking(self):
+        """ Calculate ranking only for events held by instructors """
+        if self.author.role == INSTRUCTOR:
+            return self.author.get_instructor_ranking()
+        return None
+
+    @property
+    def number_of_likes(self):
+        """ Count the number of likes for this event """
+        return self.like_set.count()
     def clean(self):
         if self.date is None:
             raise ValidationError("Event date is required.")
@@ -111,7 +143,8 @@ class Event(models.Model):
         Checks if the event has any bookings.
         Returns True if bookings exist, False otherwise.
         """
-        return self.booking_set.exists()    
+        return self.booking_set.exists()  
+      
     class Meta:
         """
         Meta class for the Event model.
@@ -121,6 +154,12 @@ class Event(models.Model):
         unique_together = ('date','time')
     def __str__(self):
         return self.title
+class Tag(models.Model):
+    """ Tag model """
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
 class Booking(models.Model):
     """
     Manages the bookings for events. Each booking is linked to a specific event and user profile.

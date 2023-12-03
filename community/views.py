@@ -42,27 +42,23 @@ def home(request):
         'event_titles': '[]',
         'booking_counts': '[]'
     }
-
     if request.user.is_authenticated:
         # Fetch events created and joined by the user
         created_events = Event.objects.filter(author=request.user.profile, date__gte=timezone.now().date())
         joined_bookings = Booking.objects.filter(user_profile=request.user.profile, event__date__gte=timezone.now().date())
         joined_events = [booking.event for booking in joined_bookings]
-
         # Fetch balance transactions for the user
         balance_transactions = BalanceChange.objects.filter(
             user_profile=request.user.profile
         ).order_by('-change_date')
         transaction_dates = [transaction.change_date.strftime("%Y-%m-%d") for transaction in balance_transactions]
         transaction_amounts = [float(transaction.change_amount) for transaction in balance_transactions]
-
         # Fetch the created events with booking counts
         user_events_with_booking_counts = created_events.annotate(
             total_bookings=Count('booking')
         )
         event_titles = [event.title for event in user_events_with_booking_counts]
         booking_counts = [event.total_bookings for event in user_events_with_booking_counts]
-
         # Update context
         context.update({
             'created_events': created_events,
@@ -74,21 +70,17 @@ def home(request):
             'event_titles': json.dumps(event_titles),
             'booking_counts': json.dumps(booking_counts)
         })
-
         if request.user.is_authenticated and request.user.profile.role == STAFF:
             public_users = UserProfile.objects.filter(role=GENERAL_PUBLIC).order_by('balance')
             context['public_users'] = public_users
         else:
             context['public_users'] = None
-
     return render(request, 'community/home.html', context)
-
 def events(request):
     """
     The view function for displaying events.
     """
     return render(request, 'community/events.html')
-
 def about(request):
     """
     The view function for the about page.
@@ -96,14 +88,11 @@ def about(request):
     """
     total_users=User.objects.count()
     total_bookings=Booking.objects.count()
-
     context = {
         'total_users':total_users,
         'total_bookings':total_bookings,
     }
     return render(request,'community/about.html',context)
-
-
 # gallery view 
 def gallery(request):
     """
@@ -112,11 +101,6 @@ def gallery(request):
     """
     events_with_images = Event.objects.exclude(image='').order_by('-date')
     return render(request, 'community/gallery.html', {'events_with_images': events_with_images})
-
-
-# booking view 
-
-
 # booking view 
 def booking(request):
     """
@@ -271,7 +255,6 @@ def create_event(request, event_id=None):
             messages.error(request, 'Invalid form submission.')
     else:
         form = EventForm()
-
     return render(request, 'community/events/create_event.html', {'form': form})
 #update event 
 @login_required

@@ -10,22 +10,22 @@
             <h1 class="h1 text-center"> Welcome to <br> the Community <br> Center</h1>
         </div>
         <div class="col-8 container mt-4 d-flex d-md-none justify-content-center ">
-            <h3 class="h3 leading ">
+            <h2 class="h3 leading ">
                 <!-- Check if user is authenticated -->
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
-            </h3>
+            </h2>
         </div>
         <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
             <h1 class="h1 text-center"> Welcome to the Community Center</h1>
         </div>
         {% if user.is_authenticated %}
         <div class="col-8 container mt-4 d-none  d-md-flex justify-content-center ">
-            <h3 class="h3 leading ">
+            <h2 class="h3 leading ">
                 <!-- Check if user is authenticated -->
                 Hi , {{ user.profile }}
                 <!-- Display 'Create an Event' option for certain user roles -->
-            </h3>
+            </h2>
         </div>
         {% endif %}
     </div>

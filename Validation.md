@@ -10,3 +10,7 @@ Meta Tags and Links: The checker doesn't seem to recognize the {% block title %}
 CSS and JavaScript Loading: The checker doesn't understand the {% static 'styles/style.css' %} syntax used to load static CSS files. Again, this is specific to Django and not standard HTML.
 
 Conditionals and Loops: The checker may flag constructs like {% if ... %} and {% for ... %} because they are not part of standard HTML.
+
+
+
+First iteration of validation largely involed adding docstrings and removing whitespace . Removing trailing divs and unclosed p tags. 

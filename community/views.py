@@ -5,7 +5,6 @@ from decimal import Decimal
 from itertools import accumulate
 import json
 import logging
-
 # Related third party imports
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
@@ -21,17 +20,13 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
-
 # Local application/library specific imports
 from .forms import (GovernmentOfficialForm, InstructorForm, GeneralPublicForm, StaffForm,
                     EventForm, EventUpdateForm, RatingForm, CreditIssueForm)
 from .models import (UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
                      Booking, TIME_SLOTS, BalanceChange, Rating, Like)
-
-
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
-
 def home(request):
     """
     The view function for the home page of the community.
@@ -50,8 +45,8 @@ def home(request):
 
     if request.user.is_authenticated:
         # Fetch events created and joined by the user
-        created_events = Event.objects.filter(author=request.user.profile)
-        joined_bookings = Booking.objects.filter(user_profile=request.user.profile)
+        created_events = Event.objects.filter(author=request.user.profile, date__gte=timezone.now().date())
+        joined_bookings = Booking.objects.filter(user_profile=request.user.profile, event__date__gte=timezone.now().date())
         joined_events = [booking.event for booking in joined_bookings]
 
         # Fetch balance transactions for the user

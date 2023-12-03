@@ -6,7 +6,7 @@
 <!-- Load internationalization tag for language translation -->
 {% load static %}
 {% block content %}
-<main id="main-background">
+
     <!-- Container for the booking section -->
     <div class="container mt-4 ">
         <h1 class="text-center mb-4"> Welcome to the booking section </h1>
@@ -53,18 +53,12 @@
                                     <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
                                    {% endif %}
  <!-- Display the instructor's rating -->
- 
-
-
-
                                 <p> Cost :
                                     <!-- Display cost based on event author's role -->
                                     {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
                                     {% else %} £0.00
                                     {% endif %}
                                 </p>
-
-
                                 <!-- Handling user booking status -->
                                 {% if event.id in user_bookings %}
                                 <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
@@ -152,7 +146,6 @@
                     </div>
                 </div>
             </div>
-
             {% endfor %}
         </div>
         <nav aria-label="Page navigation ">
@@ -185,9 +178,6 @@
             </ul>
         </nav>
     </div>
-</main>
-
-
 
 <script>
     // JavaScript function for confirming event join action

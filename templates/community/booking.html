@@ -71,11 +71,11 @@
                                 {% else %}
                                 <a href="{% url 'join_event' event.id %}"
                                     class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
-                                    onclick="return confirmJoinEvent()"> Join Event </a>
+                                    onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on {{ event.date }} at {{ event.time }}</span> Join Event </a>
                                 {% endif %}
                                 <!-- Info button to zoom in and display details of th event upon clicking -->
                                 <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#eventModal{{ event.id }}">Read More</button>
+                                    data-bs-target="#eventModal{{ event.id }}"><span class="visually-hidden">Read more about {{ event.title }}</span>Read More</button>
                                 <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -104,7 +104,7 @@
                                                 <!-- Inside your event loop in the template -->
                                                 <button class="btn btn-info like-btn"
                                                     data-event-id="{{ event.id }}">Like</button>
-
+                                                    <span class="visually-hidden">Like this event</span>
                                                 <!-- Rating system -->
 
 
@@ -124,21 +124,20 @@
                                                        <option value="5">5</option>
                                                    </select>
                                                    <input type="submit" value="Submit Rating">
+                                                   <span class="visually-hidden">Submit your rating for this instructor</span>
                                                </form>
                                                {% endif %}
                                                 <a href="{% url 'join_event' event.id %}"
                                                     class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
-                                                    onclick="return confirmJoinEvent()"> Join Event </a>
+                                                    onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on {{ event.date }} at {{ event.time }}</span> Join Event </a>
                                         </div>
                                         </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Join event link with onclick event for confirmation -->
-
                             </div>
                         </div>
-
                         {% endfor %}
                         {% endif %}
                         <!-- Displaying 'Available' if no event is scheduled -->
@@ -160,10 +159,10 @@
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1">&laquo; first </a>
+                    <a class="page-link" href="?page=1"><span class="visually-hidden">Go to first page</span>&laquo; first </a>
                 </li>
                 <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> previous
-                    </a> </li>
+                    </a> <span class="visually-hidden">Previous</span></li>
                 {% else %}
  {% endif %}
                 <li class="page-item active" aria-current="page">
@@ -171,30 +170,21 @@
                         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
                     </span>
                 </li>
-
-
-
-
-
                 {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number}}"> <span aria-hidden="true"> Next
+                    <a class="page-link" href="?page={{ page_obj.next_page_number}}"> <span aria-hidden="true"><span class="visually-hidden">Next page</span> Next
                             &rsaquo;</span> </a>
  </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"> last
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"><span class="visually-hidden">Last page</span> last
                             &raquo; </span>
                     </a>
                 </li>
                 {% else %}
-
                 {% endif %}
             </ul>
         </nav>
-
     </div>
-
-
 </main>
 
 

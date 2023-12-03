@@ -1,16 +1,21 @@
-<!-- Event Detail -->
-<h1>{{ event.title }} </h1> <!-- Display event title -->
-<p> {{ event.description }} </p> <!-- Display event description -->
-<p>Date: {{ event.date }}</p> <!-- Display event date -->
-<p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
-<p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
-<p> Cost:  </p> <!-- Placeholder for event cost -->
-{% if event.image %}
-<img src="{{ event.image.url }}" alt="Event Iamge"> <!-- Display event image -->
-<p><strong>Course Type:</strong> {{ event.get_course_type_display }}</p>
-<p><strong>Tags:</strong> 
-    {% for tag in event.tags.all %}
-        {{ tag.name }}{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-</p>
-{% endif %}
+{% extends 'community/base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ event.title }}</h1>
+    <p>{{ event.description }}</p>
+    <p>Date: {{ event.date }}</p>
+    <p>Time: {{ event.time }}</p>
+    <p>Capacity: {{ event.capacity }}</p>
+    <p>Cost: {% if event.author.role == 'INSTRUCTOR' %} £7.00 {% else %} Free {% endif %}</p>
+    {% if event.image %}
+        <img src="{{ event.image.url }}" alt="Event Image" class="img-fluid">
+    {% endif %}
+    <p>Likes: {{ likes_count }}</p>
+    {% if event.author.role == 'INSTRUCTOR' %}
+        <p>Instructor Rating: {{ average_rating|default:"Not rated yet" }}</p>
+    {% endif %}
+    <!-- Other event details -->
+</div>
+{% endblock %}

@@ -315,13 +315,19 @@ def delete_event(request, event_id):
         messages.success(request, 'Event deleted successfully.')
         return redirect('home')
     return render(request, 'community/events/confirm_delete.html', {'event': event})
-def event_detail(request,event_id):
-    """
-    The view function for displaying the details of an individual event.
-    Fetches and displays information of a specific event based on its ID.
-    """
-    event = get_object_or_404 (Event,pk = event_id)
-    return render(request,'community/events/event_detail.html',{'event':event})
+@login_required
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    likes_count = event.like_set.count()
+
+    context = {
+        'event': event,
+        'likes_count': likes_count,
+    }
+    if event.author.role == 'INSTRUCTOR':
+        context['average_rating'] = event.author.average_rating
+
+    return render(request, 'community/event_detail.html', context)
 # Image Deletion from gallery 
 @login_required
 def delete_event_image(request,event_id):
@@ -518,15 +524,68 @@ def get_cumulative_graph_data(request):
     return context
 
 
+@login_required
 def search_events(request):
     form = EventSearchForm(request.GET or None)
-    events = Event.objects.none()  
+    events = Event.objects.all().prefetch_related('like_set', 'author__user', 'tags')
 
     if form.is_valid():
-        events = form.search()
+        # Filtering logic
+        course_type = form.cleaned_data.get('course_type')
+        instructor_ranking = form.cleaned_data.get('instructor_ranking')
+        likes_order = form.cleaned_data.get('likes_order')
+        time_of_day = form.cleaned_data.get('time_of_day')
+        day_of_week = form.cleaned_data.get('day_of_week')
+        tags = form.cleaned_data.get('tags')
 
-    return render(request, 'community/search_events.html', {'form': form, 'events': events})
+        # Apply filters based on the course type
+        if course_type:
+            if course_type == 'Free':
+                events = events.filter(course_type='free')
+            elif course_type == 'Paid':
+                events = events.filter(course_type='instructor_led')
 
-for user in User.objects.all():
-    UserProfile.objects.get_or_create(user=user)
+        # Filter based on instructor ranking, if applicable
+        if instructor_ranking is not None:
+            events = events.filter(author__average_rating__gte=instructor_ranking, author__role=INSTRUCTOR)
+
+        # Order by likes
+        if likes_order:
+            order = '' if likes_order == 'asc' else '-'
+            events = events.annotate(likes_count=Count('like')).order_by(f'{order}likes_count')
+
+        # Filter by time of day
+        if time_of_day:
+            events = events.filter(time=time_of_day)
+
+        # Filter by day of the week
+        if day_of_week:
+            events = events.filter(date__week_day=day_of_week)
+
+        # Filter by tags
+        if tags:
+            events = events.filter(tags__in=tags).distinct()
+        # Annotate with likes count
+    events = events.annotate(likes_count=Count('like'))
+
+    # Prepare additional details
+    event_details = {
+        event.id: {
+            'likes_count': event.likes_count,
+            'user_has_liked': event.like_set.filter(user=request.user).exists(),
+            'average_rating': event.author.average_rating if event.author.role == 'INSTRUCTOR' else None,
+            'cost': 7.00 if event.author.role == 'INSTRUCTOR' else 0.00,
+            'tags': ', '.join(tag.name for tag in event.tags.all()),
+            'user_has_booked': event.booking_set.filter(user_profile=request.user.profile).exists(),
+        }
+        for event in events
+    }
+
+    context = {
+        'form': form,
+        'events': events,
+        'event_details': event_details,
+    }
+
+    return render(request, 'community/search_events.html', context)
 # End-of-file (EOF)

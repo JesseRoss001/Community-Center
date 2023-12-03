@@ -1,37 +1,42 @@
-from django.shortcuts import render, get_object_or_404
-from .forms import GovernmentOfficialForm, InstructorForm, GeneralPublicForm ,StaffForm ,EventForm , EventUpdateForm, RatingForm , CreditIssueForm
-from .models import UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC , STAFF, Event , Booking , TIME_SLOTS , BalanceChange, Rating
-from django.contrib.auth import login as auth_login
-from django.shortcuts import render , redirect
-from django.contrib.auth.decorators import login_required
+# Standard library imports
+from collections import defaultdict
 from datetime import datetime, timedelta
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.http import HttpResponseForbidden
-import logging 
-from django.utils import timezone
-from django.utils.dateparse import parse_date
 from decimal import Decimal
-from django.db import transaction
-from django.core.paginator import Paginator
+from itertools import accumulate
 import json
 import logging
-from django.db.models import Count
+
+# Related third party imports
+from django.contrib import messages
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Avg, Count, Sum, Case, When, IntegerField
+from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.http import JsonResponse
-from .models import Like
-from django.db.models import Avg
-from django.db.models import Count, Sum, Case, When, IntegerField
-from django.db.models.functions import Coalesce
-from collections import defaultdict
-from itertools import accumulate
+from django.http import HttpResponseForbidden, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.utils.dateparse import parse_date
+
+# Local application/library specific imports
+from .forms import (GovernmentOfficialForm, InstructorForm, GeneralPublicForm, StaffForm,
+                    EventForm, EventUpdateForm, RatingForm, CreditIssueForm)
+from .models import (UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
+                     Booking, TIME_SLOTS, BalanceChange, Rating, Like)
 
 
 # Create your views here.
 #Creating views for home , events , about , gallery and booking pages 
 
 def home(request):
+    """
+    The view function for the home page of the community.
+    Fetches and displays created and joined events, user balance transactions, and other relevant data for authenticated users.
+    """
     context = {
         'created_events': None,
         'joined_events': None,
@@ -84,9 +89,16 @@ def home(request):
     return render(request, 'community/home.html', context)
 
 def events(request):
+    """
+    The view function for displaying events.
+    """
     return render(request, 'community/events.html')
 
 def about(request):
+    """
+    The view function for the about page.
+    Displays statistics like total number of users and bookings.
+    """
     total_users=User.objects.count()
     total_bookings=Booking.objects.count()
 
@@ -99,6 +111,10 @@ def about(request):
 
 # gallery view 
 def gallery(request):
+    """
+    The view function for the gallery page.
+    Displays events with images, ordered by date in descending order.
+    """
     events_with_images = Event.objects.exclude(image='').order_by('-date')
     return render(request, 'community/gallery.html', {'events_with_images': events_with_images})
 
@@ -108,6 +124,10 @@ def gallery(request):
 
 # booking view 
 def booking(request):
+    """
+    The view function for handling event bookings.
+    Displays a paginated schedule of events and handles user bookings.
+    """
     total_days = 90
     days_per_page = 14
     # start and end dates for the whole period
@@ -137,13 +157,16 @@ def booking(request):
         'schedule': schedule,
         'page_obj': page_obj,
         'user_bookings': user_bookings,
-        'rating_form': rating_form,  # Add this line
+        'rating_form': rating_form,  
     }
     
     return render(request, 'community/booking.html', context)
     
 def register_staff(request):
-    # You can add your login logic here
+    """
+    The view function for registering a new staff member.
+    Handles the submission of the StaffForm and user creation.
+    """
     if request.method == 'POST':
         form = StaffForm(request.POST)
         if form.is_valid():
@@ -162,6 +185,10 @@ def register_staff(request):
 
 
 def register_government(request):
+    """
+    The view function for registering a new government official.
+    Handles the submission of the GovernmentOfficialForm and user creation.
+    """
     if request.method == 'POST':
         form = GovernmentOfficialForm(request.POST)
         if form.is_valid():
@@ -175,6 +202,10 @@ def register_government(request):
     return render(request, 'community/register_government.html', {'form':form})
 
 def register_instructor(request):
+    """
+    The view function for registering a new instructor.
+    Handles the submission of the InstructorForm and user creation.
+    """
     if request.method == 'POST':
         form = InstructorForm(request.POST)
         if form.is_valid():
@@ -188,6 +219,10 @@ def register_instructor(request):
     return render(request,'community/register_instructor.html', {'form':form})
 
 def general_public(request):
+    """
+    The view function for registering a new general public user.
+    Handles the submission of the GeneralPublicForm and user creation.
+    """
     if request.method == 'POST':
         form = GeneralPublicForm(request.POST)
         if form.is_valid():
@@ -205,6 +240,10 @@ def general_public(request):
 logger = logging.getLogger(__name__)
 @login_required
 def create_event(request, event_id=None):
+    """
+    The view function for creating or updating an event.
+    Handles form submission for event creation and updates, with validation for event dates and capacity.
+    """
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
     instance = None
@@ -266,6 +305,10 @@ def create_event(request, event_id=None):
 #update event 
 @login_required
 def update_event(request, event_id):
+    """
+    The view function for updating an existing event.
+    Handles form submission for updating event details.
+    """
     user_profile = request.user.profile
     event = get_object_or_404(Event, id=event_id, author=user_profile)
 
@@ -294,6 +337,10 @@ def update_event(request, event_id):
 # Delete event
 @login_required
 def delete_event(request, event_id):
+    """
+    The view function for deleting an event.
+    Handles the deletion of an event and associated data, ensuring user authorization.
+    """
     event = get_object_or_404(Event, id=event_id , author=request.user.profile)
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to delete this event.")
@@ -319,26 +366,38 @@ def delete_event(request, event_id):
     return render(request, 'community/events/confirm_delete.html',{'event': event})            
 
 def event_detail(request,event_id):
+    """
+    The view function for displaying the details of an individual event.
+    Fetches and displays information of a specific event based on its ID.
+    """
     event = get_object_or_404 (Event,pk = event_id)
     return render(request,'community/events/event_detail.html',{'event':event})
 # Image Deletion from gallery 
 @login_required
 def delete_event_image(request,event_id):
+    """
+    The view function for deleting an image associated with an event.
+    Handles the deletion of an event's image, ensuring user authorization.
+    """
     event =get_object_or_404(Event,pk=event_id , author=request.user.profile)
 
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to delete this event.")
 
     if request.method == 'POST':
-     event.image.delete()
-     event.save()
-     messages.success(request,'image deleted')
-     return redirect('gallery')
+        event.image.delete()
+        event.save()
+        messages.success(request,'image deleted')
+        return redirect('gallery')
     return render(request,'community/events/delete_event_image.html', {'event': event})
 
 # Users purchasing events 
 @login_required
 def join_event(request, event_id):
+    """
+    The view function for users to join an event.
+    Handles the booking process for an event and updates the user's balance accordingly.
+    """
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
     if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('-28.00'):
@@ -381,6 +440,10 @@ def join_event(request, event_id):
     return render(request, 'community/join_event.html', {'event': event})
 @login_required
 def like_event(request, event_id):
+    """
+    The view function for liking an event.
+    Toggles the like status for an event and returns the updated like count and status.
+    """
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
 
@@ -404,6 +467,10 @@ from django.http import Http404
 
 @login_required
 def submit_rating(request, instructor_id):
+    """
+    The view function for submitting a rating for an instructor.
+    Handles the submission and validation of the rating form.
+    """
     existing_rating = Rating.objects.filter(user=request.user, instructor_id=instructor_id).exists()
 
     if existing_rating:
@@ -434,6 +501,10 @@ def submit_rating(request, instructor_id):
         return redirect('booking') 
 @login_required
 def issue_credit(request):
+    """
+    The view function for issuing credit to a user.
+    Handles the credit issuance process, including form submission and balance update.
+    """
     # Check if the logged-in user is a staff member
     if request.user.profile.role != 'STAFF':
         messages.error(request, "You are not authorized to issue credits.")
@@ -478,7 +549,10 @@ def issue_credit(request):
     return render(request, 'community/issue_credit.html', {'form': form, 'user_id': user_id})
 
 def get_cumulative_graph_data(request):
-    # Query events created by instructors
+    """
+    Fetches and accumulates data for displaying cumulative graphs on events.
+    Aggregates data for events created by instructors and government officials.
+    """
     instructor_events = Event.objects.filter(
         author__role=INSTRUCTOR
     ).annotate(
@@ -495,7 +569,8 @@ def get_cumulative_graph_data(request):
         date_only=Cast('date', DateField())
     ).values('date_only').annotate(
         count=Count('id'),
-        total=Sum(Case(When(author__role=GOVERNMENT_OFFICIAL, then=100), default=0, output_field=IntegerField()))
+        total=Sum(Case(When(author__role=GOVERNMENT_OFFICIAL, then=100),
+        default=0, output_field=IntegerField()))
     ).order_by('date_only')
 
     # Combine the queries
@@ -518,3 +593,4 @@ def get_cumulative_graph_data(request):
         'combined_event_amounts': json.dumps(combined_cumulative),
     }
     return context
+# End-of-file (EOF)

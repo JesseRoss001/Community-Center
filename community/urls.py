@@ -1,12 +1,14 @@
-# community urls 
+"""Comunity urls"""
+from django.contrib.auth import views as auth_views
 from django.urls import path 
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import like_event,submit_rating,issue_credit 
+
 from . import views
-from .views import like_event,submit_rating
-from django.contrib.auth import views as auth_views
-from .views import issue_credit 
+
+ 
 
 urlpatterns = [
     path('',views.home , name='home'),
@@ -36,3 +38,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# End-of-file (EOF)

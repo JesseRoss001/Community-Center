@@ -23,19 +23,22 @@ USER_ROLES = [
 ]
 
 class UserProfile(models.Model):
+    """
+    A class representing a user profile, extending the basic User model in Django.
+    This includes additional fields like role, badge number, and associated events.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     role = models.CharField(max_length=30,choices=USER_ROLES,default=GENERAL_PUBLIC)
-    badge_number = models.CharField(max_length=5,blank=True) #required badgeg number for government offic
-    card_number = models.CharField(max_length=4,blank=True) # card number required for instructors 
+    badge_number = models.CharField(max_length=5,blank=True) 
+    card_number = models.CharField(max_length=4,blank=True) 
     staff_id = models.CharField(max_length=6, blank=True)
     created_events = models.ManyToManyField('Event', related_name='creators', blank=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
 
     def clean(self):
-        #validation for card + badge 
         if self.role == GOVERNMENT_OFFICIAL and not self.badge_number:
-            raise ValidationError({'badge_number': 'This field is required for government officials '})
+            raise ValidationError({'badge_number': 'This field is required for officials '})
         if self.role == INSTRUCTOR and not self.card_number:
             raise ValidationError({'card_number': 'This field is required for instructors '})
         if self.role == STAFF and not self.staff_id:
@@ -46,16 +49,24 @@ class UserProfile(models.Model):
             self.badge_number = ''
         if self.role != INSTRUCTOR:
             self.card_number = ''
-    
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
-    
     def update_average_rating(self):
+        """
+        Updates the average rating of an instructor. 
+        This method calculates the average score from all ratings related to the instructor 
+        and updates the 'average_rating' field. Only applicable if the user is an instructor.
+        """
         if self.role == INSTRUCTOR:
             aggregate_rating = self.ratings.aggregate(Avg('score'))['score__avg'] or 0
             self.average_rating = round(aggregate_rating, 2)  # Rounding to two decimal places
             self.save()
     def update_balance_by_staff(self, staff_member, change_amount):
+        """
+        Updates the balance of a user profile by a specified amount. 
+        This method is only permitted to be executed by staff members. 
+        It creates a record in the BalanceChange model to log the transaction.
+        """
         if staff_member.role != STAFF:
             raise ValidationError("Only staff members can update balances")
         self.balance += change_amount
@@ -63,7 +74,7 @@ class UserProfile(models.Model):
         BalanceChange.objects.create(
             user_profile=self,
             change_amount=change_amount,
-            transaction_type='CREDIT_ISSUED',  
+            transaction_type='CREDIT_ISSUED',
             staff_member=staff_member
         )
 
@@ -79,6 +90,10 @@ TIME_SLOTS = (
 )
 #event model 
 class Event(models.Model):
+    """
+    Represents an event, with details such as author, title, description, date, and time.
+    Also includes features like capacity and optional image for the event.
+    """
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -92,12 +107,19 @@ class Event(models.Model):
         if self.date < timezone.now().date():
             raise ValidationError("Event date cannot be in the past.")
     class Meta:
+        """
+        Meta class for the Event model.
+        Defines a unique constraint for each combination of event date and time,
+        ensuring no two events occur at the same date and time.
+        """
         unique_together = ('date','time')
     def __str__(self):
         return self.title
-
-#booking class 
 class Booking(models.Model):
+    """
+    Manages the bookings for events. Each booking is linked to a specific event and user profile.
+    Includes validations to ensure bookings are for future events and within the event capacity.
+    """
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     booking_time = models.DateTimeField(auto_now_add=True)
@@ -112,6 +134,10 @@ class Booking(models.Model):
 
 
 class BalanceChange(models.Model):
+    """
+    Tracks changes in user balances, including the type of transaction and related event or staff member.
+    Useful for maintaining a record of all financial transactions in the system.
+    """
     TRANSACTION_TYPES = [
         ('CREATE_EVENT',' Created Event'),
         ('JOIN_EVENT',' Joined Event'),
@@ -129,20 +155,28 @@ class BalanceChange(models.Model):
 
 
 class CustomUserManager(UserManager):
+    """
+    Custom user manager for creating superuser with a linked UserProfile.
+    Overrides the default create_superuser method to include a user profile.
+    """
     def create_superuser(self, username, email=None, password=None, **extra_fields):
         superuser = super().create_superuser(username, email, password, **extra_fields)
         UserProfile.objects.create(user=superuser, role=ADMIN)
         return superuser
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
+    """
+    Signal receiver for post-save on User model to create or update UserProfile.
+    Ensures a UserProfile is created for each new user, with default roles set.
+    """
     if created or not hasattr(instance, 'profile'):
-            user=instance, 
+            user=instance,
             defaults={'role': ADMIN if instance.is_superuser else GENERAL_PUBLIC}
     
     else:
         if not UserProfile.objects.filter(user=instance).exists():
             UserProfile.objects.create(
-                user=instance, 
+                user=instance,
                 role=ADMIN if instance.is_superuser else GENERAL_PUBLIC
             )
 
@@ -150,14 +184,28 @@ User.add_to_class('objects', CustomUserManager())
 
 
 class Like(models.Model):
+    """
+    Represents a 'like' given by a user to an event.
+    Includes a unique constraint to ensure a user can only like an event once.
+    """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        """
+        Meta class for the Like model.
+        Ensures a unique constraint between a user and an event,
+        preventing a user from liking the same event more than once.
+        """
         unique_together = ('user', 'event')
 
+
 class Rating(models.Model):
+    """
+    Manages ratings given by users to instructors.
+    Ratings are constrained between 1 and 5 and are unique between a user and an instructor.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_ratings')
     instructor = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ratings')
     score = models.PositiveSmallIntegerField(
@@ -167,7 +215,13 @@ class Rating(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        """
+        Meta class for the Rating model.
+        Specifies a unique constraint between a user and an instructor,
+        ensuring a user can only rate an instructor once.
+        """
         unique_together = ('user', 'instructor')
 
     def __str__(self):
         return f"Rating for {self.instructor.user.username} by {self.user.username}: {self.score}"
+# End-of-file (EOF)

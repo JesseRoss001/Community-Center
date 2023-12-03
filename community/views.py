@@ -32,19 +32,8 @@ def home(request):
     The view function for the home page of the community.
     Fetches and displays created and joined events, user balance transactions, and other relevant data for authenticated users.
     """
-    if not hasattr(request.user, 'profile'):
-        UserProfile.objects.create(user=request.user)
-    created_events = Event.objects.filter(author=request.user.profile, date__gte=timezone.now().date())
-    context = {
-        'created_events': None,
-        'joined_events': None,
-        'balance_transactions': None,
-        'transaction_dates': '[]',
-        'transaction_amounts': '[]',
-        'user_balance': 0,
-        'event_titles': '[]',
-        'booking_counts': '[]'
-    }
+    context = {}  # Define context dictionary if not already defined
+
     if request.user.is_authenticated:
         # Fetch events created and joined by the user
         created_events = Event.objects.filter(author=request.user.profile, date__gte=timezone.now().date())
@@ -73,11 +62,13 @@ def home(request):
             'event_titles': json.dumps(event_titles),
             'booking_counts': json.dumps(booking_counts)
         })
-        if request.user.is_authenticated and request.user.profile.role == STAFF:
+        if request.user.profile.role == STAFF:
             public_users = UserProfile.objects.filter(role=GENERAL_PUBLIC).order_by('balance')
             context['public_users'] = public_users
         else:
             context['public_users'] = None
+  
+
     return render(request, 'community/home.html', context)
 def events(request):
     """

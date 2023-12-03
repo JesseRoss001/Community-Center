@@ -7,184 +7,194 @@
 {% load static %}
 {% block content %}
 
-    <!-- Container for the booking section -->
-    <div class="container mt-4 ">
-        <h1 class="text-center mb-4"> Welcome to the booking section </h1>
-        <div class="row">
+<!-- Container for the booking section -->
+<div class="container mt-4 ">
+    <h1 class="text-center mb-4"> Welcome to the booking section </h1>
+    <div class="row">
 
-            <!-- Loop over each day in the schedule -->
-            {% for date, day_schedule in schedule.items %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <!-- Start of a card -->
-                <div class="card   schedule-card">
-                    <div class="card-header">
-                        <h3 class="card-title"> {{ date|date:"D, M j, Y" }} </h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- Loop over each time slot in the day's schedule -->
-                        {% for time_slot , slot_data in day_schedule.items %}
+        <!-- Loop over each day in the schedule -->
+        {% for date, day_schedule in schedule.items %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <!-- Start of a card -->
+            <div class="card   schedule-card">
+                <div class="card-header">
+                    <h3 class="card-title"> {{ date|date:"D, M j, Y" }} </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Loop over each time slot in the day's schedule -->
+                    {% for time_slot , slot_data in day_schedule.items %}
 
-                        <p> {{ time_slot }} </p>
-                        {% if slot_data.available %}
-                        {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-                        <a href="{% url 'create_event' %}" class="btn btn-success btn-sm">Book Event</a>
-                        <!-- Adding a booking button -->
-                        {% endif %}
+                    <p> {{ time_slot }} </p>
+                    {% if slot_data.available %}
+                    {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
+                    <a href="{% url 'create_event' %}" class="btn btn-success btn-sm">Book Event</a>
+                    <!-- Adding a booking button -->
+                    {% endif %}
 
-                        {% else %}
+                    {% else %}
 
 
-                        {% for event in slot_data.events %}
-                        <!-- Check if there is an event in this time slot -->
+                    {% for event in slot_data.events %}
+                    <!-- Check if there is an event in this time slot -->
 
-                        <!-- Conditional styling based on event author's role -->
-                        <div  class=" p-2 mt-2 mb-2 border-none rounded text-center ">
-                            <div class="pt-2 bg-light ">
-                                <h5
-                                    class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
-                                    {{ event.title }}
-                                    <span>Likes:</span>
-                                    <span class="like-count" data-event-id="{{ event.id }}">
-                                        {{ event.like_set.count }}</span>
-                                </h5>
-                                <p class="mb-1">
-                                    {{ event.author.user.username }} </p>
-                                    {% if event.author.role == 'INSTRUCTOR' %}
-                                    <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
-                                   {% endif %}
- <!-- Display the instructor's rating -->
-                                <p> Cost :
-                                    <!-- Display cost based on event author's role -->
-                                    {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-                                    {% else %} £0.00
-                                    {% endif %}
-                                </p>
-                                <!-- Handling user booking status -->
-                                {% if event.id in user_bookings %}
-                                <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
-                                {% else %}
-                                <a href="{% url 'join_event' event.id %}"
-                                    class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
-                                    onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on {{ event.date }} at {{ event.time }}</span> Join Event </a>
+                    <!-- Conditional styling based on event author's role -->
+                    <div class=" p-2 mt-2 mb-2 border-none rounded text-center ">
+                        <div class="pt-2 bg-light ">
+                            <h5
+                                class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
+                                {{ event.title }}
+                                <span>Likes:</span>
+                                <span class="like-count" data-event-id="{{ event.id }}">
+                                    {{ event.like_set.count }}</span>
+                            </h5>
+                            <p class="mb-1">
+                                {{ event.author.user.username }} </p>
+                            {% if event.author.role == 'INSTRUCTOR' %}
+                            <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
+                            {% endif %}
+                            <!-- Display the instructor's rating -->
+                            <p> Cost :
+                                <!-- Display cost based on event author's role -->
+                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                {% else %} £0.00
                                 {% endif %}
-                                <!-- Info button to zoom in and display details of th event upon clicking -->
-                                <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#eventModal{{ event.id }}"><span class="visually-hidden">Read more about {{ event.title }}</span>Read More</button>
-                                <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <span> Event by {{ event.author.user.username }} <br> </span>
-                                                {% if event.author.role == 'INSTRUCTOR' %}
-                                                <p>Instructor Rating: {{ event.author.average_rating|default:"Not rated yet" }}</p>
-                                               {% endif %}
-                                                <p> {{ event.description }} </p> <!-- Display event description -->
-                                                <p>Date: {{ event.date }}</p> <!-- Display event date -->
-                                                <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
-                                                <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
-                                                Cost :
-                                                <!-- Display cost based on event author's role -->
-                                                {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
-                                                {% else  %} £0.00
-                                                {% endif %}
-                                                <!-- Placeholder for event cost -->
-                                                <!-- Inside your event loop in the template -->
-                                                <button class="btn btn-info like-btn"
-                                                    data-event-id="{{ event.id }}">Like</button>
-                                                    <span class="visually-hidden">Like this event</span>
-                                                <!-- Rating system -->
+                            </p>
+                            <!-- Handling user booking status -->
+                            {% if event.id in user_bookings %}
+                            <button class="btn btn-secondary mb-2 btn-sm disabled"> Joined </button>
+                            {% else %}
+                            <a href="{% url 'join_event' event.id %}"
+                                class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
+                                onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on
+                                    {{ event.date }} at {{ event.time }}</span> Join Event </a>
+                            {% endif %}
+                            <!-- Info button to zoom in and display details of th event upon clicking -->
+                            <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                                data-bs-target="#eventModal{{ event.id }}"><span class="visually-hidden">Read more about
+                                    {{ event.title }}</span>Read More</button>
+                            <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span> Event by {{ event.author.user.username }} <br> </span>
+                                            {% if event.author.role == 'INSTRUCTOR' %}
+                                            <p>Instructor Rating:
+                                                {{ event.author.average_rating|default:"Not rated yet" }}</p>
+                                            {% endif %}
+                                            <p> {{ event.description }} </p> <!-- Display event description -->
+                                            <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                            <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
+                                            <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
+                                            Cost :
+                                            <!-- Display cost based on event author's role -->
+                                            {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                            {% else  %} £0.00
+                                            {% endif %}
+                                            <!-- Placeholder for event cost -->
+                                            <!-- Inside your event loop in the template -->
+                                            <button class="btn btn-info like-btn"
+                                                data-event-id="{{ event.id }}">Like</button>
+                                            <span class="visually-hidden">Like this event</span>
+                                            <!-- Rating system -->
 
 
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="d-flex col-10 row justify-content-center align-items-center">
-                                                    {% if event.author.role == 'INSTRUCTOR' and  event.id in user_bookings %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="d-flex col-10 row justify-content-center align-items-center">
+                                                {% if event.author.role == 'INSTRUCTOR' and  event.id in user_bookings %}
                                                 <!-- ... event details ... -->
-                                                <form method="post" action="{% url 'submit_rating' instructor_id=event.author.id %}">
-                                                   {% csrf_token %}
-                                                   <label for="rating">Rate this instructor:</label>
-                                                   <select name="score" id="rating">
-                                                       <option value="1">1</option>
-                                                       <option value="2">2</option>
-                                                       <option value="3">3</option>
-                                                       <option value="4">4</option>
-                                                       <option value="5">5</option>
-                                                   </select>
-                                                   <input type="submit" value="Submit Rating">
-                                                   <span class="visually-hidden">Submit your rating for this instructor</span>
-                                               </form>
-                                               {% endif %}
+                                                <form method="post"
+                                                    action="{% url 'submit_rating' instructor_id=event.author.id %}">
+                                                    {% csrf_token %}
+                                                    <label for="rating">Rate this instructor:</label>
+                                                    <select name="score" id="rating">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                    <input type="submit" value="Submit Rating">
+                                                    <span class="visually-hidden">Submit your rating for this
+                                                        instructor</span>
+                                                </form>
+                                                {% endif %}
                                                 <a href="{% url 'join_event' event.id %}"
                                                     class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
-                                                    onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on {{ event.date }} at {{ event.time }}</span> Join Event </a>
-                                        </div>
-                                        </div>
+                                                    onclick="return confirmJoinEvent()"><span
+                                                        class="visually-hidden">Join this event on {{ event.date }} at
+                                                        {{ event.time }}</span> Join Event </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Join event link with onclick event for confirmation -->
                             </div>
+                            <!-- Join event link with onclick event for confirmation -->
                         </div>
-                        {% endfor %}
-                        {% endif %}
-                        <!-- Displaying 'Available' if no event is scheduled -->
-                        {% if user.profile.role == 'INSTRUCTOR' and slot_data.available or user.profile.role == 'GOVERNMENT_OFFICIAL' and slot_data.available %}
-                        <div class="status-available"> {{ 'Available' }}</div>
-                        {% endif %}
-{% if forloop.counter|divisibleby:2 %}
-                        <!-- Adding a cleaning break after every two time slots -->
-                        <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
-                        {% endif %}
-{% endfor %}
                     </div>
+                    {% endfor %}
+                    {% endif %}
+                    <!-- Displaying 'Available' if no event is scheduled -->
+                    {% if user.profile.role == 'INSTRUCTOR' and slot_data.available or user.profile.role == 'GOVERNMENT_OFFICIAL' and slot_data.available %}
+                    <div class="status-available"> {{ 'Available' }}</div>
+                    {% endif %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <!-- Adding a cleaning break after every two time slots -->
+                    <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
         </div>
-        <nav aria-label="Page navigation ">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1"><span class="visually-hidden">Go to first page</span>&laquo; first </a>
-                </li>
-                <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> previous
-                    </a> <span class="visually-hidden">Previous</span></li>
-                {% else %}
- {% endif %}
-                <li class="page-item active" aria-current="page">
-                    <span class="page-link ">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                    </span>
-                </li>
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number}}"> <span aria-hidden="true"><span class="visually-hidden">Next page</span> Next
-                            &rsaquo;</span> </a>
- </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"><span class="visually-hidden">Last page</span> last
-                            &raquo; </span>
-                    </a>
-                </li>
-                {% else %}
-                {% endif %}
-            </ul>
-        </nav>
+        {% endfor %}
     </div>
+    <nav aria-label="Page navigation ">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1"><span class="visually-hidden">Go to first page</span>&laquo; first
+                </a>
+            </li>
+            <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> previous
+                </a> <span class="visually-hidden">Previous</span></li>
+            {% else %}
+            {% endif %}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link ">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number}}"> <span aria-hidden="true"><span
+                            class="visually-hidden">Next page</span> Next
+                        &rsaquo;</span> </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"><span
+                            class="visually-hidden">Last page</span> last
+                        &raquo; </span>
+                </a>
+            </li>
+            {% else %}
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 
 <script>
     // JavaScript function for confirming event join action
     function confirmJoinEvent() {
         return confirm(
             'Are you sure you want to join this event? This will deduct the cost from your wallet. Refunds are not eligible for events.'
-            );
+        );
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -221,26 +231,26 @@
     });
 </script>
 <script>
-$(document).ready(function() {
-    $('form.rating-form').on('submit', function(e) {
-        e.preventDefault();
-        var form = $(this);
-        $.ajax({
-    url: form.attr('action'),
-    type: 'POST',
-    data: form.serialize(),
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-    },
-    success: function(response) {
-        // handle success
-    },
-    error: function(xhr, status, error) {
-        // handle error
-    }
+    $(document).ready(function () {
+        $('form.rating-form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (response) {
+                    // handle success
+                },
+                error: function (xhr, status, error) {
+                    // handle error
+                }
+            });
         });
     });
-});
 </script>
 
 {% endblock %}

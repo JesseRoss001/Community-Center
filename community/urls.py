@@ -15,8 +15,7 @@ urlpatterns = [
     path('events/',views.events,name ='events'),
     path('about/',views.about,name='about'),
     path('gallery/',views.gallery,name='gallery'),
-    path('booking/',views.booking,name='booking'),
-    #django template login logout 
+    path('booking/',views.booking,name='booking'), 
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register_public/', views.general_public, name='register_public'),

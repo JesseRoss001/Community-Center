@@ -111,7 +111,6 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="d-flex col-10 row justify-content-center align-items-center">
-                                              
                                                     {% if event.author.role == 'INSTRUCTOR' and  event.id in user_bookings %}
                                                 <!-- ... event details ... -->
                                                 <form method="post" action="{% url 'submit_rating' instructor_id=event.author.id %}">
@@ -127,12 +126,9 @@
                                                    <input type="submit" value="Submit Rating">
                                                </form>
                                                {% endif %}
-                                           
-                                            
                                                 <a href="{% url 'join_event' event.id %}"
                                                     class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
                                                     onclick="return confirmJoinEvent()"> Join Event </a>
-                                            
                                         </div>
                                         </div>
                                         </div>
@@ -148,17 +144,12 @@
                         <!-- Displaying 'Available' if no event is scheduled -->
                         {% if user.profile.role == 'INSTRUCTOR' and slot_data.available or user.profile.role == 'GOVERNMENT_OFFICIAL' and slot_data.available %}
                         <div class="status-available"> {{ 'Available' }}</div>
-
-
                         {% endif %}
-
-
-                        {% if forloop.counter|divisibleby:2 %}
+{% if forloop.counter|divisibleby:2 %}
                         <!-- Adding a cleaning break after every two time slots -->
                         <p class="cleaning-break cleaning-break-badge"> {% trans "30 min Cleaning Break" %} </p>
                         {% endif %}
-
-                        {% endfor %}
+{% endfor %}
                     </div>
                 </div>
             </div>
@@ -174,8 +165,7 @@
                 <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> previous
                     </a> </li>
                 {% else %}
-
-                {% endif %}
+ {% endif %}
                 <li class="page-item active" aria-current="page">
                     <span class="page-link ">
                         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
@@ -190,13 +180,11 @@
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.next_page_number}}"> <span aria-hidden="true"> Next
                             &rsaquo;</span> </a>
-
-                </li>
+ </li>
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true"> last
                             &raquo; </span>
                     </a>
-
                 </li>
                 {% else %}
 

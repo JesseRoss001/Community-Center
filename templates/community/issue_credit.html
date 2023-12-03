@@ -4,7 +4,6 @@
 {% block content %}
   <h2>Issue Credit</h2>
   <form method="post">
-    
     {% csrf_token %}
     <input type="hidden" name="user_id" value="the_user_id_value">
     {{ form.as_p }}

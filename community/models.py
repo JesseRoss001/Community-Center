@@ -106,6 +106,12 @@ class Event(models.Model):
             raise ValidationError("Event date is required.")
         if self.date < timezone.now().date():
             raise ValidationError("Event date cannot be in the past.")
+    def has_bookings(self):
+        """
+        Checks if the event has any bookings.
+        Returns True if bookings exist, False otherwise.
+        """
+        return self.booking_set.exists()    
     class Meta:
         """
         Meta class for the Event model.

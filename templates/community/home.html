@@ -200,23 +200,19 @@
                         </div>
                     </div>
                     <div class="row p-1 d-flex justify-content-center  ">
-                        <div class="col-6  ">
-                            {% if event.capacity < 60 %}
-                            <a href="{% url  'update_event' event.id %}"> <button
-                                    class=" mt-4 ms-md-1 ms-lg-4 standard">
-                                    Update
-                                </button> </a>
-                            {% else %}
-                            <a href="{% url  'update_event' event.id %}"> <button class="standard"> Update </button>
-                            </a>
-                            {% endif %}
+                        <div class="row p-1 d-flex justify-content-center">
+                            <div class="col-6">
+                                <a href="{% url 'update_event' event.id %}"> 
+                                    <button class="standard {% if event.has_bookings %}disabled{% endif %}"> Update </button>
+                                </a>
+                            </div>
                         </div>
                         <div class="col-6">
-                            {% if event.capacity >= 60 %}
-                            <a href="{% url 'delete_event' event.id %}"><button class="standard"> Delete </button> </a>
+                            {% if not event.has_bookings %}
+                                <a href="{% url 'delete_event' event.id %}"><button class="standard"> Delete </button></a>
                             {% else %}
-                            <p class="ms-md-1"> Event deletion is disabled after public booking of course </p>
-                            <button class="btn btn-danger standard disabled  ms-md-1 ms-lg-4 ">Delete </button>
+                                <p class="ms-md-1"> Event deletion is disabled after public booking of course </p>
+                                <button class="btn btn-danger standard disabled ms-md-1 ms-lg-4 ">Delete </button>
                             {% endif %}
                         </div>
                     </div>

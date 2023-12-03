@@ -339,12 +339,18 @@ def update_event(request, event_id):
 def delete_event(request, event_id):
     """
     The view function for deleting an event.
-    Handles the deletion of an event and associated data, ensuring user authorization.
+    Handles the deletion of an event and associated data, ensuring user authorization
+    and that no bookings are associated with the event.
     """
-    event = get_object_or_404(Event, id=event_id , author=request.user.profile)
+    event = get_object_or_404(Event, id=event_id, author=request.user.profile)
+    
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to delete this event.")
     
+    if event.has_bookings():
+        messages.error(request, "Cannot delete the event as it has bookings.")
+        return redirect('event_detail', event_id=event.id)
+
     if request.method == 'POST':
         with transaction.atomic():
             if event.author.role == INSTRUCTOR:
@@ -356,15 +362,12 @@ def delete_event(request, event_id):
                     transaction_type="Event Deletion Refund"
                 )
             elif event.author.role == GOVERNMENT_OFFICIAL:
-                pass
+                pass  # Any specific logic for government official can be added here
+
         event.delete()
-        messages.success(request, ' Event deleted successfully ')
+        messages.success(request, 'Event deleted successfully.')
         return redirect('home')
-    
-
-    
-    return render(request, 'community/events/confirm_delete.html',{'event': event})            
-
+    return render(request, 'community/events/confirm_delete.html', {'event': event})
 def event_detail(request,event_id):
     """
     The view function for displaying the details of an individual event.

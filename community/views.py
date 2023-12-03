@@ -16,7 +16,7 @@ from django.db.models import Avg, Count, Sum, Case, When, IntegerField
 from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden,Http404 ,JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -146,7 +146,6 @@ def booking(request):
     user_bookings = []
     if request.user.is_authenticated:
         user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id', flat=True)
-    
     rating_form = RatingForm()
     context = {
         'schedule': schedule,
@@ -154,9 +153,7 @@ def booking(request):
         'user_bookings': user_bookings,
         'rating_form': rating_form,  
     }
-    
-    return render(request, 'community/booking.html', context)
-    
+    return render(request, 'community/booking.html', context) 
 def register_staff(request):
     """
     The view function for registering a new staff member.
@@ -173,12 +170,6 @@ def register_staff(request):
     else:
         form = StaffForm()
     return render(request, 'community/register_staff.html',{'form':form})
-
-
-
-   
-
-
 def register_government(request):
     """
     The view function for registering a new government official.
@@ -195,7 +186,6 @@ def register_government(request):
     else:
         form = GovernmentOfficialForm()
     return render(request, 'community/register_government.html', {'form':form})
-
 def register_instructor(request):
     """
     The view function for registering a new instructor.
@@ -212,7 +202,6 @@ def register_instructor(request):
     else: 
         form = InstructorForm()
     return render(request,'community/register_instructor.html', {'form':form})
-
 def general_public(request):
     """
     The view function for registering a new general public user.
@@ -228,10 +217,7 @@ def general_public(request):
     else:
        form =GeneralPublicForm()
     return render(request,'community/register_public.html',{'form':form})
-
 # Creating +update the event view
-
-
 logger = logging.getLogger(__name__)
 @login_required
 def create_event(request, event_id=None):
@@ -242,34 +228,26 @@ def create_event(request, event_id=None):
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
     instance = None
-
     if event_id:
         instance = Event.objects.get(id=event_id)
-
     if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
         messages.error(request, "You are not authorised to create events or update them.")
         return redirect('home')
-
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             event = form.save(commit=False)
             event.author = user_profile
-
             if event.date > three_months_ahead or event.date < timezone.now().date():
                 messages.error(request, 'Event date must be within 3 months and not in the past.')
                 return render(request, 'community/events/create_event.html', {'form': form})
-
             critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
             overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
-
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
                 return render(request, 'community/events/create_event.html', {'form': form})
-
             # Save the event before creating BalanceChange
             event.save()
-
             if not event_id and user_profile.role == INSTRUCTOR:
                 if user_profile.balance >= -400:
                     user_profile.balance -= 200
@@ -283,11 +261,9 @@ def create_event(request, event_id=None):
                 else:
                     messages.error(request, "Insufficient fund balance to book an event.")
                     return render(request, 'community/events/create_event.html', {'form': form})
-
             elif not event_id and user_profile.role == GOVERNMENT_OFFICIAL:
                 user_profile.balance = 0
                 user_profile.save()
-
             user_profile.created_events.add(event)
             messages.success(request, 'Event created successfully.')
             return redirect('home')
@@ -306,29 +282,23 @@ def update_event(request, event_id):
     """
     user_profile = request.user.profile
     event = get_object_or_404(Event, id=event_id, author=user_profile)
-
     if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
         messages.error(request, "You are not authorised to update this event.")
         return redirect('home')
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to update this event.")
-
     if request.method == 'POST':
         form = EventUpdateForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
             event = form.save()
-
             # BalanceChange logic removed for brevity.
-
             messages.success(request, 'Event updated successfully.')
             return redirect('home')
         else:
             messages.error(request, 'Invalid form submission.')
     else:
         form = EventUpdateForm(instance=event)
-
     return render(request, 'community/events/update_event.html', {'form': form, 'event_id': event_id})
-
 # Delete event
 @login_required
 def delete_event(request, event_id):
@@ -338,14 +308,11 @@ def delete_event(request, event_id):
     and that no bookings are associated with the event.
     """
     event = get_object_or_404(Event, id=event_id, author=request.user.profile)
-    
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to delete this event.")
-    
     if event.has_bookings():
         messages.error(request, "Cannot delete the event as it has bookings.")
         return redirect('event_detail', event_id=event.id)
-
     if request.method == 'POST':
         with transaction.atomic():
             if event.author.role == INSTRUCTOR:
@@ -358,7 +325,6 @@ def delete_event(request, event_id):
                 )
             elif event.author.role == GOVERNMENT_OFFICIAL:
                 pass  # Any specific logic for government official can be added here
-
         event.delete()
         messages.success(request, 'Event deleted successfully.')
         return redirect('home')
@@ -378,17 +344,14 @@ def delete_event_image(request,event_id):
     Handles the deletion of an event's image, ensuring user authorization.
     """
     event =get_object_or_404(Event,pk=event_id , author=request.user.profile)
-
     if event.author != request.user.profile:
         return HttpResponseForbidden("You are not authorized to delete this event.")
-
     if request.method == 'POST':
         event.image.delete()
         event.save()
         messages.success(request,'image deleted')
         return redirect('gallery')
     return render(request,'community/events/delete_event_image.html', {'event': event})
-
 # Users purchasing events 
 @login_required
 def join_event(request, event_id):
@@ -404,7 +367,6 @@ def join_event(request, event_id):
     if user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
         messages.error(request,'Instructors and officials are not allowed to join booking classes')
     existing_booking=Booking.objects.filter(event=event,user_profile=user_profile).exists()
-
     if existing_booking:
         messages.info(request,"You have already joined this event.")
     #ensuring venue is not overfilled 
@@ -444,7 +406,6 @@ def like_event(request, event_id):
     """
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
-
     # Toggle the like status for the event and user.
     like, created = Like.objects.get_or_create(user=request.user, event=event)
     if not created:
@@ -452,17 +413,10 @@ def like_event(request, event_id):
         liked = False
     else:
         liked = True
-
     # Get the updated like count for the event.
     like_count = event.like_set.count()
-
     # Return the updated like count and like status in the response.
     return JsonResponse({'liked': liked, 'like_count': like_count})
-
-
-
-from django.http import Http404
-
 @login_required
 def submit_rating(request, instructor_id):
     """
@@ -470,7 +424,6 @@ def submit_rating(request, instructor_id):
     Handles the submission and validation of the rating form.
     """
     existing_rating = Rating.objects.filter(user=request.user, instructor_id=instructor_id).exists()
-
     if existing_rating:
         messages.error(request, 'You have already submitted a rating for this instructor.')
         return redirect('booking')
@@ -485,7 +438,6 @@ def submit_rating(request, instructor_id):
             instructor = rating_instance.instructor
              # After saving the rating, update the instructor's average rating
             instructor_profile.update_average_rating()
-            
             messages.success(request, 'Thank you for your rating.')
             return redirect('booking')  # Replace 'booking' with the name of your URL pattern for the booking page
         else:
@@ -507,7 +459,6 @@ def issue_credit(request):
     if request.user.profile.role != 'STAFF':
         messages.error(request, "You are not authorized to issue credits.")
         return redirect('home')
-
     # Pre-populate the form with the user_id if it's present in the URL
     user_id = request.GET.get('user_id', None)
     initial_data = {'user_id': user_id} if user_id else None
@@ -515,17 +466,14 @@ def issue_credit(request):
     if request.method == 'POST' and form.is_valid():
         user_id = form.cleaned_data['user_id']
         credit_amount = form.cleaned_data['credit_amount']
-
         try:
             # Use a transaction to ensure atomicity of the balance update
             with transaction.atomic():
                 # Lock the user profile row for update and check for the existence
                 user_profile = UserProfile.objects.select_for_update().get(user__id=user_id)
-                
                 # Update the user's balance
                 user_profile.balance += credit_amount
                 user_profile.save(update_fields=['balance'])
-
                 # Create a record of this transaction
                 BalanceChange.objects.create(
                     user_profile=user_profile,
@@ -533,19 +481,15 @@ def issue_credit(request):
                     transaction_type='CREDIT_ISSUED',
                     staff_member=request.user.profile
                 )
-
                 messages.success(request, f"Successfully issued £{credit_amount} credit to {user_profile.user.username}.")
                 return redirect('home')
-
         except UserProfile.DoesNotExist:
             messages.error(request, "User not found.")
         except Exception as e:
             # If any error occurs, show an error message
             messages.error(request, f"An error occurred: {str(e)}")
-    
     # Render the issue credit page with the form
     return render(request, 'community/issue_credit.html', {'form': form, 'user_id': user_id})
-
 def get_cumulative_graph_data(request):
     """
     Fetches and accumulates data for displaying cumulative graphs on events.
@@ -559,7 +503,6 @@ def get_cumulative_graph_data(request):
         count=Count('id'),
         total=Sum(Case(When(author__role=INSTRUCTOR, then=200), default=0, output_field=IntegerField()))
     ).order_by('date_only')
-
     # Query events created by government officials
     government_events = Event.objects.filter(
         author__role=GOVERNMENT_OFFICIAL
@@ -570,18 +513,14 @@ def get_cumulative_graph_data(request):
         total=Sum(Case(When(author__role=GOVERNMENT_OFFICIAL, then=100),
         default=0, output_field=IntegerField()))
     ).order_by('date_only')
-
     # Combine the queries
     combined_events = instructor_events.union(government_events).order_by('date_only')
-
     # Accumulate the sums
     instructor_cumulative = list(accumulate(event['total'] for event in instructor_events))
     government_cumulative = list(accumulate(event['total'] for event in government_events))
     combined_cumulative = list(accumulate(event['total'] for event in combined_events))
-
     # Extract dates
     dates = [event['date_only'].strftime('%Y-%m-%d') for event in combined_events]
-
     context = {
         'instructor_event_dates': json.dumps(dates),
         'government_event_dates': json.dumps(dates),

@@ -186,8 +186,8 @@ class CreditIssueForm(forms.Form):
             # Fetch the user's profile
             try:
                 user_profile = UserProfile.objects.get(user__id=user_id)
-                if credit_amount > user_profile.balance:
-                    self.add_error('credit_amount', "Credit amount cannot exceed the user's current balance.")
+                if user_profile.balance < 0 and credit_amount > abs(user_profile.balance):
+                    self.add_error('credit_amount', "Credit amount cannot bring the balance to positive for users in debt.")
             except UserProfile.DoesNotExist:
                 raise ValidationError("User not found.")
 TIME_SLOTS_CHOICES = [('', 'Any Time of Day')] + list(TIME_SLOTS)

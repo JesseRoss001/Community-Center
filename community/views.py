@@ -207,7 +207,7 @@ def create_event(request, event_id=None):
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
     instance = get_object_or_404(Event, id=event_id) if event_id else None
-    if user_profile.role not in [UserProfile.INSTRUCTOR, UserProfile.GOVERNMENT_OFFICIAL]:
+    if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
         messages.error(request, "You are not authorised to create events or update them.")
         return redirect('home')
 
@@ -221,7 +221,7 @@ def create_event(request, event_id=None):
                 messages.error(request, 'Event date must be within 3 months and not in the past.')
                 return render(request, 'community/events/create_event.html', {'form': form})
 
-            critical_profiles = UserProfile.objects.filter(role__in=[UserProfile.INSTRUCTOR, UserProfile.GOVERNMENT_OFFICIAL])
+            critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
             overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
@@ -229,7 +229,7 @@ def create_event(request, event_id=None):
 
             event.save()
 
-            if not event_id and user_profile.role == UserProfile.INSTRUCTOR:
+            if not event_id and user_profile.role == 'INSTRUCTOR':
                 if user_profile.balance >= -400:
                     user_profile.balance -= 200
                     user_profile.save()
@@ -520,7 +520,6 @@ def get_cumulative_graph_data(request):
     }
     return context
 
-
 @login_required
 def search_events(request):
     form = EventSearchForm(request.GET or None)
@@ -528,7 +527,6 @@ def search_events(request):
 
     if form.is_valid():
         # Filtering logic
-      
         instructor_ranking = form.cleaned_data.get('instructor_ranking')
         likes_order = form.cleaned_data.get('likes_order')
         time_of_day = form.cleaned_data.get('time_of_day')
@@ -536,11 +534,10 @@ def search_events(request):
         tags = form.cleaned_data.get('tags')
 
         # Apply filters based on the course type
-  
 
         # Filter based on instructor ranking, if applicable
         if instructor_ranking is not None:
-            events = events.filter(author__average_rating__gte=instructor_ranking, author__role=INSTRUCTOR)
+            events = events.filter(author__average_rating__gte=instructor_ranking, author__role='INSTRUCTOR')
 
         # Order by likes
         if likes_order:
@@ -558,7 +555,8 @@ def search_events(request):
         # Filter by tags
         if tags:
             events = events.filter(tags__in=tags).distinct()
-        # Annotate with likes count
+
+    # Annotate with likes count
     events = events.annotate(likes_count=Count('like'))
 
     # Prepare additional details
@@ -569,7 +567,7 @@ def search_events(request):
             'user_has_liked': event.like_set.filter(user=request.user).exists(),
             'average_rating': event.author.average_rating if event.author.role == 'INSTRUCTOR' else None,
             'cost': 7.00 if event.author.role == 'INSTRUCTOR' else 0.00,
-            'tags': ', '.join(tag.name for tag in event.tags.all()),
+            'tags':  event.tags,
             'user_has_booked': event.booking_set.filter(user_profile=request.user.profile).exists(),
         }
         for event in events

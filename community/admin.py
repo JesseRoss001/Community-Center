@@ -107,10 +107,12 @@ class BookingAdmin(admin.ModelAdmin):
     Includes settings for displaying event, user profile, 
     and booking time, along with search and filtering options.
     """
-    list_display = ('event','user_profile','booking_time')
-    search_fields = ['event__title', 'user_profile__user__username']
-    list_filter = ('event',)
-    readonly_fields = ('booking_time',)
+    list_display = ('event', 'user_profile', 'booking_time')  # Adjust these fields if necessary
+    search_fields = ['event__title', 'user_profile__user__username']  # Make sure these fields exist
+    list_filter = ('event',)  # Ensure 'event' is a valid field for filtering
+    readonly_fields = ('booking_time',)  # Ensure 'booking_time' exists
+
+
 class BalanceChangeAdmin(admin.ModelAdmin):
     """
     Admin class for the BalanceChange model.
@@ -121,6 +123,8 @@ class BalanceChangeAdmin(admin.ModelAdmin):
     search_fields = ['user_profile__user__username', 'transaction_type', 'event__title']
     list_filter = ('transaction_type', 'change_date')
     readonly_fields = ('change_date', 'staff_member')
+
+
 
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Event, EventAdmin)

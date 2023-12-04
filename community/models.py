@@ -154,8 +154,7 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
-    def __str__(self):
-        return self.name
+
 class Booking(models.Model):
     """
     Manages the bookings for events. Each booking is linked to a specific event and user profile.

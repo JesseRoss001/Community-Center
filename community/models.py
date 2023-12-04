@@ -89,24 +89,12 @@ TIME_SLOTS = (
     ('19:00','19:00-21:00'),
 )
 #event model 
+
 class Event(models.Model):
     """
     Represents an event, with details such as author, title, description, date, and time.
     Also includes features like capacity and optional image for the event.
     """
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    date = models.DateField()
-    time = models.CharField(max_length=10, choices=TIME_SLOTS)
-    capacity =models.IntegerField(default=60)
-    image = models.ImageField(upload_to='event_images/',blank=True , null=True)
-    COURSE_TYPES = [
-        ('free', 'Free'),
-        ('instructor_led', 'Instructor-led'),
-    ]
-    course_type = models.CharField(max_length=20, choices=COURSE_TYPES, default='free')
-
     TAG_CHOICES = [
         ('education', 'Education'),
         ('physical_fitness', 'Physical Fitness'),
@@ -119,9 +107,17 @@ class Event(models.Model):
         ('community_service', 'Community Service'),
         ('personal_development', 'Personal Development'),
         ('health_nutrition', 'Health & Nutrition'),
-        # Add other tags as needed
+        # ... other tags as needed
     ]
-    tags = models.ManyToManyField('Tag', blank=True)
+
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateField()
+    time = models.CharField(max_length=10, choices=TIME_SLOTS)
+    capacity = models.IntegerField(default=60)
+    image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    tags = models.CharField(max_length=50, choices=TAG_CHOICES, blank=True) 
     @property
     def instructor_ranking(self):
         """ Calculate ranking only for events held by instructors """
@@ -144,6 +140,9 @@ class Event(models.Model):
         Returns True if bookings exist, False otherwise.
         """
         return self.booking_set.exists()  
+    def __str__(self):
+        tag_display = dict(Event.TAG_CHOICES).get(self.tags, "No Tag")  # Gets the human-readable name for the tag
+        return f"{self.title} - {tag_display}"
       
     class Meta:
         """
@@ -154,9 +153,6 @@ class Event(models.Model):
         unique_together = ('date','time')
     def __str__(self):
         return self.title
-class Tag(models.Model):
-    """ Tag model """
-    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name

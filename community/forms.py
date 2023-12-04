@@ -3,7 +3,7 @@ from django.forms.widgets import DateInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 from .models import (UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
-                     Booking, TIME_SLOTS, BalanceChange, Rating, Like,Tag)
+                     Booking, TIME_SLOTS, BalanceChange, Rating, Like)
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
@@ -88,9 +88,15 @@ class EventForm(forms.ModelForm):
     A form for creating or updating events. 
     Includes custom validation for event date and capacity.
     """
-    time = forms.ChoiceField(choices=TIME_SLOTS)
-    course_type = forms.ChoiceField(choices=Event.COURSE_TYPES, required=True)
-    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+    class Meta:
+        model = Event
+        fields = '__all__'
+        exclude = ('author',) 
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        self.fields['tags'].choices = Event.TAG_CHOICES
+
+
     def clean_date(self):
         """
         Validates the 'date' field of the form.
@@ -118,7 +124,7 @@ class EventForm(forms.ModelForm):
         Specifies the model to use and the fields, widgets to be included in the form.
         """
         model = Event
-        fields = ['title', 'description', 'date', 'time', 'capacity', 'image', 'course_type', 'tags']
+        fields = ['title', 'description', 'date', 'time', 'capacity', 'image', 'tags']
         widgets = {'date': DateInput(attrs={'type': 'date'})}
 
 class EventUpdateForm(forms.ModelForm):
@@ -132,7 +138,7 @@ class EventUpdateForm(forms.ModelForm):
         Specifies the model and fields to exclude from the form.
         """
         model = Event
-        exclude = ['author','date','time','capacity']
+        exclude = ['author','date','time','capacity','course_type','tags']
 
 
 class RatingForm(forms.ModelForm):
@@ -193,7 +199,11 @@ LIKES_CHOICES = (
 
 class EventSearchForm(forms.Form):
    
-    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+    tags = forms.ChoiceField(
+        choices=Event.TAG_CHOICES,
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
     instructor_ranking = forms.DecimalField(required=False, min_value=0, decimal_places=2, widget=forms.NumberInput(attrs={'type': 'number', 'step': "0.01"}))
     likes_order = forms.ChoiceField(choices=LIKES_CHOICES, required=False, label='Likes Order')
     day_of_week = forms.ChoiceField(choices=[('', 'Any Day')] + [('1', 'Monday'), ('2', 'Tuesday'), ('3', 'Wednesday'), ('4', 'Thursday'), ('5', 'Friday'), ('6', 'Saturday'), ('7', 'Sunday')], required=False)

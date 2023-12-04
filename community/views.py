@@ -197,6 +197,7 @@ def general_public(request):
     return render(request,'community/register_public.html',{'form':form})
 # Creating +update the event view
 logger = logging.getLogger(__name__)
+
 @login_required
 def create_event(request, event_id=None):
     """
@@ -205,28 +206,30 @@ def create_event(request, event_id=None):
     """
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
-    instance = None
-    if event_id:
-        instance = Event.objects.get(id=event_id)
-    if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
+    instance = get_object_or_404(Event, id=event_id) if event_id else None
+    if user_profile.role not in [UserProfile.INSTRUCTOR, UserProfile.GOVERNMENT_OFFICIAL]:
         messages.error(request, "You are not authorised to create events or update them.")
         return redirect('home')
+
     if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
+        form = EventForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             event = form.save(commit=False)
             event.author = user_profile
+
             if event.date > three_months_ahead or event.date < timezone.now().date():
                 messages.error(request, 'Event date must be within 3 months and not in the past.')
                 return render(request, 'community/events/create_event.html', {'form': form})
-            critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
+
+            critical_profiles = UserProfile.objects.filter(role__in=[UserProfile.INSTRUCTOR, UserProfile.GOVERNMENT_OFFICIAL])
             overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
                 return render(request, 'community/events/create_event.html', {'form': form})
-            # Save the event before creating BalanceChange
+
             event.save()
-            if not event_id and user_profile.role == INSTRUCTOR:
+
+            if not event_id and user_profile.role == UserProfile.INSTRUCTOR:
                 if user_profile.balance >= -400:
                     user_profile.balance -= 200
                     user_profile.save()
@@ -239,16 +242,19 @@ def create_event(request, event_id=None):
                 else:
                     messages.error(request, "Insufficient fund balance to book an event.")
                     return render(request, 'community/events/create_event.html', {'form': form})
-            elif not event_id and user_profile.role == GOVERNMENT_OFFICIAL:
+
+            elif not event_id and user_profile.role == UserProfile.GOVERNMENT_OFFICIAL:
                 user_profile.balance = 0
                 user_profile.save()
+
             user_profile.created_events.add(event)
             messages.success(request, 'Event created successfully.')
             return redirect('home')
         else:
             messages.error(request, 'Invalid form submission.')
     else:
-        form = EventForm()
+        form = EventForm(instance=instance)
+
     return render(request, 'community/events/create_event.html', {'form': form})
 #update event 
 @login_required
@@ -518,7 +524,7 @@ def get_cumulative_graph_data(request):
 @login_required
 def search_events(request):
     form = EventSearchForm(request.GET or None)
-    events = Event.objects.all().prefetch_related('like_set', 'author__user', 'tags')
+    events = Event.objects.all()
 
     if form.is_valid():
         # Filtering logic

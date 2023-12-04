@@ -1,11 +1,11 @@
 # Project Name: Community Center Booking System
-#Problem Statement  : Local community centers are not imformative about what events are being held and a booking system for them does not exist that is avialable to the public. 
-#Purpose : Provides a platform for community venue to increase public engagement and public awareness of ongoing events. To allow instructors to host events and provide a venue for education, businesses and individuals . 
+#Problem Statement  : Local community centers are not imformative about what events are being held and a booking system for them does not exist that is avialable to the qualified instructors in search of a venue . 
+#Purpose : Provides a platform for a community venue to increase public engagement and public awareness of ongoing events. To allow instructors to host events and provide a venue for education, businesses and individuals and allow government officials to host events aimed at informing the public. 
 #Target Audience  : Government officials , members of the public and instructors 
 ## Overview
 This project is a web application for managing bookings at a community center. It provides interfaces for different user personas including general users , instructors  and government officials to interact with the system based on their roles.
 
-#MVP Features: User registration + login , task entry editing , deleting , submitting for instructors and officials . General Users can view events and the schedule . General users can save events to their schedule . 
+#MVP Features: User registration + login , task entry editing , deleting , submitting for instructors and officials . General Users can view events and the schedule . General users can save events to their schedule by joining events and search for events based on a rudimentory search system 
 
 #Iteration 1 and 2 : Category filtering , images uploaded to gallery , downloading resources , payment system. Liking and commenting on events . 
 
@@ -209,7 +209,7 @@ For any questions or concerns , please contact me at jesseross001@gmail.com
 20. **Event Search by Keywords for Users**:
     As a user, I want to search for events by keywords, so I can quickly find events that interest me.
 
-#USE CASES How each use case contributes to allecviating the indentified problem 
+ 
 
 ## Project Wireframes
 
@@ -291,230 +291,79 @@ The intitial time boxing document can be found below
 
 # [COMMUNITY CENTER](https://community-centre-71f077e09006.herokuapp.com)
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-In this section, you will include a few paragraphs providing an overview of your project.
-Essentially, this part is your "sales pitch".
 
-At this stage, you should have a name for your project so use it!
-Don't introduce the project as a "portfolio project" for the diploma.
-
-In this section, describe what the project hopes to accomplish, who it is intended to target, and how it will be useful to the target audience.
-
-Consider adding a mockup image using the "Am I Responsive" website.
-Here's your deployed site as an example:
-https://ui.dev/amiresponsive?url=https://community-centre-71f077e09006.herokuapp.com
-
-Screenshots for the README and testing should not be inside of `assets/` or `static/` image folders.
-(reminder: `assets/` and `static/` are for files used on the live site, not documentation)
-Consider adding a new folder called `documentation`, and add the amiresponsive screenshot inside of that folder.
-To add the image into your README, use this format:
-(assuming you have a new folder called `documentation` with an image called "mockup.png")
-
-![screenshot](documentation/mockup.png)
-
-Note: Markdown files (.md) should not contain HTML elements like `img`, `br`, `div`, `a`, etc, only Markdown formatting.
-Find out more about using Markdown elements here:
-https://pandao.github.io/editor.md/en.html
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
 ## UX
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+## Intuitive Navigation
+- The website features a straightforward and intuitive navigation system, ensuring users can easily find what they're looking for.
 
-In this section, you will briefly explain your design processes.
+## Responsive Design
+- The design adapts seamlessly across different devices and screen sizes, offering an optimal viewing experience whether on desktop, tablet, or mobile.
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+## Engaging Visuals
+- The site's aesthetics are both engaging and professional, contributing to a pleasant user experience and reinforcing brand identity.
+
+##  Load Times
+- [ Focus for second sprint ]
+
+## Accessibility
+- The site is designed with accessibility in mind, ensuring it is usable by people with diverse abilities.
+
+## User-Friendly Features
+- Features such as search functionality, clear call-to-action buttons, and easy-to-read fonts contribute to a user-friendly experience.
+
+## Secure and Reliable
+- Strong security measures are in place to protect user data, ensuring a trustworthy and reliable experience.
+
+## Continuous Improvement
+- Regular updates and improvements based on user feedback and UX best practices demonstrate our commitment to delivering an outstanding user experience.
+
+
+
 
 ### Colour Scheme
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+### Color Scheme
 
-Explain your colours and the colour scheme.
+#### 1. **Background Colors**
+- `.booked-event`: Soft pink (`#ffcccc`), gentle and inviting.
+- `.open-slot`: Fresh green (`#ccffcc`), indicating availability.
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+#### 2. **Dynamic Elements**
+- `.carousel-inner`, `#main-background`: Vibrant gradient with blues, purples, yellows, and pinks.
 
-- `#000000` used for primary text.
-- `#E84610` used for primary highlights.
-- `#4A4A4F` used for secondary text.
-- `#009FE3` used for secondary highlights.
+#### 3. **Buttons**
+- Standard buttons: Gradient from pink (`#FF5F6D`) to orange (`#FFC371`), eye-catching.
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+#### 4. **Special Elements**
+- `.standard`: Professional gradient from dark blue (`#2D3E50`) to lighter blue (`#4B6278`).
 
-Consider adding a link and screenshot for your colour scheme using "coolors".
-https://coolors.co/generate
+#### 5. **Footer Elements**
+- `.Btninstagram`: Instagram-like gradient, orange to pink.
 
-When you add a colour to the palette, the URL is dynamically updated, making it easier for you to return back to your colour palette later if needed.
+#### 6. **Forms and Social Buttons**
+- Forms: Matching main background gradient.
+- Social buttons: Unique colors for each platform.
+#### 7. **Text**
+- `#000000` used for primary text - chosen for clarity
+- `#999999` used to show non active text - clear visually
 
-Example:
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-I used [coolors.co](https://coolors.co/e84610-009fe3-4a4a4f-445261-d63649-e6ecf0-000000) to generate my colour palette.
+## Icons & Typography 
 
-![screenshot](documentation/coolors.png)
+- **Typography**: The site employs a clear, sans-serif font enhancing readability, ideal for diverse user demographics.
+- **Icons**: Utilization of Font Awesome for icons provides a uniform and accessible visual language across the platform
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-If you've used CSS `:root` variables, consider also including a code snippet here!
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-I've used CSS `:root` variables to easily update the global colour scheme by changing only one value, instead of everywhere in the CSS file.
 
-```css
-:root {
-    /* P = Primary | S = Secondary */
-    --p-text: #000000;
-    --p-highlight: #E84610;
-    --s-text: #4A4A4F;
-    --s-highlight: #009FE3;
-    --white: #FFFFFF;
-    --black: #000000;
-}
-```
 
-### Typography
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-Explain any fonts and icon libraries used, like Google Fonts and/or Font Awesome.
-
-Consider adding a link to each font used, and the Font Awesome site if used (or similar icon library).
-
-Example:
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-- [Montserrat](https://fonts.google.com/specimen/Montserrat) was used for the primary headers and titles.
-
-- [Lato](https://fonts.google.com/specimen/Lato) was used for all other secondary text.
-
-- [Font Awesome](https://fontawesome.com) icons were used throughout the site, such as the social media icons in the footer.
-
-## User Stories
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-In this section, list all of your user stories for the project.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-### New Site Users
-
-- As a new site user, I would like to ____________, so that I can ____________.
-- As a new site user, I would like to ____________, so that I can ____________.
-- As a new site user, I would like to ____________, so that I can ____________.
-- As a new site user, I would like to ____________, so that I can ____________.
-- As a new site user, I would like to ____________, so that I can ____________.
-
-### Returning Site Users
-
-- As a returning site user, I would like to ____________, so that I can ____________.
-- As a returning site user, I would like to ____________, so that I can ____________.
-- As a returning site user, I would like to ____________, so that I can ____________.
-- As a returning site user, I would like to ____________, so that I can ____________.
-- As a returning site user, I would like to ____________, so that I can ____________.
-
-### Site Admin
-
-- As a site administrator, I should be able to ____________, so that I can ____________.
-- As a site administrator, I should be able to ____________, so that I can ____________.
-- As a site administrator, I should be able to ____________, so that I can ____________.
-- As a site administrator, I should be able to ____________, so that I can ____________.
-- As a site administrator, I should be able to ____________, so that I can ____________.
-
-## Wireframes
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-In this section, display your wireframe screenshots using a Markdown `table`.
-Instructions on how to do Markdown `tables` start on line #213 on this site: https://pandao.github.io/editor.md/en.html
-
-Alternatively, dropdowns are a way to condense several wireframes into a collapsible menu to save space.
-Dropdowns in Markdown are considered some of the only acceptable HTML components that are allowed for assessment purposes.
-
-**IMPORTANT**! **IMPORTANT**! **IMPORTANT**!
-The example below uses the `details` and `summary` code elements.
-However, for these scripts to work, I've had to add spaces within the `< >` elements.
-
-You MUST remove these spaces for it to work properly on your own README/TESTING files.
-Remove the spaces within the `< >` brackets for the `details` and `summary` code elements,
-for the Mobile, Tablet, and Desktop wireframes.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-To follow best practice, wireframes were developed for mobile, tablet, and desktop sizes.
-I've used [Balsamiq](https://balsamiq.com/wireframes) to design my site wireframes.
-
-### Mobile Wireframes
-
-< details >
-< summary > Click here to see the Mobile Wireframes < / summary >
-
-Home
-  - ![screenshot](documentation/wireframes/mobile-home.png)
-
-About
-  - ![screenshot](documentation/wireframes/mobile-about.png)
-
-Contact
-  - ![screenshot](documentation/wireframes/mobile-contact.png)
-
-Gallery
-  - ![screenshot](documentation/wireframes/mobile-gallery.png)
-
-etc.
-  - repeat for any remaining mobile wireframes
-
-< / details >
-
-### Tablet Wireframes
-
-< details >
-< summary > Click here to see the Tablet Wireframes < / summary >
-
-Home
-  - ![screenshot](documentation/wireframes/tablet-home.png)
-
-About
-  - ![screenshot](documentation/wireframes/tablet-about.png)
-
-Contact
-  - ![screenshot](documentation/wireframes/tablet-contact.png)
-
-Gallery
-  - ![screenshot](documentation/wireframes/tablet-gallery.png)
-
-etc.
-  - repeat for any remaining tablet wireframes
-
-< / details >
-
-### Desktop Wireframes
-
-< details >
-< summary > Click here to see the Desktop Wireframes < / summary >
-
-Home
-  - ![screenshot](documentation/wireframes/desktop-home.png)
-
-About
-  - ![screenshot](documentation/wireframes/desktop-about.png)
-
-Contact
-  - ![screenshot](documentation/wireframes/desktop-contact.png)
-
-Gallery
-  - ![screenshot](documentation/wireframes/desktop-gallery.png)
-
-etc.
-  - repeat for any remaining desktop wireframes
-
-< / details >
-
-## Features
 
 🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
@@ -533,22 +382,87 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
 ### Existing Features
 
-- **Title for feature #1**
+- **Login/Sign-up Public User , Staff , Instructor and  Government Offical Admin #1**
 
-    - Details about this particular feature, including the value to the site, and benefit for the user. Be as detailed as possible!
+    - Public user can book, view , vote and search events once logged in .
+    - Staff can credit public users for event fees paid . 
+    - Instructors can create events and find the best possible booking time with a priced event
+    - Officals can also create free events and find the best booking time that matches their schedule.
+    - Admin can search and edit users, events and the gallery. 
+
+
 
 ![screenshot](documentation/feature01.png)
 
-- **Title for feature #2**
+- **Not signed up users  #2**
 
-    - Details about this particular feature, including the value to the site, and benefit for the user. Be as detailed as possible!
+    - Non sign up users can vist the site , viewing the gallery and the about page. 
 
 ![screenshot](documentation/feature02.png)
 
-- **Title for feature #3**
+- **Bookings page Page #3**
 
-    - Details about this particular feature, including the value to the site, and benefit for the user. Be as detailed as possible!
+    - Signed up users can view all events for the next 3 months on the booking page . 
+    - They can also join events using this page or view more info . 
 
+![screenshot](documentation/feature03.png)
+
+
+- **All Users can like events #4**
+
+    - Users can like events therefore interacting with the post . This is also a search category which will come in handy in another feature. 
+
+ 
+
+![screenshot](documentation/feature03.png)
+
+
+
+- **Instructor Rating  #5**
+
+    - Once an event is joined participants can choose to rate their instructor , which is another search criteria . 
+
+![screenshot](documentation/feature02.png)
+
+- **Bookings page Page #6**
+
+    - All joined events show on the users home page .  
+
+![screenshot](documentation/feature03.png)
+
+
+- **In search events #7**
+
+    - Public users can search by tag , instructor ranking , likes , day of the week and time of day . 
+![screenshot](documentation/feature03.png)
+
+
+- **Instructors balance #8**
+
+    - Instructors can view their balance and recent transactions in their home page. 
+
+
+
+![screenshot](documentation/feature03.png)
+
+
+
+- **Instructor event creation  #9**
+
+    - Instructors can create events directly from the booking page . 
+
+![screenshot](documentation/feature02.png)
+
+- **Instructors can add tags and directly access create event #10**
+
+    - Instructors can access event creation form directly from nav bar with form logic it restricts double booking . Capacity can be changed , optional image addded and a tag chosen. 
+
+![screenshot](documentation/feature03.png)
+
+
+- **Instructors and officials  can update and delete events as well as delete images from the gallery that are theirs  #11**
+
+    - Full crud functionality with events . Once public members join update and delete event is disabled . 
 ![screenshot](documentation/feature03.png)
 
 🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
@@ -961,3 +875,4 @@ A few examples have been provided below to give you some ideas.
 - I would like to thank the [Code Institute Slack community](https://code-institute-room.slack.com) for the moral support; it kept me going during periods of self doubt and imposter syndrome.
 - I would like to thank my partner (John/Jane), for believing in me, and allowing me to make this transition into software development.
 - I would like to thank my employer, for supporting me in my career development change towards becoming a software developer.
+

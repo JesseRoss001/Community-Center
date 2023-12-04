@@ -352,9 +352,10 @@ def join_event(request, event_id):
     user_profile = request.user.profile
     if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('-28.00'):
         messages.error(request, "Your balance is too low to join this event.")
-        return redirect('event_detail', event_id=event_id)
+        return redirect('home')
     if user_profile.role in [INSTRUCTOR,GOVERNMENT_OFFICIAL]:
         messages.error(request,'Instructors and officials are not allowed to join booking classes')
+        return redirect('home')
     existing_booking=Booking.objects.filter(event=event,user_profile=user_profile).exists()
     if existing_booking:
         messages.info(request,"You have already joined this event.")

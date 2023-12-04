@@ -28,118 +28,6 @@ This project is a web application for managing bookings at a community center. I
 **Frustrations:** Inefficiency in event management and reporting.
 
 
-## Project Setup
-
-### Requirements
-- Python 
-- Django 
-- PostgreSQL
-- Heroku CLI
-
-### Local Development Setup
-1. Clone the repository:
-2. Navigate to the project directory:
-3. Install dependencies:
-4. Set up your PostgreSQL database and update `settings.py` with your database credentials.
-5. Run migrations to create database schema:
-6. Start the development server:
-
-### Deploying to Heroku
-1. Log in to your Heroku account and create a new app.
-2. Connect your GitHub repository to Heroku.
-3. Configure environment variables in Heroku's settings.
-4. Deploy the main branch to Heroku.
-5. Run migrations on Heroku:
-6. Access the live site using your Heroku app's URL.
-
-# Progress Report
-
-## Day 1: Nov 14, 2023
-- **Started the Project**: Initial commit and set up Django project and app.
-- **Base Setup**: Created base template and linked the home page.
-- **Deployment Initiatives**: Worked on deploying to Heroku and resolving application errors.
-- **Configuration**: Set up Whitenoise for static files and fixed BASE_DIR and path issues in wsgi.
-
-## Day 2: Nov 15, 2023
-- **Admin and User Management**: Worked on the admin interface and user creation, rectifying user creation errors.
-- **Authentication**: Implemented basic login functionality.
-- **User Roles**: Developed a model for different user types.
-- **Registration System**: Displayed and indicated correct login details and views for registration.
-
-## Day 3: Nov 16, 2023
-- **Signup Functionality**: Completed signup forms and addressed form submission errors.
-- **Event Management**: Began creating event models, views, and forms.
-- **Testing**: Conducted initial form testing.
-- **MVT Implementation**: Started working on the Model-View-Template for events.
-
-## Day 4: Nov 17, 2023
-- **Login and Registration**: Resolved login page errors and confirmed the effective functioning of event registration.
-- **Booking System Development**: Initiated the development of the booking system, focusing on rendering and functionality.
-
-## Day 5: Nov 18, 2023
-- **Gallery and Media**: Addressed errors in displaying media files and added functionality to the gallery.
-- **Styling**: Completed preliminary styling on the about page.
-- **Booking System Enhancement**: Worked on refining the booking system, ensuring proper rendering and addressing double booking issues.
-
-## Day 6: Nov 19, 2023
-- **Admin Interface Upgrade**: Implemented Summernote in the admin section to enhance content management.
-- **Cloud Integration**: Added Cloudinary for improved media management.
-- **System Check**: Resolved issues identified during system checks.
-- **Readme Update**: Updated the project README file.
-
-## Day 7:Nov 20, 2023
-- **Fixed Media Upload Errors**: Corrected issues with uploading media and the correct use of static files.
-- **Styling Home Page**: Began the process of enhancing the home page styling.
-
-## Day 8: Nov 21, 2023
-- **Rough Styling of Pages**: Applied initial styling to various pages excluding forms.
-- **Styling the Booking Page**: Focused on refining the booking page appearance.
-- **Styling the About Page**: Made several commits to improve the layout and style of the about page.
-
-## Day 9: Nov 22, 2023
-- **Testing**: Added `tests.py` ensuring all tests pass.
-- **Code Commenting**: Improved code documentation to adhere to industry standards.
-- **Migrations and Updates**: Kept database migrations up to date and made minor updates.
-- **MVP Achieved**: Reached a minimal viable product with current features.
-- **Form Styling**: Enhanced the styling of forms and updated the event updating form.
-
-## Day 10: Nov 23, 2023
-- **Correcting Styling Errors**: Made adjustments to fix prominent styling issues across the platform.
-- **Finalizing Home Page Design**: Worked on finalizing the home page design, ensuring responsiveness across all device sizes.
-- **Footer Layout Improvement**: Reverted footer styling to its original design and enhanced the layout.
-
-### Day 11: Nov 24, 2023
-- **HTML Validation**: Began the process of validating HTML to ensure code quality.
-- **UI Enhancements**: Made improvements to the user interface for better usability.
-
-### Day 12: Nov 25, 2023
-- **Code Documentation**: Enhanced code documentation for better clarity and maintenance.
-- **Bug Fixes**: Addressed minor bugs to improve overall system stability.
-
-### Day 13: Nov 26, 2023
-- **Refactoring Code**: Continued cleaning and refactoring parts of the codebase.
-- **Security Updates**: Implemented additional security measures for robustness.
-
-### Days 14-16: Nov 27-29, 2023
-- **No Commits**: Attended a Hackathon, hence no progress on this project.
-
-### Day 17: Nov 30, 2023
-- **Deploy to Heroku**: Redeployed project to Heroku, recycling keys for security.
-- **Feature Addition for Staff**: Added a 'coming soon' feature to the staff graph display and fixed a bug related to staff crediting.
-
-### Day 18: Dec 1, 2023
-- **Improvement in Functionality**: Worked on enhancing various functionalities, including instructor rating and staff roles.
-
-### Day 19: Dec 2, 2023
-- **Search Functionality Enhancement**: Improved basic search functions and added features like searching by tags and filters.
-
-### Day 20: Dec 3, 2023
-- **Accessibility Improvements**: Focused on improving accessibility features, like adding semantic headers and visually hidden classes.
-- **Layout Improvements**: Made improvements in the layout of views and other elements for better user experience.
-
-### Day 21: Dec 4, 2023
-- **Bug Fixing and Updates**: Addressed several bugs, particularly in search functionality and event management.
-- **Testing and Documentation**: Updated testing procedures and documentation to reflect recent changes.
 
 ## Contributing
 This project is aimed at meeting assessment criteria and therefore contributions are not welcome.
@@ -363,23 +251,6 @@ The intitial time boxing document can be found below
 
 
 
-
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-In this section, you should go over the different parts of your project,
-and describe each in a sentence or so.
-
-You will need to explain what value each of the features provides for the user,
-focusing on who this website is for, what it is that they want to achieve,
-and how your project is the best way to help them achieve these things.
-
-For some/all of your features, you may choose to reference the specific project files that implement them.
-
-IMPORTANT: Remember to always include a screenshot of each individual feature!
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
 ### Existing Features
 
 - **Login/Sign-up Public User , Staff , Instructor and  Government Offical Admin #1**
@@ -502,45 +373,45 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
 
 
-
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Repeat as necessary for as many features as your site contains.
-
-Hint: the more, the merrier!
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
 ### Future Features
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+-**Search by author #1**-
 
-Do you have additional ideas that you'd like to include on your project in the future?
-Fantastic! List them here!
-It's always great to have plans for future improvements!
-Consider adding any helpful links or notes to help remind you in the future, if you revisit the project in a couple years.
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+-**Recommended events  #2**-
+- Based off past events joined 
 
-- Title for future feature #1
-    - Any additional notes about this feature.
-- Title for future feature #2
-    - Any additional notes about this feature.
-- Title for future feature #3
-    - Any additional notes about this feature.
+-**Event showcase for high performing events #3**-
+-Shown on the home page to all users
 
-## Tools & Technologies Used
+-**Profile pages #4**-
+- Clickable profile page for each user
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+-**Event comments #5**-
+- Comments on events
 
-In this section, you should explain the various tools and technologies used to develop the project.
-Make sure to put a link (where applicable) to the source, and explain what each was used for.
-Some examples have been provided, but this is just a sample only, your project might've used others.
-Feel free to delete any unused items below as necessary.
+-**Public booking of events #6**
+- Book out event for weddings etc
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+-**Staff graph #7**
+-Shows financial flow of event venue 
 
+-**Government portal login #8**
+-Portal for login for officials 
+
+-**In app purchases #9**
+-Direct payment for events instead of in person payments
+
+-**Stricter user forms #10**
+-Since site is for testing identification is not restricted yet 
+
+
+
+
+
+
+
+# Technology Stack #
 - [HTML](https://en.wikipedia.org/wiki/HTML) used for the main site content.
 - [CSS](https://en.wikipedia.org/wiki/CSS) used for the main site design and layout.
 - [CSS :root variables](https://www.w3schools.com/css/css3_variables.asp) used for reusable styles throughout the site.
@@ -552,78 +423,14 @@ Feel free to delete any unused items below as necessary.
 - [GitHub](https://github.com) used for secure online code storage.
 - [GitHub Pages](https://pages.github.com) used for hosting the deployed front-end site.
 - [Gitpod](https://gitpod.io) used as a cloud-based IDE for development.
-- [Codeanywhere](https://codeanywhere.com) used as a cloud-based IDE for development.
 - [Bootstrap](https://getbootstrap.com) used as the front-end CSS framework for modern responsiveness and pre-built components.
 - [Materialize](https://materializecss.com) used as the front-end CSS framework for modern responsiveness and pre-built components.
-- [Flask](https://flask.palletsprojects.com) used as the Python framework for the site.
 - [Django](https://www.djangoproject.com) used as the Python framework for the site.
-- [MongoDB](https://www.mongodb.com) used as the non-relational database management with Flask.
-- [SQLAlchemy](https://www.sqlalchemy.org) used as the relational database management with Flask.
 - [PostgreSQL](https://www.postgresql.org) used as the relational database management.
 - [ElephantSQL](https://www.elephantsql.com) used as the Postgres database.
 - [Heroku](https://www.heroku.com) used for hosting the deployed back-end site.
 - [Cloudinary](https://cloudinary.com) used for online static file storage.
-- [Stripe](https://stripe.com) used for online secure payments of ecommerce products/services.
-- [AWS S3](https://aws.amazon.com/s3) used for online static file storage.
 
-## Database Design
-
-Entity Relationship Diagrams (ERD) help to visualize database architecture before creating models.
-Understanding the relationships between different tables can save time later in the project.
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Using your defined models (one example below), create an ERD with the relationships identified.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-```python
-class Product(models.Model):
-    category = models.ForeignKey(
-        "Category", null=True, blank=True, on_delete=models.SET_NULL)
-    sku = models.CharField(max_length=254, null=True, blank=True)
-    name = models.CharField(max_length=254)
-    description = models.TextField()
-    has_sizes = models.BooleanField(default=False, null=True, blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    rating = models.DecimalField(
-        max_digits=6, decimal_places=2, null=True, blank=True)
-    image_url = models.URLField(max_length=1024, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-```
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-A couple recommendations for building free ERDs:
-- [Draw.io](https://draw.io)
-- [Lucidchart](https://www.lucidchart.com/pages/ER-diagram-symbols-and-meaning)
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-![screenshot](documentation/erd.png)
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Using Markdown formatting to represent an example ERD table using the Product model above:
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-- Table: **Product**
-
-    | **PK** | **id** (unique) | Type | Notes |
-    | --- | --- | --- | --- |
-    | **FK** | category | ForeignKey | FK to **Category** model |
-    | | sku | CharField | |
-    | | name | CharField | |
-    | | description | TextField | |
-    | | has_sizes | BooleanField | |
-    | | price | DecimalField | |
-    | | rating | DecimalField | |
-    | | image_url | URLField | |
-    | | image | ImageField | |
 
 ## Agile Development Process
 
@@ -633,14 +440,100 @@ Using Markdown formatting to represent an example ERD table using the Product mo
 It isn't a specialized tool, but with the right tags and project creation/issue assignments, it can be made to work.
 
 Through it, user stories, issues, and milestone tasks were planned, then tracked on a weekly basis using the basic Kanban board.
+# Progress Report
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+## Day 1: Nov 14, 2023
+- **Started the Project**: Initial commit and set up Django project and app.
+- **Base Setup**: Created base template and linked the home page.
+- **Deployment Initiatives**: Worked on deploying to Heroku and resolving application errors.
+- **Configuration**: Set up Whitenoise for static files and fixed BASE_DIR and path issues in wsgi.
 
-Consider adding a basic screenshot of your Projects Board.
+## Day 2: Nov 15, 2023
+- **Admin and User Management**: Worked on the admin interface and user creation, rectifying user creation errors.
+- **Authentication**: Implemented basic login functionality.
+- **User Roles**: Developed a model for different user types.
+- **Registration System**: Displayed and indicated correct login details and views for registration.
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+## Day 3: Nov 16, 2023
+- **Signup Functionality**: Completed signup forms and addressed form submission errors.
+- **Event Management**: Began creating event models, views, and forms.
+- **Testing**: Conducted initial form testing.
+- **MVT Implementation**: Started working on the Model-View-Template for events.
 
-![screenshot](documentation/gh-projects.png)
+## Day 4: Nov 17, 2023
+- **Login and Registration**: Resolved login page errors and confirmed the effective functioning of event registration.
+- **Booking System Development**: Initiated the development of the booking system, focusing on rendering and functionality.
+
+## Day 5: Nov 18, 2023
+- **Gallery and Media**: Addressed errors in displaying media files and added functionality to the gallery.
+- **Styling**: Completed preliminary styling on the about page.
+- **Booking System Enhancement**: Worked on refining the booking system, ensuring proper rendering and addressing double booking issues.
+
+## Day 6: Nov 19, 2023
+- **Admin Interface Upgrade**: Implemented Summernote in the admin section to enhance content management.
+- **Cloud Integration**: Added Cloudinary for improved media management.
+- **System Check**: Resolved issues identified during system checks.
+- **Readme Update**: Updated the project README file.
+
+## Day 7:Nov 20, 2023
+- **Fixed Media Upload Errors**: Corrected issues with uploading media and the correct use of static files.
+- **Styling Home Page**: Began the process of enhancing the home page styling.
+
+## Day 8: Nov 21, 2023
+- **Rough Styling of Pages**: Applied initial styling to various pages excluding forms.
+- **Styling the Booking Page**: Focused on refining the booking page appearance.
+- **Styling the About Page**: Made several commits to improve the layout and style of the about page.
+
+## Day 9: Nov 22, 2023
+- **Testing**: Added `tests.py` ensuring all tests pass.
+- **Code Commenting**: Improved code documentation to adhere to industry standards.
+- **Migrations and Updates**: Kept database migrations up to date and made minor updates.
+- **MVP Achieved**: Reached a minimal viable product with current features.
+- **Form Styling**: Enhanced the styling of forms and updated the event updating form.
+
+## Day 10: Nov 23, 2023
+- **Correcting Styling Errors**: Made adjustments to fix prominent styling issues across the platform.
+- **Finalizing Home Page Design**: Worked on finalizing the home page design, ensuring responsiveness across all device sizes.
+- **Footer Layout Improvement**: Reverted footer styling to its original design and enhanced the layout.
+
+### Day 11: Nov 24, 2023
+- **HTML Validation**: Began the process of validating HTML to ensure code quality.
+- **UI Enhancements**: Made improvements to the user interface for better usability.
+
+### Day 12: Nov 25, 2023
+- **Code Documentation**: Enhanced code documentation for better clarity and maintenance.
+- **Bug Fixes**: Addressed minor bugs to improve overall system stability.
+
+### Day 13: Nov 26, 2023
+- **Refactoring Code**: Continued cleaning and refactoring parts of the codebase.
+- **Security Updates**: Implemented additional security measures for robustness.
+
+### Days 14-16: Nov 27-29, 2023
+- **No Commits**: Attended a Hackathon, hence no progress on this project.
+
+### Day 17: Nov 30, 2023
+- **Deploy to Heroku**: Redeployed project to Heroku, recycling keys for security.
+- **Feature Addition for Staff**: Added a 'coming soon' feature to the staff graph display and fixed a bug related to staff crediting.
+
+### Day 18: Dec 1, 2023
+- **Improvement in Functionality**: Worked on enhancing various functionalities, including instructor rating and staff roles.
+
+### Day 19: Dec 2, 2023
+- **Search Functionality Enhancement**: Improved basic search functions and added features like searching by tags and filters.
+
+### Day 20: Dec 3, 2023
+- **Accessibility Improvements**: Focused on improving accessibility features, like adding semantic headers and visually hidden classes.
+- **Layout Improvements**: Made improvements in the layout of views and other elements for better user experience.
+
+### Day 21: Dec 4, 2023
+- **Bug Fixing and Updates**: Addressed several bugs, particularly in search functionality and event management.
+- **Testing and Documentation**: Updated testing procedures and documentation to reflect recent changes.
+
+## Project Board 
+
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701696570/projectboard_fjgp3o.png)
+
+
 
 ### GitHub Issues
 
@@ -649,45 +542,31 @@ There, I used my own **User Story Template** to manage user stories.
 
 It also helped with milestone iterations on a weekly basis.
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+## Milestones 
 
-Consider adding a screenshot of your Open and Closed Issues.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701696569/milestones_ll5uug.png)
 
 - [Open Issues](https://github.com/JesseRoss001/Community-Center/issues)
 
-    ![screenshot](documentation/gh-issues-open.png)
+    ![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701696569/issues_bzkwxx.png)
 
 - [Closed Issues](https://github.com/JesseRoss001/Community-Center/issues?q=is%3Aissue+is%3Aclosed)
 
-    ![screenshot](documentation/gh-issues-closed.png)
+    ![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701696570/closedissues_gfcb0h.png)
 
-### MoSCoW Prioritization
+
 
 I've decomposed my Epics into stories prior to prioritizing and implementing them.
 Using this approach, I was able to apply the MoSCow prioritization and labels to my user stories within the Issues tab.
 
 - **Must Have**: guaranteed to be delivered (*max 60% of stories*)
-- **Should Have**: adds significant value, but not vital (*the rest ~20% of stories*)
 - **Could Have**: has small impact if left out (*20% of stories*)
-- **Won't Have**: not a priority for this iteration
+- **Won't Have/ Out of Scope**: not a priority for this iteration
 
 ## Testing
 
 For all testing, please refer to the [TESTING.md](TESTING.md) file.
 
-## Deployment
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-**IMPORTANT:**
-
-- ⚠️ DO NOT update the environment variables to your own! These should NOT be included in this file; just demo values! ⚠️
-- ⚠️ DO NOT update the environment variables to your own! These should NOT be included in this file; just demo values! ⚠️
-- ⚠️ DO NOT update the environment variables to your own! These should NOT be included in this file; just demo values! ⚠️
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
 The live deployed application can be found deployed on [Heroku](https://community-centre-71f077e09006.herokuapp.com).
 
@@ -828,35 +707,7 @@ You can fork this repository by using the following steps:
 2. At the top of the Repository (not top of page) just above the "Settings" Button on the menu, locate the "Fork" Button.
 3. Once clicked, you should now have a copy of the original repository in your own GitHub account!
 
-### Local VS Deployment
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Use this space to discuss any differences between the local version you've developed, and the live deployment site on Heroku.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
 ## Credits
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-In this section you need to reference where you got your content, media, and extra help from.
-It is common practice to use code from other repositories and tutorials,
-however, it is important to be very specific about these sources to avoid plagiarism.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-### Content
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Use this space to provide attribution links to any borrowed code snippets, elements, or resources.
-A few examples have been provided below to give you some ideas.
-
-Ideally, you should provide an actual link to every resource used, not just a generic link to the main site!
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
 | Source | Location | Notes |
 | --- | --- | --- |
 | [Markdown Builder](https://tim.2bn.dev/markdown-builder) | README and TESTING | tool to help generate the Markdown files |
@@ -871,47 +722,35 @@ Ideally, you should provide an actual link to every resource used, not just a ge
 | [YouTube](https://www.youtube.com/watch?v=u51Zjlnui4Y) | PP3 terminal | tutorial for adding color to the Python terminal |
 | [strftime](https://strftime.org) | CRUD functionality | helpful tool to format date/time from string |
 | [WhiteNoise](http://whitenoise.evans.io) | entire site | hosting static files on Heroku temporarily |
+| [YouTube](https://www.youtube.com/watch?v=YL1F4dCUlLc) | Leaderboard | Using `localStorage()` in JS for high scores |
+| [YouTube](https://www.youtube.com/watch?v=u51Zjlnui4Y) | PP3 Terminal | Tutorial for adding color to the Python terminal |
+| [strftime](https://strftime.org) | CRUD Functionality | Helpful tool to format date/time from string |
+| Dee Mc | Django Tutorial | "Django Recipe Sharing Tutorial - 14. Search Functionality" |
+| Cryce Truly | Django Project | "Django Project Tutorial" |
+| Csőke Zalán | Developer Profile | Profile and contributions |
+| [OpenAI ChatGPT-3.5](https://openai.com/chatgpt) | Bug finding assistance and content | AI assistance |
+| Pexels | Event Images | Free-to-use images sourced for website content CC BY |
+| Code Institute Blog | Inspiration and project iniliasing |
 
-### Media
+- "Yoga Class" by Andrea Piacquadio
+- "Playing Chess" by Alex Green
+- "Public Speaking" by Orkhan Shahbaz
+- "Teaching" by Katerina Holmes
+- "Gallery Presentation" by 祝 鹤槐
+- "Diverse Yoga Class" by Yan Krukov
+- "Ballet Training" by Budgeron Bach
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+Special thanks to the photographers for providing these images and to Pexels for facilitating a platform for free and accessible visual content.
+|Google| Staff Images |  CC0 (Creative Commons Zero) |
 
-Use this space to provide attribution links to any images, videos, or audio files borrowed from online.
-A few examples have been provided below to give you some ideas.
 
-If you're the owner (or a close acquaintance) of all media files, then make sure to specify this.
-Let the assessors know that you have explicit rights to use the media files within your project.
-
-Ideally, you should provide an actual link to every media file used, not just a generic link to the main site!
-The list below is by no means exhaustive. Within the Code Institute Slack community, you can find more "free media" links
-by sending yourself the following command: `!freemedia`.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-| Source | Location | Type | Notes |
-| --- | --- | --- | --- |
-| [Pexels](https://www.pexels.com) | entire site | image | favicon on all pages |
-| [Lorem Picsum](https://picsum.photos) | home page | image | hero image background |
-| [Unsplash](https://unsplash.com) | product page | image | sample of fake products |
-| [Pixabay](https://pixabay.com) | gallery page | image | group of photos for gallery |
-| [Wallhere](https://wallhere.com) | footer | image | background wallpaper image in the footer |
-| [This Person Does Not Exist](https://thispersondoesnotexist.com) | testimonials | image | headshots of fake testimonial images |
-| [Audio Micro](https://www.audiomicro.com/free-sound-effects) | game page | audio | free audio files to generate the game sounds |
-| [Videvo](https://www.videvo.net/) | home page | video | background video on the hero section |
-| [TinyPNG](https://tinypng.com) | entire site | image | tool for image compression |
 
 ### Acknowledgements
-
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
-Use this space to provide attribution to any supports that helped, encouraged, or supported you throughout the development stages of this project.
-A few examples have been provided below to give you some ideas.
-
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
-
+- I would like to thank my partner Nova, for believing in me, and allowing me to make this transition into software development.
+- I would like to thank Freya and Finn my dogs for keeping me company during late nights.
+- I would like to thank my mother for supporting me while doing this course. 
+- I would like to thank Charlotte for discussion sessions about our project. 
 - I would like to thank my Code Institute mentor, [Tim Nelson](https://github.com/TravelTimN) for their support throughout the development of this project.
 - I would like to thank the [Code Institute](https://codeinstitute.net) tutor team for their assistance with troubleshooting and debugging some project issues.
-- I would like to thank the [Code Institute Slack community](https://code-institute-room.slack.com) for the moral support; it kept me going during periods of self doubt and imposter syndrome.
-- I would like to thank my partner (John/Jane), for believing in me, and allowing me to make this transition into software development.
-- I would like to thank my employer, for supporting me in my career development change towards becoming a software developer.
+
 

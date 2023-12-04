@@ -392,20 +392,20 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
 
 
-![screenshot](documentation/feature01.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694376/vfw20qf25kwnfhs4zvpb.png)
 
 - **Not signed up users  #2**
 
     - Non sign up users can vist the site , viewing the gallery and the about page. 
 
-![screenshot](documentation/feature02.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694375/jhsxvuu0fba7tnxxh9ij.png)
 
 - **Bookings page Page #3**
 
     - Signed up users can view all events for the next 3 months on the booking page . 
     - They can also join events using this page or view more info . 
 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694373/xvlgg4jghn0tfq9cljgt.png)
 
 
 - **All Users can like events #4**
@@ -414,7 +414,7 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
  
 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694373/b253ehay9dlyuipi1yt9.png)
 
 
 
@@ -422,19 +422,19 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
     - Once an event is joined participants can choose to rate their instructor , which is another search criteria . 
 
-![screenshot](documentation/feature02.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694373/laknpov6axjhxhuqvkzq.png)
 
-- **Bookings page Page #6**
+- **Bookings on home page #6**
 
     - All joined events show on the users home page .  
 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701695205/Feature_uxclyw.png)
 
 
 - **In search events #7**
 
     - Public users can search by tag , instructor ranking , likes , day of the week and time of day . 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694373/kma3sifg4ctbl25xx1yu.png)
 
 
 - **Instructors balance #8**
@@ -443,7 +443,7 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
 
 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694372/y8f9s9s3mqirobksm59o.png)
 
 
 
@@ -451,19 +451,58 @@ IMPORTANT: Remember to always include a screenshot of each individual feature!
 
     - Instructors can create events directly from the booking page . 
 
-![screenshot](documentation/feature02.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694372/rqiiqjdmncmh32gspfjb.png)
 
 - **Instructors can add tags and directly access create event #10**
 
     - Instructors can access event creation form directly from nav bar with form logic it restricts double booking . Capacity can be changed , optional image addded and a tag chosen. 
 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694372/tits8t1bqi1ylpphlxhw.png)
 
 
 - **Instructors and officials  can update and delete events as well as delete images from the gallery that are theirs  #11**
 
     - Full crud functionality with events . Once public members join update and delete event is disabled . 
-![screenshot](documentation/feature03.png)
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694371/gukbg3wxbjfflsme3uzr.png)
+
+- **Government Official graph #12**
+
+    - Histogram showing the number of members joining each event . 
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694372/m0hsux5g8jvrswsvmvln.png)
+
+
+- **Staff can view balances of all public users  #13**
+
+    - View balances of public users to prompt payment and entry to events . 
+
+
+
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694372/hlvdvcxepimevl8jhkp6.png)
+
+
+
+- **Staff can issue credit to public users  #14**
+
+    - Once payment is made credit can be issued to public users . 
+
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694371/uwxlznli5u0lxtkp0ghd.png)
+
+- **Admin can view and delete events #15**
+
+    - Admin can search view and delete events . They can also search for events with images and therefore delete images from the gallery . 
+
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694371/xfzny09nuoayd6amdqak.png)
+
+- **Admin can view and delete users  #16**
+
+    - Admin can search view and delete users. They can search by roles and view each accounts balances. 
+
+ 
+![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701694370/dn0zghpfgjutdzobxx8p.png)
+
+
+
+
 
 🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 

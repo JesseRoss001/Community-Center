@@ -200,9 +200,9 @@ LIKES_CHOICES = (
 class EventSearchForm(forms.Form):
    
     tags = forms.ChoiceField(
-        choices=Event.TAG_CHOICES,
+        choices=[('', 'Any Tag')] + Event.TAG_CHOICES,
         required=False,
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.Select
     )
     instructor_ranking = forms.DecimalField(required=False, min_value=0, decimal_places=2, widget=forms.NumberInput(attrs={'type': 'number', 'step': "0.01"}))
     likes_order = forms.ChoiceField(choices=LIKES_CHOICES, required=False, label='Likes Order')

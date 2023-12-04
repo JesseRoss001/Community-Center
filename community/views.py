@@ -553,8 +553,9 @@ def search_events(request):
             events = events.filter(date__week_day=day_of_week)
 
         # Filter by tags
+        tags = form.cleaned_data.get('tags')
         if tags:
-            events = events.filter(tags__in=tags).distinct()
+            events = events.filter(tags=tags).distinct()
 
     # Annotate with likes count
     events = events.annotate(likes_count=Count('like'))

@@ -1,6 +1,8 @@
 # Project Name: Community Center Booking System
-#Problem Statement  : Local community centers are not imformative about what events are being held and a booking system for them does not exist that is avialable to the qualified instructors in search of a venue . 
-#Purpose : Provides a platform for a community venue to increase public engagement and public awareness of ongoing events. To allow instructors to host events and provide a venue for education, businesses and individuals and allow government officials to host events aimed at informing the public. 
+## Problem Statement  :
+ Local community centers are not imformative about what events are being held and a booking system for them does not exist that is avialable to the qualified instructors in search of a venue . 
+## Purpose : 
+Provides a platform for a community venue to increase public engagement and public awareness of ongoing events. To allow instructors to host events and provide a venue for education, businesses and individuals and allow government officials to host events aimed at informing the public. 
 #Target Audience  : Government officials , members of the public and instructors 
 ## Overview
 This project is a web application for managing bookings at a community center. It provides interfaces for different user personas including general users , instructors  and government officials to interact with the system based on their roles.

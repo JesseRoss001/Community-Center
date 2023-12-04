@@ -2,10 +2,15 @@
 {% block title %}Search Events{% endblock title %}
 
 {% block content %}
-<form method="get">
-    {{ form.as_p }}
-    <button class="btn btn-primary " type="submit">Search</button>
-</form>
+
+    <div class="d-flex   justify-content-center align-items-center">
+    <form method="get" class="d-block d-lg-flex align-items-center justify-content-center ">
+        {{ form.as_p }}
+        <button class="btn btn-primary " type="submit">Search</button>
+    </form>
+    </div>
+</div>
+
 <div class="container mt-4">
     <div class="row">
         {% for event_detail in event_details_list %}

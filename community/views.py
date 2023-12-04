@@ -269,7 +269,8 @@ def update_event(request, event_id):
         messages.error(request, "You are not authorised to update this event.")
         return redirect('home')
     if event.author != request.user.profile:
-        return HttpResponseForbidden("You are not authorized to update this event.")
+        messages.error(request, "You are not authorised to update this event.")
+        return redirect('home')
     if request.method == 'POST':
         form = EventUpdateForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
@@ -292,7 +293,8 @@ def delete_event(request, event_id):
     """
     event = get_object_or_404(Event, id=event_id, author=request.user.profile)
     if event.author != request.user.profile:
-        return HttpResponseForbidden("You are not authorized to delete this event.")
+        messages.error(request, "You are not authorised to delete this event.")
+        return redirect('home')
     if event.has_bookings():
         messages.error(request, "Cannot delete the event as it has bookings.")
         return redirect('event_detail', event_id=event.id)

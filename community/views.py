@@ -100,6 +100,7 @@ def gallery(request):
 def booking(request):
     event_date_str = request.GET.get('event_date')
     event_id = request.GET.get('event_id')
+    highlighted_event_id = request.GET.get('event_id')
     total_days = 90
     days_per_page = 14
     start_date = timezone.now().date()
@@ -138,7 +139,7 @@ def booking(request):
         'page_obj': page_obj,
         'user_bookings': user_bookings,
         'rating_form': rating_form,  
-        'highlighted_event_id': event_id
+        'highlighted_event_id': highlighted_event_id,
     }
     return render(request, 'community/booking.html', context)
 def register_staff(request):

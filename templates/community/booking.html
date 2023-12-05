@@ -35,7 +35,7 @@
                     <!-- Check if there is an event in this time slot -->
                     <!-- Conditional styling based on event author's role -->
                     <div class=" p-2 mt-2 mb-2  rounded text-center ">
-                        <div id="event{{ event.id }}" class="{% if event.id|stringformat:'s' == highlighted_event_id %}highlight-event{% endif %}">
+                        <div id="event{{ event.id }}" class="event-card" data-event-id="{{ event.id }}">
                         <a id="event{{ event.id }}"></a>
                         <div class="pt-2 bg-light border-2 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} rounded">
                             <h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
@@ -102,8 +102,6 @@
                                                 data-event-id="{{ event.id }}">Like</button>
                                             <span class="visually-hidden">Like this event</span>
                                             <!-- Rating system -->
-                                            
-
                                         </div>
                                         <div class="modal-footer">
                                             <div class="d-flex col-10 row justify-content-center align-items-center">
@@ -186,18 +184,28 @@
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var highlightedEventId = "{{ highlighted_event_id }}";
-        if (highlightedEventId) {
-            var eventElement = document.getElementById("event" + highlightedEventId);
-            if (eventElement) {
-                eventElement.style.fontWeight = "bold";
-                eventElement.scrollIntoView();
-            }
-        }
+        // Listen for clicks on "Find Event" buttons
+        var findEventButtons = document.querySelectorAll('.find-event-btn');
+        findEventButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var eventDate = button.getAttribute('data-event-date');
+                var eventId = button.getAttribute('data-event-id');
+
+                // Highlight the corresponding event in the "Booking" HTML
+                var eventElement = document.getElementById("event" + eventId);
+                if (eventElement) {
+                    eventElement.classList.add("highlighted-event");
+                    eventElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }); // Close the click event listener function
+        });
     });
 </script>
+
 <script>
     $(document).ready(function () {
         // Like button event listener

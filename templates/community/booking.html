@@ -36,7 +36,7 @@
                     <!-- Conditional styling based on event author's role -->
                     <div class=" p-2 mt-2 mb-2  rounded text-center ">
                         <div id="event{{ event.id }}" class="event-card" data-event-id="{{ event.id }}">
-                        <a id="event{{ event.id }}"></a>
+                        
                         <div class="pt-2 bg-light border-2 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} rounded">
                             <h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
                                 {{ event.title }}
@@ -72,11 +72,11 @@
                                 data-bs-target="#eventModal{{ event.id }}"><span class="visually-hidden">Read more about
                                     {{ event.title }}</span>Read More</button> </div>
                             <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                aria-labelledby="eventModal{{ event.id }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="eventModal{{ event.id }}">{{ event.title }}
+                                            <h5 class="modal-title">{{ event.title }}
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>

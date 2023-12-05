@@ -17,12 +17,15 @@ import os
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
+
 def get_env_variable(var_name):
     try:
         return os.environ[var_name]
-    except KeyError:  
+    except KeyError:
         error_msg = f"Set the {var_name} environment variable"
         raise ImproperlyConfigured(error_msg)
+
+
 if os.path.isfile('env.py'):
     import env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +43,8 @@ SECRET_KEY = get_env_variable('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', False)
 CSRF_TRUSTED_ORIGINS = ['https://*.gitpod.io']
 ALLOWED_HOSTS = [
-    '8000-jesseross00-communityce-zyjsz9taqgg.ws-eu106.gitpod.io','.herokuapp.com'
+    '8000-jesseross00-communityce-zyjsz9taqgg.ws-eu106.gitpod.io',
+    '.herokuapp.com'
     # ... other hosts ...
 ]
 
@@ -60,7 +64,7 @@ INSTALLED_APPS = [
     # installing community app
     'community',
     'crispy_forms',
-    'crispy_bootstrap4',   
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +74,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #added whitenoise 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -101,28 +104,15 @@ TEMPLATES = [
     },
 ]
 
-# For event media uploads 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-#crispy template 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'my_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#       'ENGINE': 'django.db.backends.sqlite3',
-#       'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-# Check if DATABASE_URL environment variable is set
-import sys
+import sys  # noqa: W291
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
@@ -147,16 +137,16 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa: E501
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa: E501
     },
 ]
 
@@ -188,5 +178,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'home' # Redirect to home after login 
-LOGOUT_REDIRECT_URL = 'home' # Redirect to home after logout 
+LOGIN_REDIRECT_URL = 'home'  # Redirect to home after login
+LOGOUT_REDIRECT_URL = 'home'  # Redirect to home after logout

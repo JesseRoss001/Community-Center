@@ -139,8 +139,7 @@ class EventForm(forms.ModelForm):
         widgets to be included in the form.
         """
         model = Event
-        fields =
-        ['title', 'description', 'date', 'time', 'capacity', 'image', 'tags']
+        fields = ['title', 'description', 'date', 'time', 'capacity', 'image', 'tags']
         widgets = {'date': DateInput(attrs={'type': 'date'})}
 
 
@@ -179,8 +178,7 @@ class CreditIssueForm(forms.Form):
     Includes custom validation for credit amount and user existence.
     """
     user_id = forms.IntegerField(label='User ID', widget=forms.HiddenInput())
-    credit_amount = forms.DecimalField
-    (max_digits=10, decimal_places=2, label='Credit Amount')
+    credit_amount = forms.DecimalField(max_digits=10, decimal_places=2, label='Credit Amount')
 
     def __init__(self, *args, **kwargs):
         super(CreditIssueForm, self).__init__(*args, **kwargs)
@@ -209,8 +207,7 @@ class CreditIssueForm(forms.Form):
             # Fetch the user's profile
             try:
                 user_profile = UserProfile.objects.get(user__id=user_id)
-                if user_profile.balance < 0 and credit_amount > abs
-                (user_profile.balance):
+                if user_profile.balance < 0 and credit_amount > abs (user_profile.balance):
                     self.add_error
                     ('credit_amount',
                      "Credit amount cannot bring the balance to"

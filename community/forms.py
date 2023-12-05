@@ -163,9 +163,6 @@ class RatingForm(forms.ModelForm):
     A form for rating instructors.
     """
     class Meta:
-    """
-    rating form fields 
-    """
         model = Rating
         fields = ['score']
         labels = {'score': 'Rate this instructor:'}

@@ -35,7 +35,7 @@
                     <!-- Check if there is an event in this time slot -->
                     <!-- Conditional styling based on event author's role -->
                     <div class=" p-2 mt-2 mb-2  rounded text-center ">
-                        <div id="event{{ event.id }}" class="event-card" data-event-id="{{ event.id }}">
+                        <div id="event{{ forloop.parentloop.counter }}_{{ event.id }}" class="event-card" data-event-id="{{ event.id }}">
                         
                         <div class="pt-2 bg-light border-2 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} rounded">
                             <h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
@@ -69,10 +69,10 @@
                             
                             <!-- Info button to zoom in and display details of th event upon clicking -->
                             <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
-                                data-bs-target="#eventModal{{ event.id }}"><span class="visually-hidden">Read more about
+                                data-bs-target="#eventModal{{ forloop.parentloop.counter }}_{{ event.id }}"><span class="visually-hidden">Read more about
                                     {{ event.title }}</span>Read More</button> </div>
-                            <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1"
-                                aria-labelledby="eventModal{{ event.id }}" aria-hidden="true">
+                            <div class="modal fade" id="eventModal{{ forloop.parentloop.counter }}_{{ event.id }}" tabindex="-1"
+                                aria-labelledby="eventModal{{ forloop.parentloop.counter }}_{{ event.id }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">

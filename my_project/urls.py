@@ -15,16 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path , include , re_path
+from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static, serve
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #adding community url paths
-    path('community/',include('community.urls')),
+    path('community/', include('community.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    
-    re_path(r'^$',RedirectView.as_view(url='community/',permanent=False)),
+    re_path(r'^$', RedirectView.as_view(url='community/', permanent=False)),
 ]
+

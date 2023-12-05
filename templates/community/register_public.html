@@ -1,6 +1,6 @@
 {% extends "community/base.html" %}
 {% block content %}<!-- Main content block for the registration page for public -->
-<body>
+
     <h2 class="header"> Register as a user  </h2>
     {% load crispy_forms_tags %}
     <form method="post">
@@ -8,5 +8,5 @@
         {{ form|crispy }}
         <button class="standard" type ="submit"> Register </button>
     </form>
-</body>
+
 {% endblock %}

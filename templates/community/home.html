@@ -238,7 +238,7 @@
             <div class="col-md-4">
                 <div class="card bg-light   card-opacity border-4 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} mb-4">
                     <div class="ms-3 mt-2"> <p>
-                        <strong class="{% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %}"  > {{ event.title }}</strong> by {{ event.author.user.username }} 
+                        <strong   > {{ event.title }}</strong> by {{ event.author.user.username }} 
                        <br> Like Count 
                         <span class="like-count" data-event-id="{{ event.id }}">
                             {{ event.like_set.count }}</span>
@@ -314,6 +314,28 @@
             <h2 class="text-center">Event Participation Overview</h2>
             <div class="chart-container" style="position: relative; height:40vh; width:40vw">
                 <canvas id="eventParticipationGraph"></canvas>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if user.profile.role == 'PUBLIC' %}
+    <div class="container mt-5 mb-3 pb-4 ">
+        <div class="row align-items-start carousel-inner border-0 rounded m-1">
+            <div class="col-8 col-md-4">
+                <h3> Your Balance: {{ user.profile.balance }}</h3>
+                <h4> Recent Transactions </h4>
+                <ul class="budget-list">
+                    {% for transaction in balance_transactions %}
+                    <li class="budget-list"> {{ transaction.create_at }} {{ transaction.amount }}
+                        {{ transaction.transaction_type }}
+                    </li>
+                    {% empty %}
+                    <li class="budget-list"> No recent transactions.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="d-none d-md-inline-block col-8">
+                <canvas id="transactionGraph" width='300' height="150"></canvas>
             </div>
         </div>
     </div>

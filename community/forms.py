@@ -100,9 +100,6 @@ class EventForm(forms.ModelForm):
     Includes custom validation for event date and capacity.
     """
     class Meta:
-    """
-    Fields for event form 
-    """
         model = Event
         fields = '__all__'
         exclude = ('author',)

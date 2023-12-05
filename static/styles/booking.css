@@ -1,56 +1,65 @@
-/* Body Styling  */
-
-
-.schedule-card {
+/* List Styling - Removing default list styles */
+li {
+    text-decoration: none;
+    list-style-type: none;
+  }
+  
+  ul {
+    text-decoration: none;
+    list-style-type: none;
+  }
+  
+  /* Schedule Card Styling */
+  .schedule-card {
     border: 1px solid #dee2e6;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    height:100%;
-}
-
-.schedule-card .card-header {
+    height: 100%;
+  }
+  
+  .schedule-card .card-header {
     background-color: #f8f9fa;
     border-bottom: none;
-}
-
-.time-slot {
+  }
+  
+  /* Time Slot Styling */
+  .time-slot {
     font-weight: bold;
-    color:#495057;
+    color: #495057;
     margin-bottom: 0.5rem;
-}
-
-
-li {
-    text-decoration: none;
-    list-style-type: none;
-}
-
-ul {
-    text-decoration: none;
-    list-style-type: none;
-}
-
-.status-available{color:28a745;}
-
-.event-title{font-style: italic;}
-
-.join-event.btn{font-size: 0.8rem;
-margin-top: auto;
-width:100%;}
-.cleaning-break {
+  }
+  
+  /* Availability Status Styling */
+  .status-available {
+    color: #28a745;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Event Title Styling */
+  .event-title {
+    font-style: italic;
+  }
+  
+  /* Join Event Button Styling */
+  .join-event.btn {
+    font-size: 0.8rem;
+    margin-top: auto;
+    width: 100%;
+  }
+  
+  /* Cleaning Break Styling */
+  .cleaning-break {
     font-size: 0.9rem;
     color: #6c757d;
     text-align: center;
     padding: 0.5rem 0;
     background-color: #e2e6ea;
     margin-top: 0.5rem;
-    font-size: 0.9rem;
-    text-align: center;
-    background-color: #e2e6ea;
-}
-
-.cleaning-break-badge {
+  }
+  
+  .cleaning-break-badge {
     display: block;
     text-transform: uppercase;
     font-size: 0.75rem;
@@ -60,12 +69,7 @@ width:100%;}
     padding: 0.25rem 0.5rem;
     margin: 0.5rem 0;
     border-radius: 0.25rem;
-}
-
-
-.status-available { padding: 5px; margin-bottom: 10px; }
-.cleaning-break-badge { background-color: #17a2b8; color: white; padding: 5px; margin-bottom: 10px; }
-
+  }
 
 
 

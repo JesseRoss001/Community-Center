@@ -1,26 +1,74 @@
+/* Global Settings and Variables */
+:root {
+  --form-background-gradient: linear-gradient(45deg, #FFB199,#FFD26F,#73A1F9,  #6DC8F3);
+  --button-gradient: linear-gradient(45deg, #FF5F6D, #FFC371);
+  --button_radius: 0.75em;
+  --button_color: #e8e8e8;
+  --button_outline_color: #000000;
+}
 
-#fire-background{background: linear-gradient(89.2deg, rgb(0, 0, 0) 10.4%, rgb(255, 0, 0) 37.1%, rgb(255, 216, 51) 64.3%, rgb(255, 255, 255) 90.5%);}
-/* Header styling */
+/* Header Styling */
 .navbar-heading {
-  width: 100%;}
+  width: 100%;
+}
 
+#fire-background {
+  background: linear-gradient(89.2deg, rgb(0, 0, 0) 10.4%, rgb(255, 0, 0) 37.1%, rgb(255, 216, 51) 64.3%, rgb(255, 255, 255) 90.5%);
+}
 
+/* Main Background Animation */
 #main-background {
-  background: linear-gradient(45deg, #FFB199,#FFD26F,#73A1F9,  #6DC8F3);
+  background: var(--form-background-gradient);
   background-size: 600% 600%;
-  
   -webkit-animation: Gradient 25s ease infinite;
   -moz-animation: Gradient 25s ease infinite;
   animation: Gradient 25s ease infinite;
 }
 
+/* Animation Keyframes */
+@-webkit-keyframes Gradient {
+  0% {background-position: 0% 50%}
+  50% {background-position: 100% 50%}
+  100% {background-position: 0% 50%}
+}
 
-.testing-css { font-size: 100px;}
+@-moz-keyframes Gradient {
+  0% {background-position: 0% 50%}
+  50% {background-position: 100% 50%}
+  100% {background-position: 0% 50%}
+}
+
+@keyframes Gradient {
+  0% {background-position: 0% 50%}
+  50% {background-position: 100% 50%}
+  100% {background-position: 0% 50%}
+}
+
+/* Carousel Styling */
+.carousel-inner {
+  background: var(--form-background-gradient);
+  background-size: 600% 600%;
+  -webkit-animation: Gradient 25s ease infinite;
+  -moz-animation: Gradient 25s ease infinite;
+  animation: Gradient 25s ease infinite;
+}
+
+.carousel-item img {
+  border-radius: 15px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transform: translate(0, -50%);
+}
+
+/* Button Styling */
 button {
-  /* Variables */
-  --button_radius: 0.75em;
-  --button_color: #e8e8e8;
-  --button_outline_color: #000000;
   font-size: 17px;
   font-weight: bold;
   border: none;
@@ -37,65 +85,7 @@ button {
   color: var(--button_outline_color);
   transform: translateY(-0.2em);
   transition: transform 0.1s ease;
-  background: linear-gradient(45deg, #FF5F6D, #FFC371);
-}
-
-button:hover .button_top {
-  /* Pull the button upwards when hovered */
-  transform: translateY(-0.33em);
-}
-
-button:active .button_top {
-  /* Push the button downwards when pressed */
-  transform: translateY(0);
-}
-
-.banner-container {
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .carousel-item img {
-    border-radius: 15px;
-  }
-  
-  /* Example gradient */
-  .carousel-inner {
-    background: linear-gradient(45deg, #6DC8F3, #73A1F9, #FFD26F, #FFB199);
-    background-size: 600% 600%;
-  
-    -webkit-animation: Gradient 25s ease infinite;
-    -moz-animation: Gradient 25s ease infinite;
-    animation: Gradient 25s ease infinite;
-  }
-
-  .budget-list {list-style-type: none;}
-
-  
-  @-webkit-keyframes Gradient {
-    0% {background-position: 0% 50%}
-    50% {background-position: 100% 50%}
-    100% {background-position: 0% 50%}
-  }
-  @-moz-keyframes Gradient {
-    0% {background-position: 0% 50%}
-    50% {background-position: 100% 50%}
-    100% {background-position: 0% 50%}
-  }
-  @keyframes Gradient {
-    0% {background-position: 0% 50%}
-    50% {background-position: 100% 50%}
-    100% {background-position: 0% 50%}
-  }
-
-  .carousel-inner > .item {
-    position: relative;
-    display: none;
-    -webkit-transition: 7s ease-in-out left;
-    -moz-transition: 7s ease-in-out left;
-    -o-transition: 7s ease-in-out left;
-    transition: 7s ease-in-out left;
+  background: var(--button-gradient);
 }
 
 .standard {
@@ -107,70 +97,137 @@ button:active .button_top {
   border: 2px solid transparent;
 }
 
+/* Hover and Active States for Buttons */
+button:hover .button_top,
 .standard:hover {
+  transform: translateY(-0.33em);
   background: linear-gradient(45deg, #4B6278, #2D3E50);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+button:active .button_top,
 .standard:active {
+  transform: translateY(0);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.card-opacity { background-color: rgba(255, 165, 0, 0.25);}
-.card *  {opacity:1;}
-
-.carousel-control-prev,
-.carousel-control-next {width:2rem;
-  height:2rem;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  transform: translate(0, -50%);}
-
-
-.carousel-control-prev:hover .carousel-control-prev-icon,
-.carousel-control-next:hover .carousel-control-next-icon {
-  opacity: 0.4;}
-
-
-
-
-
-/* ABOUT PAGE */ 
-li {text-decoration: none;
-  list-style-type: none;}
-  
-  ul {text-decoration: none;
-      list-style-type: none;}
-  
-img-facility {object-fit: cover;}
-  
-
-
-
-/* Styling the forms */
+/* Form Styling */
 form {
-  width:90vw;
+  width: 90vw;
   padding: 2rem;
   background: var(--form-background-gradient);
   border-radius: 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-
 }
 
 .custom-form {
-  max-width:80%;
-
-}
-
-:root {
-  --form-background-gradient: linear-gradient(45deg, #FFB199,#FFD26F,#73A1F9,  #6DC8F3);
-  --button-gradient: linear-gradient(45deg, #FF5F6D, #FFC371);
+  max-width: 80%;
 }
 
 
-/* footer styling */ 
+/* Miscellaneous Styling */
+.testing-css { 
+  font-size: 100px;
+}
+
+.budget-list {
+  list-style-type: none;
+}
+
+.card-opacity {
+  background-color: rgba(255, 165, 0, 0.25);
+}
+
+.card * {
+  opacity: 1;
+}
+
+.banner-container {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* About Page Styling */
+li,
+ul {
+  text-decoration: none;
+  list-style-type: none;
+}
+
+img-facility {
+  object-fit: cover;
+}
+
+/* Scrollable Section Styling */
+.scrollable-section {
+  height: 200px; /* Adjust height as needed */
+  overflow-y: scroll;
+}
+
+.user-item {
+  cursor: pointer;
+}
+
+/* Social Buttons Styling */
+.discord-button:hover {
+  background: #5865F2;
+}
+
+.twitter-button:hover {
+  background: #1CA1F1;
+}
+
+.reddit-button:hover {
+  background: #FF4500;
+}
+
+.messenger-button:hover {
+  background: #0093FF;
+}
+
+.pinterest-button:hover {
+  background: #F0002A;
+}
+
+.instagram-button:hover {
+  background: #F914AF;
+}
+
+.snapchat-button:hover {
+  background: #FFFC00;
+}
+
+.whatsapp-button:hover {
+  background: #25D366;
+}
+
+.social-button:hover {
+  transform: scale(1.1);
+}
+
+.buttons {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 50px; 
+  width: 50px;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
+}
+
+.buttons:hover {
+  padding: 20px;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Footer Styling */
 .Btninstagram {
   width: 45px;
   height: 45px;
@@ -180,7 +237,6 @@ form {
   border: none;
   background-color: transparent;
   position: relative;
-  /* overflow: hidden; */
   border-radius: 7px;
   cursor: pointer;
   transition: all .3s;
@@ -194,7 +250,6 @@ form {
   justify-content: center;
   background-color: transparent;
   backdrop-filter: blur(4px);
-  letter-spacing: 0.8px;
   border-radius: 10px;
   transition: all .3s;
   border: 1px solid rgba(156, 156, 156, 0.466);
@@ -209,11 +264,8 @@ form {
   background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
   background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
   z-index: -1;
   border-radius: 9px;
-  pointer-events: none;
-  transition: all .3s;
 }
 
 .Btninstagram:hover .BG {
@@ -224,145 +276,3 @@ form {
 .Btninstagram:hover .svgContainer {
   background-color: rgba(156, 156, 156, 0.466);
 }
-
-
-.buttons {
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: 50px; 
-  width: 50px;
-  transition: 0.3s;
-  border-radius: 50%;
-  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
-  
-}
-
-.buttons:hover {
-  padding: 20px;
-}
-
-.buttons:hover .button {
-  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
-}
-
-.main-button {
-  position: relative;
-  display: grid;
-  place-items: center;
-  padding: 10px;
-  border: none;
-  background: #e8e8e8;
-  box-shadow: 5px 5px 12px #cacaca, -5px -5px 12px #ffffff;
-  border-radius: 50%;
-  transition: 0.2s;
-  z-index: 100;
-  top:-20px;
-  right:20px;
-}
-.buttons-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.buttons {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  padding: 10px;
-  border: none;
-  background: #e8e8e8;
-  box-shadow: 5px 5px 12px rgba(202, 202, 202, 0), -5px -5px 12px rgba(255, 255, 255, 0);
-  transition: 0.3s;
-  border-radius: 50%;
-}
-
-
-.discord-button:hover {
-  background: #5865F2;
-}
-.discord-button:hover {
-  background: #5865F2;
-}
-
-.buttons.active .discord-button {
-  transform: translate(70px, 0px);
-}
-
-.twitter-button:hover {
-  background: #1CA1F1;
-}
-
-.buttons.active .twitter-button {
-  transform: translate(47px, -47px);
-}
-
-.reddit-button:hover {
-  background: #FF4500;
-}
-
-.buttons.active .reddit-button {
-  transform: translate(0px, -70px);
-}
-
-.messenger-button:hover {
-  background: #0093FF;
-}
-
-.buttons.active .messenger-button {
-  transform: translate(-47px, -47px);
-}
-
-.pinterest-button:hover {
-  background: #F0002A;
-}
-
-.buttons.active .pinterest-button {
-  transform: translate(-70px, 0px);
-}
-
-.instagram-button:hover {
-  background: #F914AF;
-}
-
-.buttons.active .instagram-button {
-  transform: translate(-47px, 47px);
-}
-
-.snapchat-button:hover {
-  background: #FFFC00;
-}
-
-.buttons.active .snapchat-button {
-  transform: translate(0px, 70px);
-}
-
-.whatsapp-button:hover {
-  background: #25D366;
-}
-
-.buttons.active .whatsapp-button {
-  transform: translate(47px, 47px);
-}
-
-
-.social-button:hover {
-  transform: scale(1.1);
-}
-#shareButtonContainer.active{
-padding: 30px;
-}
-
-
-.scrollable-section {
-  height: 200px; /* Adjust height as needed */
-  overflow-y: scroll;
-}
-
-.user-item {
-  cursor: pointer;
-}
-
-
-

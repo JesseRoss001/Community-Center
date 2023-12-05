@@ -32,19 +32,40 @@ The codebase now adheres much more closely to PEP 8 standards, which will aid in
 ![screenshot](https://res.cloudinary.com/dwz6t9jry/image/upload/v1701752147/Validation/formspy_ldrcpo.png)
 
 
-**** HTML CHECKER 
-Base.html 
 
-Parse Errors for Django Template Tags: The checker points out parse errors for lines where you use Django template tags, such as {% extends 'community/base.html' %}, {% load static %}, {% block content %}, and so on. These tags are not standard HTML and will not be recognized by a generic HTML validator.
+## JavaScript File Metrics (Analyzed with JSHint)
 
-Use of Django Template Variables: Similarly, the checker flags lines where you use Django template variables like {{ user.profile }}. These are Django-specific and won't be understood by a standard HTML checker.
+- Total Functions: 25
+- Largest Function Signature: 3 arguments
+- Median Function Signature: 1 argument
+- Largest Function Statements: 12
+- Median Function Statements: 1
+- Most Complex Function Cyclomatic Complexity: 7
+- Median Cyclomatic Complexity: 1
+- Warnings: 27
 
-Meta Tags and Links: The checker doesn't seem to recognize the {% block title %} and {% endblock title %} syntax used in your <title> tag, which is a Django template feature. This might be why it's reporting an issue with the <title> tag.
+    - 'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+    - 'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+    - 'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+    - 'template literal syntax' is only available in ES6 (use 'esversion: 6').
+    - Unrecoverable syntax error. (80% scanned).
 
-CSS and JavaScript Loading: The checker doesn't understand the {% static 'styles/style.css' %} syntax used to load static CSS files. Again, this is specific to Django and not standard HTML.
+- Unused Variables: 5
 
-Conditionals and Loops: The checker may flag constructs like {% if ... %} and {% for ... %} because they are not part of standard HTML.
+    - eventDate
+    - eventGraph
+    - instructorEventDates
+    - governmentEventDates
+    - eventParticipationGraph
 
+## CSS Validation - Zero Errors Achieved!
 
+We are proud to announce that our project's CSS has been thoroughly validated using the W3C CSS Validator, and it has passed with flying colors – no errors were found!
 
-First iteration of validation largely involed adding docstrings and removing whitespace . Removing trailing divs and unclosed p tags. 
+### What This Means
+- **Compliance with Standards**: Our CSS meets the rigorous standards set by the W3C for CSS level 3 + SVG.
+- **Cross-Browser Compatibility**: This validation ensures that our stylesheets are more likely to be rendered consistently across different web browsers.
+- **Optimized Performance**: Error-free CSS can help to speed up page loading times, providing a better user experience.
+
+### Our Commitment
+Ensuring our CSS is free from errors is part of our commitment to quality and excellence in web development. We strive to maintain this standard going forward, keeping our code clean, efficient, and up-to-date with the latest web standards.

@@ -8,4 +8,4 @@ class CommunityConfig(AppConfig):
 
     def ready(self):
         import community.signals
-    
+   

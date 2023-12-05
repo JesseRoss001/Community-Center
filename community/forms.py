@@ -100,6 +100,9 @@ class EventForm(forms.ModelForm):
     Includes custom validation for event date and capacity.
     """
     class Meta:
+    """
+    Fields for event form 
+    """
         model = Event
         fields = '__all__'
         exclude = ('author',)
@@ -163,6 +166,9 @@ class RatingForm(forms.ModelForm):
     A form for rating instructors.
     """
     class Meta:
+    """
+    rating form fields 
+    """
         model = Rating
         fields = ['score']
         labels = {'score': 'Rate this instructor:'}
@@ -194,8 +200,7 @@ class CreditIssueForm(forms.Form):
         credit_amount = self.cleaned_data['credit_amount']
         # Check for two decimal places
         if credit_amount and credit_amount.as_tuple().exponent != -2:
-            raise ValidationError
-            ("Please enter a credit amount with two decimal places.")
+            raise ValidationError ("Please enter a credit amount with two decimal places.")
         return credit_amount
 
     def clean(self):

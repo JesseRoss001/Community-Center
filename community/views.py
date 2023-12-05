@@ -96,22 +96,29 @@ def gallery(request):
     events_with_images = Event.objects.exclude(image='').order_by('-date')
     return render(request, 'community/gallery.html', {'events_with_images': events_with_images})
 # booking view 
+
 def booking(request):
-    """
-    The view function for handling event bookings.
-    Displays a paginated schedule of events and handles user bookings.
-    """
+    event_date_str = request.GET.get('event_date')
+    event_id = request.GET.get('event_id')
     total_days = 90
     days_per_page = 14
-    # start and end dates for the whole period
     start_date = timezone.now().date()
-    date_list = [start_date + timedelta(days=x) for x in range(total_days)]
-    
-    # Paginating the events 
-    paginator = Paginator(date_list, days_per_page)
+
+    # Capture the page number from the request
     page_number = request.GET.get('page', 1)
+
+    if event_date_str:
+        try:
+            event_date = datetime.strptime(event_date_str, '%Y-%m-%d').date()
+            if start_date <= event_date < start_date + timedelta(days=total_days):
+                delta_days = (event_date - start_date).days
+                page_number = delta_days // days_per_page + 1
+        except ValueError:
+            pass  # Handle incorrect date format
+
+    date_list = [start_date + timedelta(days=x) for x in range(total_days)]
+    paginator = Paginator(date_list, days_per_page)
     page_obj = paginator.get_page(page_number)
-    
     schedule = {}
     for single_date in page_obj:
         day_schedule = {slot[0]: {'events': [], 'available': True} for slot in TIME_SLOTS}
@@ -124,14 +131,16 @@ def booking(request):
     user_bookings = []
     if request.user.is_authenticated:
         user_bookings = Booking.objects.filter(user_profile=request.user.profile).values_list('event_id', flat=True)
+
     rating_form = RatingForm()
     context = {
         'schedule': schedule,
         'page_obj': page_obj,
         'user_bookings': user_bookings,
         'rating_form': rating_form,  
+        'highlighted_event_id': event_id
     }
-    return render(request, 'community/booking.html', context) 
+    return render(request, 'community/booking.html', context)
 def register_staff(request):
     """
     The view function for registering a new staff member.
@@ -292,6 +301,7 @@ def delete_event(request, event_id):
     and that no bookings are associated with the event.
     """
     event = get_object_or_404(Event, id=event_id, author=request.user.profile)
+    
     if event.author != request.user.profile:
         messages.error(request, "You are not authorised to delete this event.")
         return redirect('home')
@@ -526,8 +536,7 @@ def get_cumulative_graph_data(request):
 @login_required
 def search_events(request):
     form = EventSearchForm(request.GET or None)
-    events = Event.objects.all()
-
+    events = Event.objects.filter(date__gte=timezone.now().date())
     if form.is_valid():
         # Filtering logic
         instructor_ranking = form.cleaned_data.get('instructor_ranking')

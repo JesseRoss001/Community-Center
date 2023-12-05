@@ -194,7 +194,9 @@
                                 <div class="modal-body">
                                     <span> Event by {{ event.author.user.username }} <br> </span>
                                     <p> {{ event.description }} </p> <!-- Display event description -->
-                                    <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                    <p>Date: {{ event.date }}</p>
+                                    <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
+                                        <p> Capacity: {{ event.capacity }}</p> <!-- Display event date -->
                                 </div>
                             </div>
                         </div>
@@ -234,9 +236,14 @@
         <div class="row">
             {% for event in joined_events %}
             <div class="col-md-4">
-                <div class="card bg-light  card-opacity border-0 mb-4">
-                    <div class="ms-3 mt-2">
-                        <strong> {{ event.title }}</strong> by {{ event.author.user.username }}
+                <div class="card bg-light   card-opacity border-4 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} mb-4">
+                    <div class="ms-3 mt-2"> <p>
+                        <strong class="{% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %}"  > {{ event.title }}</strong> by {{ event.author.user.username }} 
+                       <br> Like Count 
+                        <span class="like-count" data-event-id="{{ event.id }}">
+                            {{ event.like_set.count }}</span>
+                        </p>
+                        <p>Start Time : {{ event.time }}</p>
                     </div>
                     <div class="card-body">
                         <p> {{ event.date|date:"l, F j , Y" }}-{{ event.time }} </p>
@@ -255,6 +262,17 @@
                                         <span> Event by {{ event.author.user.username }} <br> </span>
                                         <p> {{ event.description }} </p> <!-- Display event description -->
                                         <p>Date: {{ event.date }}</p> <!-- Display event date -->
+                                        {% if event.author.role == 'INSTRUCTOR' %}
+                                        <p>Instructor Rating:
+                                            {{ event.author.average_rating|default:"Not rated yet" }}</p>
+                                        {% endif %}
+                                        <p>Start Time : {{ event.time }}</p> <!-- Display event start time -->
+                                        <p> Capacity: {{ event.capacity }}</p> <!-- Display event capacity -->
+                                        Cost :
+                                        <!-- Display cost based on event author's role -->
+                                        {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
+                                        {% else  %} £0.00
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

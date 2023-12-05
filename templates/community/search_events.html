@@ -3,36 +3,60 @@
 
 {% block content %}
 
-    <div class="d-flex   justify-content-center align-items-center">
+<div class="d-flex   justify-content-center align-items-center">
     <form method="get" class="d-block d-lg-flex align-items-center justify-content-center ">
         {{ form.as_p }}
         <button class="btn btn-primary " type="submit">Search</button>
     </form>
-    </div>
 </div>
+
 
 <div class="container mt-4">
     <div class="row">
         {% for event_detail in event_details_list %}
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <!-- Event Card -->
-                <div class="card schedule-card m-3 bg-light p-3 rounded">
-                    <h3>{{ event_detail.event.title }}</h3>
-                    <p>{{ event_detail.event.description }}</p>
-                    <p>Like Count: <span class="like-count">{{ event_detail.likes_count }}</span></p>
-                    {% if event_detail.event.author.role == 'INSTRUCTOR' %}
-                        <p>Instructor Rating: {{ event_detail.average_rating|default:"Not rated yet" }}</p>
-                    {% endif %}
-                    <p>Date: {{ event_detail.event.date }}</p>
-                    <p>{{ event.description }}</p>
-                    <p>Start Time: {{ event_detail.event.time }}</p>
-                    <p>Capacity: {{ event_detail.event.capacity }}</p>
-                    <p>Cost: {% if event_detail.cost == 0.00 %} Free {% else %} £{{ event_detail.cost }}0 {% endif %}</p>
-                    <p>Tags: {{ event_detail.tags }}</p>
+        <div class="col-lg-4 col-md-6 col-12 mb-4 ">
+            <!-- Event Card -->
+            <div
+                class="card schedule-card m-3 bg-light p-3 {% if event_detail.event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} rounded">
 
-                    <!-- Join Event Button -->
+                <h3
+                    class="{% if event_detail.event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
+                    {{ event_detail.event.title }} </h3>
+
+                <p>Like Count: <span class="like-count">{{ event_detail.likes_count }}</span></p>
+                {% if event_detail.event.author.role == 'INSTRUCTOR' %}
+                <p>Instructor Rating: {{ event_detail.average_rating|default:"Not rated yet" }}</p>
+                {% endif %}
+                <p>Date: {{ event_detail.event.date }}</p>
+                <p>{{ event.author.user.username }}</p>
+
+                <p>Start Time: {{ event_detail.event.time }}</p>
+                <p>Capacity: {{ event_detail.event.capacity }}</p>
+                <p>Cost: {% if event_detail.cost == 0.00 %} Free {% else %} £{{ event_detail.cost }}0 {% endif %}</p>
+                <p>Tags: {{ event_detail.tags }}</p>
+                <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                    data-bs-target="#eventModal{{ event_detail.id }}">Read More</button>
+                    <a href="{% url 'booking' %}?event_date={{ event_detail.event.date|date:'Y-m-d' }}" class="btn {% if event_detail.event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %}">Find Event</a>
+                <div class="modal fade" id="eventModal{{ event_detail.id }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ event_detail.event.title }}
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ event_detail.event.description }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+        </div>
+
         {% endfor %}
     </div>
 </div>

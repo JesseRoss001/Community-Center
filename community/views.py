@@ -422,9 +422,10 @@ def join_event(request, event_id):
     """
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
-    if user_profile.role == GENERAL_PUBLIC and user_profile.balance < Decimal('-28.00'):  # noqa: E231
-        messages.error(request, "Your balance is too low to join this event.")
-        return redirect('home')
+    if user_profile.role == GENERAL_PUBLIC:
+        if  user_profile.balance < Decimal('-28.00'):  # noqa: E231
+            messages.error(request, "Your balance is too low to join this event.")
+            return redirect('home')
     if user_profile.role in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
         messages.error(
             request,

@@ -140,9 +140,11 @@ class BalanceChangeAdmin(admin.ModelAdmin):
     changes including the user profile,
     transaction type, amount, and related staff member.
     """
-    list_display =('user_profile', 'change_date',
-    'transaction_type', 'change_amount', 'event', 'staff_member')
-    search_fields =['user_profile__user__username', 'transaction_type', 'event__title']
+    list_display = ('user_profile', 'change_date',
+                    'transaction_type', 'change_amount',
+                    'event', 'staff_member')
+    search_fields = ['user_profile__user__username',
+                     'transaction_type', 'event__title']
     list_filter = ('transaction_type', 'change_date')
     readonly_fields = ('change_date', 'staff_member')
 
@@ -151,3 +153,4 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(BalanceChange, BalanceChangeAdmin)
+

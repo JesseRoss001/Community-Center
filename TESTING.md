@@ -144,7 +144,7 @@ This report evaluates the security and user experience aspects of the `join_even
 ### Search Event Access
 - **Objective**: Confirm that non-logged-in members cannot search events.
 - **Expected Behavior**: Restricted access.
-- **Result**: (Provide screenshot or test result link)
+- **Result**: Non logged in members cannot access search features.
 
 ### Event Booking Visibility
 - **Objective**: Assess if event booking details are hidden from non-logged-in members.

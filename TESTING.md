@@ -2,16 +2,13 @@
 
 Return back to the [README.md](README.md) file.
 
+## Responsiveness
 
-##Responsiveness 
-
-
-
+You can watch the video [here](https://youtu.be/NTsB_5O4eM4).
 
 
 
-
-Testing for officials 
+# Feature Testing
 
 - **Instructor Signup**: Instructors signing up should provide a 4-digit card number or lower. This is to demonstrate the concept initially, with plans to later restrict the accepted card numbers and implement in-person verification for added security.
 
@@ -131,3 +128,5 @@ Testing for officials
 ![Screenshot 2023-12-06 041034](https://github.com/JesseRoss001/Community-Center/assets/79084912/5fd515fe-2a8d-4685-9f56-aa838262a8d4)
 ![Screenshot 2023-12-06 041114](https://github.com/JesseRoss001/Community-Center/assets/79084912/17852022-01e2-4864-a716-4744d0efa39d)
 ![Screenshot 2023-12-06 041226](https://github.com/JesseRoss001/Community-Center/assets/79084912/8416959c-1e02-47ac-b066-d15fded6bed9)
+
+# Defensive programming Test

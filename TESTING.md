@@ -102,4 +102,25 @@ Find event with known error . Takes to the correct page but not the correct even
 ![Screenshot 2023-12-06 032059](https://github.com/JesseRoss001/Community-Center/assets/79084912/592a849f-ab1a-4559-a269-cc1e63a8ef0d)
 ![Screenshot 2023-12-06 032120](https://github.com/JesseRoss001/Community-Center/assets/79084912/c27892cb-f36a-46f1-980e-8a67966dcaa6)
 
+Government instructor testing . 
+Test offical need a badgenumber 5 digits or less 
+![Screenshot 2023-12-06 034105](https://github.com/JesseRoss001/Community-Center/assets/79084912/66322813-7dbc-4da2-9a72-ee499deedaba)
 
+
+For officals and instructors events can be booked directly from the booking page ![Screenshot 2023-12-06 034138](https://github.com/JesseRoss001/Community-Center/assets/79084912/5160a30c-5b2c-470d-afd3-4e8ab63a7b13)
+
+Redirect after creating instructors bug . 
+![Screenshot 2023-12-06 034858](https://github.com/JesseRoss001/Community-Center/assets/79084912/696654fa-7f26-4b60-bce2-2b85201ca3f3)
+
+NB NB NB NB  Joining Fee bug should costs users zero for official joining events 
+Staff memebers require a staff id 6 digits or less 
+
+staff members can view all users budgets and credit them if they make payment in person 
+![Screenshot 2023-12-06 035549](https://github.com/JesseRoss001/Community-Center/assets/79084912/2a0a4cf2-5441-4bc3-9e04-603db0703f27)
+
+
+![Screenshot 2023-12-06 035626](https://github.com/JesseRoss001/Community-Center/assets/79084912/525fa976-ee18-4b9a-81ea-94c9c46a6287)
+
+![Screenshot 2023-12-06 035634](https://github.com/JesseRoss001/Community-Center/assets/79084912/ddf23bd4-4d35-46c3-acf2-cf88574963f8)
+
+![Screenshot 2023-12-06 035645](https://github.com/JesseRoss001/Community-Center/assets/79084912/cb376479-228e-40a9-b53f-e0ea2e9a6b0e)

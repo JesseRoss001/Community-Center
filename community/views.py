@@ -299,7 +299,7 @@ def create_event(request, event_id=None):
                         request, 'community/events/create_event.html',
                         {'form': form})
 
-            elif not event_id and user_profile.role == UserProfile.GOVERNMENT_OFFICIAL:  # noqa: E231
+            elif not event_id and user_profile.role == 'GOVERNMENT_OFFICIAL':  # noqa: E231
                 user_profile.balance = 0
                 user_profile.save()
 

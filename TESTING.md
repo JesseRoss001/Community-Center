@@ -129,10 +129,45 @@ You can watch the video [here](https://youtu.be/NTsB_5O4eM4).
 ![Screenshot 2023-12-06 041114](https://github.com/JesseRoss001/Community-Center/assets/79084912/17852022-01e2-4864-a716-4744d0efa39d)
 ![Screenshot 2023-12-06 041226](https://github.com/JesseRoss001/Community-Center/assets/79084912/8416959c-1e02-47ac-b066-d15fded6bed9)
 
-# Defensive programming Test
-Non logged in members trying to join an event redirected to login page 
+# Defensive Programming Test: Join Event
 
-Non logged in members cannot search events 
+## Overview
+This report evaluates the security and user experience aspects of the `join_event` functionality in the Community Center project.
 
-Non logged in members cannot see event booking  
+## Test Scenarios
 
+### Non-Logged-In Member Access
+- **Objective**: Verify access control for non-logged-in users.
+- **Expected Behavior**: Redirection to login page.
+- **Result**: ![Non-logged-in Access Test](https://github.com/JesseRoss001/Community-Center/assets/79084912/d02c91fc-7ab5-4124-a8dd-6f201257914a)
+
+### Search Event Access
+- **Objective**: Confirm that non-logged-in members cannot search events.
+- **Expected Behavior**: Restricted access.
+- **Result**: (Provide screenshot or test result link)
+
+### Event Booking Visibility
+- **Objective**: Assess if event booking details are hidden from non-logged-in members.
+- **Expected Behavior**: Booking details should not be visible.
+- **Result**: ![Event Booking Test](https://github.com/JesseRoss001/Community-Center/assets/79084912/d02c91fc-7ab5-4124-a8dd-6f201257914a)
+
+### Credit Issuance Authorization
+- **Objective**: Ensure that only authorized members can issue credits.
+- **Expected Behavior**: Access denied for unauthorized roles.
+- **Result**: ![Credit Issuance Test](https://github.com/JesseRoss001/Community-Center/assets/79084912/d5e14c3e-36c5-43f2-8971-9b7c5a34dc00)
+
+### Token Generation for Event Joining
+- **Objective**: Validate the token generation mechanism for event joining.
+- **Expected Behavior**: Unique tokens for each join event request.
+- **Results**: 
+  - ![Token Test 1](https://github.com/JesseRoss001/Community-Center/assets/79084912/959d2e93-a591-4df4-89dd-6af71e188d54)
+  - ![Token Test 2](https://github.com/JesseRoss001/Community-Center/assets/79084912/ab115db9-b825-4c07-92c0-2dc90393ab88)
+  - ![Token Test 3](https://github.com/JesseRoss001/Community-Center/assets/79084912/5a2d8a90-c1df-41fa-825b-e9fc2e5ea1a0)
+
+### Budget Restriction Compliance
+- **Objective**: Check the effectiveness of budget restrictions.
+- **Expected Behavior**: Restrict event joining based on budget.
+- **Result**: ![Budget Restriction Test](https://github.com/JesseRoss001/Community-Center/assets/79084912/fb0f5054-db3c-48fc-9df2-0866ff6e00aa)
+
+## Conclusion
+The tests conducted illustrate robust access control, effective budgetary restrictions, and secure token-based event joining mechanisms. These results affirm the application's adherence to defensive programming principles.

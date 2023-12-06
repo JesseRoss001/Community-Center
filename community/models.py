@@ -188,6 +188,7 @@ class Booking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     booking_time = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         unique_together = ('event', 'user_profile')
 
@@ -311,3 +312,4 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating for {self.instructor.user.username} by {self.user.username}: {self.score}"  # noqa: W291
+

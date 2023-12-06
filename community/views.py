@@ -436,34 +436,38 @@ def join_event(request, event_id):
     if existing_booking:
         messages.info(request, "You have already joined this event.")
     if request.method == 'POST':
+        # Check if the event has capacity before creating a booking
         if event.capacity > 0:
-            event.capacity -= 1
-            event.save()
-            # balance transfer
-            if event.author.role != GOVERNMENT_OFFICIAL:
-                event.author.balance += Decimal('7.00')
-                event.author.save()
-                BalanceChange.objects.create(
-                    user_profile=event.author,
-                    event=event,
-                    change_amount=Decimal('7.00'),
-                    transaction_type="Event Joining Fee Recieved"
-                )
-            request.user.profile.balance -= Decimal('7.00')
-            request.user.profile.save()
-            BalanceChange.objects.create(
-                user_profile=request.user.profile,
-                event=event,
-                change_amount=Decimal('7.00'),
-                transaction_type='Event Joing Fee Paid'
-            )
+            with transaction.atomic():
+                # Decrease the event capacity
+                event.capacity -= 1
+                event.save(update_fields=['capacity'])
+                if event.author.role != GOVERNMENT_OFFICIAL:
+                    event.author.user.profile.balance += Decimal('7.00')
+                    event.author.user.profile.save(update_fields=['balance'])
+                    BalanceChange.objects.create(
+                        user_profile=event.author.user.profile,
+                        event=event,
+                        change_amount=Decimal('7.00'),
+                        transaction_type="Event Joining Fee Received"
+                    )
+                    user_profile.balance -= Decimal('7.00')
+                    user_profile.save(update_fields=['balance'])
+                    BalanceChange.objects.create(
+                        user_profile=user_profile,
+                        event=event,
+                        change_amount=Decimal('-7.00'),
+                        transaction_type='Event Joining Fee Paid'
+                    )
+                Booking.objects.create(event=event, user_profile=user_profile)
+                messages.success(request, "You have successfully joined the event")
         else:
-            messages.error(request, "Event is full ")
-        Booking.objects.create(event=event, user_profile=user_profile)
-        messages.success(request, "You have successfully joined the event ")
-        return redirect('home')
-    return render(request, 'community/join_event.html', {'event': event})
+            messages.error(request, "Event is full")
 
+        return redirect('home')
+    else:
+        return render(request, 'community/join_event.html', {'event': event})
+    
 
 @login_required
 def like_event(request, event_id):

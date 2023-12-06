@@ -6,11 +6,11 @@ from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import (like_event, submit_rating, issue_credit,
-search_events, issue_credit)
+                    search_events, issue_credit)
 
 
 urlpatterns = [
-    path('', views.home , name='home'),  # noqa: E203
+    path('', views.home, name='home'),  # noqa: E203
     path('events/', views.events, name='events'),
     path('about/', views.about, name='about'),
     path('gallery/', views.gallery, name='gallery'),

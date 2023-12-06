@@ -109,7 +109,7 @@ def gallery(request):
     return render(request, 'community/gallery.html',
                   {'events_with_images': events_with_images})
 
-
+@login_required
 def booking(request):
     event_date_str = request.GET.get('event_date')
     event_id = request.GET.get('event_id')

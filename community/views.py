@@ -5,6 +5,7 @@ from decimal import Decimal
 from itertools import accumulate
 import json
 import logging
+import uuid
 # Related third party imports
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
@@ -28,6 +29,10 @@ from .models import (
     UserProfile, GOVERNMENT_OFFICIAL, INSTRUCTOR, GENERAL_PUBLIC, STAFF, Event,
     Booking, TIME_SLOTS, BalanceChange, Rating, Like)
 
+
+def my_view(request):
+    # Generate a unique token
+    request.session['my_unique_token'] = str(uuid.uuid4())
 
 def home(request):
     """
@@ -111,6 +116,7 @@ def gallery(request):
 
 @login_required
 def booking(request):
+    request.session['my_unique_token'] = str(uuid.uuid4())
     event_date_str = request.GET.get('event_date')
     event_id = request.GET.get('event_id')
     highlighted_event_id = request.GET.get('event_id')
@@ -415,33 +421,26 @@ def delete_event_image(request, event_id):
 
 @login_required
 def join_event(request, event_id):
-    """
-    The view function for users to join an event.
-    Handles the booking process for an event
-    and updates the user's balance accordingly.
-    """
+    token = request.GET.get('token', '')
+    if not token or token != request.session.get('my_unique_token'):
+        return HttpResponseForbidden("Invalid access method.")
     event = get_object_or_404(Event, id=event_id)
     user_profile = request.user.profile
-    if user_profile.role == GENERAL_PUBLIC:
-        if  user_profile.balance < Decimal('-28.00'):  # noqa: E231
-            messages.error(request, "Your balance is too low to join this event.")
-            return redirect('home')
+
     if user_profile.role in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
-        messages.error(
-            request,
-            "Instructors and officials aren't allowed to join booking classes")
+        messages.error(request, "Instructors and officials aren't allowed to join booking classes")
         return redirect('home')
-    existing_booking = Booking.objects.filter(
-        event=event, user_profile=user_profile).exists()
-    if existing_booking:
+
+    if Booking.objects.filter(event=event, user_profile=user_profile).exists():
         messages.info(request, "You have already joined this event.")
+        return redirect('home')
+
     if request.method == 'POST':
-        # Check if the event has capacity before creating a booking
-        if event.capacity > 0:
+        if event.capacity > 0 and not Booking.objects.filter(event=event).count() >= event.capacity:
             with transaction.atomic():
-                # Decrease the event capacity
                 event.capacity -= 1
                 event.save(update_fields=['capacity'])
+                
                 if event.author.role != GOVERNMENT_OFFICIAL:
                     event.author.user.profile.balance += Decimal('7.00')
                     event.author.user.profile.save(update_fields=['balance'])
@@ -451,6 +450,7 @@ def join_event(request, event_id):
                         change_amount=Decimal('7.00'),
                         transaction_type="Event Joining Fee Received"
                     )
+
                     user_profile.balance -= Decimal('7.00')
                     user_profile.save(update_fields=['balance'])
                     BalanceChange.objects.create(
@@ -462,8 +462,7 @@ def join_event(request, event_id):
                 Booking.objects.create(event=event, user_profile=user_profile)
                 messages.success(request, "You have successfully joined the event")
         else:
-            messages.error(request, "Event is full")
-
+            messages.error(request, "Event is full or you have already joined.")
         return redirect('home')
     else:
         return render(request, 'community/join_event.html', {'event': event})

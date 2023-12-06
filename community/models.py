@@ -188,6 +188,8 @@ class Booking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     booking_time = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ('event', 'user_profile')
 
     def save(self, *args, **kwargs):
         if self.event.date < timezone.now().date():

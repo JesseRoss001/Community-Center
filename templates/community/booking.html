@@ -63,9 +63,11 @@
                             <button class="btn btn-danger mb-2 btn-sm disabled">Fully Booked</button>
                             {% else %}
                             
-                            <a href="{% url 'join_event' event.id %}"
-                                class=" mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
-                                onclick="return confirmJoinEvent()"><span class="visually-hidden">Join this event on
+                            <a href="{% url 'join_event' event.id %}?token={{ request.session.my_unique_token }}"
+                            class="mb-2 btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-info {% endif %} btn-sm"
+                            onclick="return confirmJoinEvent()">
+                        
+                         <span class="visually-hidden">Join this event on
                                     {{ event.date }} at {{ event.time }}</span> Join Event </a>
                             {% endif %}
                             

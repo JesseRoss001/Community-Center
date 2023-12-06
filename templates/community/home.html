@@ -232,9 +232,6 @@
         <div class="col-md-4 mb-3 ">
             <div class="card bg-light  card-opacity border-0 justify-content-center align-items-center">
                 <strong>{{ event.title }}</strong>
-                {% if event.image %}
-                <img src="{{ event.image.url }}" alt="Event Image">
-                {% endif %}
                 <p>Date: {{ event.date }}</p>
                 <p>Start Time : {{ event.time }}</p>
                 <p> Capacity: {{ event.capacity }}</p>
@@ -338,6 +335,9 @@
                                     <!-- Display cost based on event author's role -->
                                     {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
                                     {% else  %} £0.00
+                                    {% endif %}
+                                    {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">
                                     {% endif %}
                                 </div>
                             </div>

@@ -96,6 +96,9 @@
                                             {% if event.author.role == 'INSTRUCTOR' %} £ 7.00
                                             {% else  %} £0.00
                                             {% endif %}
+                                            {% if event.image %}
+                                            <img src="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">
+                                            {% endif %}
                                             <!-- Placeholder for event cost -->
                                             <!-- Inside your event loop in the template -->
                                             <button class="btn btn-info like-btn"

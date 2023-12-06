@@ -102,22 +102,63 @@ When in doubt, use the above method instead, and delete the table below.
 
 ## User Story Testing
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
+Homepage Access for Guest Users
+Contribution: Simplifies discovery of community offerings without the barrier of forced registration.
+Implementation: A welcoming homepage with clear CTAs and information about the community centre's offerings.
 
-Testing user stories is actually quite simple, once you've already got the stories defined on your README.
 
-Most of your project's **features** should already align with the **user stories**,
-so this should as simple as creating a table with the user story, matching with the re-used screenshot
-from the respective feature.
+![Screenshot 2023-12-06 010515](https://github.com/JesseRoss001/Community-Center/assets/79084912/9696b3d1-be88-4933-b880-217abe991f53)
 
-🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-🛑🛑🛑🛑🛑 START OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 
-Use this section to list any known issues you ran into while writing your Jest tests.
-Remember to include screenshots (where possible), and a solution to the issue (if known).
 
-This can be used for both "fixed" and "unresolved" issues.
+
+
+
+
+
+Event Browsing for Guest Users
+Contribution: Engages the public by showcasing events and encourages registration.
+Implementation: Publicly accessible events page with filters for dates and categories.
+Account Login for Registered Users
+Contribution: Personalizes the experience and unlocks full platform features.
+Implementation: Secure login system with personalized dashboard reflecting bookings and interests.
+Government Portal Access
+Contribution: Streamlines event management for government-sponsored activities.
+Implementation: Separate login portal for government officials with additional event management tools.
+Instructor Dashboard Access
+Contribution: Enables instructors to manage their offerings and engage with the community.
+Implementation: Instructor dashboard for course management, scheduling, and communication with attendees.
+Event Booking for Users
+Contribution: Facilitates community participation in events.
+Implementation: Intuitive booking system with confirmation and calendar integration.
+Booking Details for Users
+Contribution: Informs users to make educated decisions about event participation.
+Implementation: Detailed event pages with cost, duration, and other relevant information.
+Course Pricing for Instructors
+Contribution: Provides instructors with a revenue stream for their services.
+Implementation: Pricing options during event creation with secure payment processing.
+Course Addition for Government Officials
+Contribution: Offers educational opportunities to the community.
+Implementation: Special privileges for government officials to create and manage free courses.
+Event Calendar for Users
+Contribution: Assists users in planning their schedules around community events.
+Implementation: Interactive calendar view of events that users can subscribe to.
+User Management for Admins
+Contribution: Ensures appropriate access and maintains platform integrity.
+Implementation: Admin panel for user role assignment and access control.
+Gallery Management for Admins
+Contribution: Enhances the visual appeal and informational value of the platform.
+Implementation: Admin tools for curating and managing the event gallery.
+Feedback Submission for Users
+Contribution: Collects community input for continuous improvement.
+Implementation: Feedback forms and rating systems for events and courses.
+Booking and Transaction Oversight for Admins
+Contribution: Monitors the financial and operational health of the community center.
+Implementation: Dashboard with reports on bookings, cancellations, and financial transactions.
+Event Modification for Instructors/Government Officials
+Contribution: Adds flexibility to event management to adapt to unforeseen circumstances.
+Implementation: Tools to edit, reschedule, or cancel events with automated attendee notifications
 
 🛑🛑🛑🛑🛑 END OF NOTES (to be deleted) 🛑🛑🛑🛑🛑
 

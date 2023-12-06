@@ -112,8 +112,9 @@ For officals and instructors events can be booked directly from the booking page
 Redirect after creating instructors bug . 
 ![Screenshot 2023-12-06 034858](https://github.com/JesseRoss001/Community-Center/assets/79084912/696654fa-7f26-4b60-bce2-2b85201ca3f3)
 
-NB NB NB NB  Joining Fee bug should costs users zero for official joining events 
+NB NB NB NB  Joining Fee bug should costs users zero for official joining events Error fixed 
 Staff memebers require a staff id 6 digits or less 
+![Screenshot 2023-12-06 040756](https://github.com/JesseRoss001/Community-Center/assets/79084912/6424191d-abaa-4699-89b5-6f46b98fa74b)
 
 staff members can view all users budgets and credit them if they make payment in person 
 ![Screenshot 2023-12-06 035549](https://github.com/JesseRoss001/Community-Center/assets/79084912/2a0a4cf2-5441-4bc3-9e04-603db0703f27)
@@ -124,3 +125,18 @@ staff members can view all users budgets and credit them if they make payment in
 ![Screenshot 2023-12-06 035634](https://github.com/JesseRoss001/Community-Center/assets/79084912/ddf23bd4-4d35-46c3-acf2-cf88574963f8)
 
 ![Screenshot 2023-12-06 035645](https://github.com/JesseRoss001/Community-Center/assets/79084912/cb376479-228e-40a9-b53f-e0ea2e9a6b0e)
+Admin login 
+Can view all balance changes and ammounts. Can delete specific transfers . ![Screenshot 2023-12-06 041015](https://github.com/JesseRoss001/Community-Center/assets/79084912/524581a2-8fcd-4178-9092-1c5dc7563b75)
+
+can view and delete specific bookings  . 
+![Screenshot 2023-12-06 041034](https://github.com/JesseRoss001/Community-Center/assets/79084912/5fd515fe-2a8d-4685-9f56-aa838262a8d4)
+
+can view update and delete events. Can filter events to notice any system errors , can filter by has image and has not can delete images . 
+![Screenshot 2023-12-06 041114](https://github.com/JesseRoss001/Community-Center/assets/79084912/17852022-01e2-4864-a716-4744d0efa39d)
+
+can view user roles budgets delete and filter by role . 
+
+![Screenshot 2023-12-06 041226](https://github.com/JesseRoss001/Community-Center/assets/79084912/8416959c-1e02-47ac-b066-d15fded6bed9)
+
+
+

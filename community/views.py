@@ -34,6 +34,7 @@ def my_view(request):
     # Generate a unique token
     request.session['my_unique_token'] = str(uuid.uuid4())
 
+
 def home(request):
     """
     The view function for the home page of the community.
@@ -114,6 +115,7 @@ def gallery(request):
     return render(request, 'community/gallery.html',
                   {'events_with_images': events_with_images})
 
+
 @login_required
 def booking(request):
     request.session['my_unique_token'] = str(uuid.uuid4())
@@ -182,9 +184,7 @@ def register_staff(request):
     else:
         form = StaffForm()
     return render(
-        request,
-        'community/register_staff.html',
-        {'form':form})  # noqa: E231
+        request, 'community/register_staff.html', {'form':form})  # noqa: E231
 
 
 def register_government(request):
@@ -203,7 +203,7 @@ def register_government(request):
             return redirect('home')
     else:
         form = GovernmentOfficialForm()
-    return render(request, 'community/register_government.html', {'form':form})  # noqa: E231
+    return render(request, 'community/register_government.html', {'form':form})
 
 
 def register_instructor(request):
@@ -222,7 +222,7 @@ def register_instructor(request):
             return redirect('home')
     else:
         form = InstructorForm()
-    return render(request, 'community/register_instructor.html', {'form':form})  # noqa: E231
+    return render(request, 'community/register_instructor.html', {'form':form})
 
 
 def general_public(request):
@@ -239,7 +239,7 @@ def general_public(request):
             return redirect('home')
     else:
         form = GeneralPublicForm()
-    return render(request, 'community/register_public.html', {'form':form})  # noqa: E231
+    return render(request, 'community/register_public.html', {'form':form})
 # Creating +update the event view
 
 
@@ -429,7 +429,7 @@ def join_event(request, event_id):
 
     # Instructors and officials aren't allowed to join booking classes
     if user_profile.role in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
-        messages.error(request, "Instructors and officials aren't allowed to join booking classes")
+        messages.error(request, "Permission denied")
         return redirect('home')
 
     # Check if user has already joined the event
@@ -438,17 +438,17 @@ def join_event(request, event_id):
         return redirect('home')
 
     if request.method == 'POST':
-        if event.capacity > 0 and not Booking.objects.filter(event=event).count() >= event.capacity:
+        if event.capacity > 0 and not Booking.objects.filter(event=event).count() >= event.capacity:  # noqa: E501
             # Check if user balance will fall below -28 after joining the event
             event_join_fee = Decimal('7.00')
             if user_profile.balance - event_join_fee >= Decimal('-28.00'):
                 with transaction.atomic():
                     event.capacity -= 1
                     event.save(update_fields=['capacity'])
-                    
                     if event.author.role != GOVERNMENT_OFFICIAL:
                         event.author.user.profile.balance += event_join_fee
-                        event.author.user.profile.save(update_fields=['balance'])
+                        event.author.user.profile.save(
+                            update_fields=['balance'])
                         BalanceChange.objects.create(
                             user_profile=event.author.user.profile,
                             event=event,
@@ -464,16 +464,22 @@ def join_event(request, event_id):
                             change_amount=-event_join_fee,
                             transaction_type='Event Joining Fee Paid'
                         )
-                    Booking.objects.create(event=event, user_profile=user_profile)
-                    messages.success(request, "You have successfully joined the event")
+                    Booking.objects.create(
+                        event=event, user_profile=user_profile)
+                    messages.success(
+                        request, "You have successfully joined the event")
             else:
-                messages.error(request, "Insufficient balance to join the event.")
+                messages.error(
+                    request, "Insufficient balance to join the event.")
             return redirect('home')
         else:
-            messages.error(request, "Event is full or you have already joined.")
+            messages.error(
+                request, "Event is full or you have already joined.")
             return redirect('home')
     else:
         return render(request, 'community/join_event.html', {'event': event})
+
+
 @login_required
 def like_event(request, event_id):
     """

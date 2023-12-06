@@ -3,6 +3,7 @@
 {% block title %} Events - {{block.super}}{% endblock title %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="row justify-content-center align-items-center p-1 border-0 rounded d-flex carousel-inner"> <!-- Content styling to match website -->
     <div class="col-11 col-md-9 col-lg-7 mt-5 p-1 mb-5 border-0 rounded" id="main-background">
         <div class="bg-light m-1 p-1 border-0 rounded ">
@@ -17,5 +18,5 @@
         </form>
     </div>
 </div>
-
+{% endif %}
 {% endblock content %}

@@ -130,3 +130,9 @@ You can watch the video [here](https://youtu.be/NTsB_5O4eM4).
 ![Screenshot 2023-12-06 041226](https://github.com/JesseRoss001/Community-Center/assets/79084912/8416959c-1e02-47ac-b066-d15fded6bed9)
 
 # Defensive programming Test
+Non logged in members trying to join an event redirected to login page 
+
+Non logged in members cannot search events 
+
+Non logged in members cannot see event booking  
+

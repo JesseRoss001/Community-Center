@@ -2,6 +2,7 @@
 
 <!-- confirm_delete.html - Template for confirming the deletion of an event -->
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-5 d-flex justify-content-center align-items-center">
      <!-- Container for the delete confirmation section with styling for centering and margin -->
     <div class="row justify-content-center align-items-center d-flex carousel-inner border-0 rounded">
@@ -18,7 +19,7 @@
 </div>
 </div>
 </div>
->
+{% endif %}
 <script>
     // JavaScript for handling the delete confirmation dialog
     document.addEventListener('DOMContentLoaded', function() {

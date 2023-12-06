@@ -1,6 +1,7 @@
 {% extends 'community/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-4">
 <h2> Delete Event Image </h2><!-- Heading for deleting event image -->
 <p> Are you sure you want to delete the image for the event "{{ event.title }}"?</p><!-- Confirmation message with event title -->
@@ -11,4 +12,5 @@
     <a href="{% url 'gallery' %}" class="btn btn-secondary"> Cancel </a><!-- Button to cancel and return to the gallery -->
 </form>
 </div>
+{% endif %}
 {% endblock %}

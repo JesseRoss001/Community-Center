@@ -1,0 +1,76 @@
+/* List Styling - Removing default list styles */
+li {
+    text-decoration: none;
+    list-style-type: none;
+  }
+  
+  ul {
+    text-decoration: none;
+    list-style-type: none;
+  }
+  
+  /* Schedule Card Styling */
+  .schedule-card {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .schedule-card .card-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+  }
+  
+  /* Time Slot Styling */
+  .time-slot {
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Availability Status Styling */
+  .status-available {
+    color: #28a745;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Event Title Styling */
+  .event-title {
+    font-style: italic;
+  }
+  
+  /* Join Event Button Styling */
+  .join-event.btn {
+    font-size: 0.8rem;
+    margin-top: auto;
+    width: 100%;
+  }
+  
+  /* Cleaning Break Styling */
+  .cleaning-break {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: center;
+    padding: 0.5rem 0;
+    background-color: #e2e6ea;
+    margin-top: 0.5rem;
+  }
+  
+  .cleaning-break-badge {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #17a2b8;
+    padding: 0.25rem 0.5rem;
+    margin: 0.5rem 0;
+    border-radius: 0.25rem;
+  }
+
+
+
+

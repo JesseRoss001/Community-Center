@@ -177,14 +177,6 @@ img-facility {
   transition: 0.3s;
 }
 
-#shareButtonContainer {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.3s;
-}
-
 /* Main Button Styles */
 .main-button {
   z-index: 10;
@@ -218,16 +210,16 @@ img-facility {
 }
 
 /* Share Buttons Pop-up Animation */
-#shareButtonContainer.active .discord-button { transform: translate(calc(70px - 50px), 0px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .twitter-button { transform: translate(calc(47px - 50px), -47px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .reddit-button { transform: translate(calc(0px - 50px), -70px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .messenger-button { transform: translate(calc(-47px - 50px), -47px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .pinterest-button { transform: translate(calc(-70px - 50px), 0px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .instagram-button { transform: translate(calc(-47px - 50px), 47px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .snapchat-button { transform: translate(calc(0px - 50px), 70px); opacity: 1; visibility: visible; }
-#shareButtonContainer.active .whatsapp-button { transform: translate(calc(47px - 50px), 47px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .discord-button { transform: translate(70px, 0px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .twitter-button { transform: translate(47px, -47px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .reddit-button { transform: translate(0px, -70px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .messenger-button { transform: translate(-47px, -47px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .pinterest-button { transform: translate(-70px, 0px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .instagram-button { transform: translate(-47px, 47px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .snapchat-button { transform: translate(0px, 70px); opacity: 1; visibility: visible; }
+#shareButtonContainer.active .whatsapp-button { transform: translate(47px, 47px); opacity: 1; visibility: visible; }
 
-/* Button Hover Background Colors */
+/* Button Hover Styles */
 .discord-button:hover { background-color: #5865F2; }
 .twitter-button:hover { background-color: #1CA1F1; }
 .reddit-button:hover { background-color: #FF4500; }

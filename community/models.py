@@ -312,4 +312,3 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating for {self.instructor.user.username} by {self.user.username}: {self.score}"  # noqa: W291
-

@@ -153,4 +153,3 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(BalanceChange, BalanceChangeAdmin)
-

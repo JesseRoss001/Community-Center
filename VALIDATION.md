@@ -1,15 +1,6 @@
 ## HTML Validation Errors
 Return back to the [README.md](README.md) file.
-The following pages have been checked for HTML validation:
 
-- [Community Centre Main Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/)
-- [About Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/about/)
-- [Gallery Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/gallery/)
-- [Login Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/accounts/login/)
-- [Public Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_public/)
-- [Instructor Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_instructor/)
-- [Government Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_government/)
-- [Staff Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_staff/)
 
 ### Known Validation Error
 

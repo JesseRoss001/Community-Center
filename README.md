@@ -201,7 +201,7 @@ The intitial time boxing document can be found below
 - The site's aesthetics are both engaging and professional, contributing to a pleasant user experience and reinforcing brand identity.
 
 ##  Load Times
-- [ Focus for second sprint ]
+- [ Focus for second sprint ] Improvement made 07-12-2023 
 
 ## Accessibility
 - The site is designed with accessibility in mind, ensuring it is usable by people with diverse abilities.

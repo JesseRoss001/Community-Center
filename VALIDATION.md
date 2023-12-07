@@ -79,32 +79,24 @@ The codebase now adheres  to PEP 8 standards.
 ![Screenshot 2023-12-07 115622](https://github.com/JesseRoss001/Community-Center/assets/79084912/2869d9c3-cdf3-460f-a4a4-060cc3fcd5b9)
 
 
-## JavaScript File Metrics (Analyzed with JSHint)
+# JavaScript Validation Report  /JS HINT 
+![Screenshot 2023-12-07 121455](https://github.com/JesseRoss001/Community-Center/assets/79084912/bb3937f7-fd35-46b4-8086-0d8fdf2ddfe9)
 
-- Total Functions: 25
-- Largest Function Signature: 3 arguments
-- Median Function Signature: 1 argument
-- Largest Function Statements: 12
-- Median Function Statements: 1
-- Most Complex Function Cyclomatic Complexity: 7
-- Median Cyclomatic Complexity: 1
-- Warnings: 27
+## Overview
 
-    - 'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
-    - 'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
-    - 'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
-    - 'template literal syntax' is only available in ES6 (use 'esversion: 6').
-    - Unrecoverable syntax error. (80% scanned).
+I've conducted a static analysis of the JavaScript code using a linter, which has helped to highlight areas for improvement and confirm good practices already in place. The tool has been instrumental in detecting errors and potential issues.
 
-- Unused Variables: 5
+## Metrics Observed
 
-    - eventDate
-    - eventGraph
-    - instructorEventDates
-    - governmentEventDates
-    - eventParticipationGraph
+In my code, I have a total of 25 functions, indicating a modular approach to scripting. The largest function signature takes 3 arguments, slightly above the median of 1, which suggests some functions might be doing more complex tasks. The most extensive function consists of 12 statements, again indicating more elaborate logic than the median of 1 statement per function. The cyclomatic complexity measures the code's complexity, with the most intricate function having a value of 7, while the median complexity is 1.
 
-## CSS Validation - Zero Errors Achieved!
+## Identified Issues and Explanations
+
+The linter has pointed out two undefined variables, `Chart` and `$`. These are not errors in the code but rather indicators of external dependencies. The variable `Chart` is utilized in conjunction with the Chart.js library, which is a separate script included in the project for rendering charts and graphs. The `$` symbol is a common alias for jQuery, another external library that simplifies DOM manipulation and event handling.
+
+Additionally, four variables have been marked as unused: `eventDate`, `eventGraph`, `instructorEventDates`, and `governmentEventDates`. These variables are placeholders for future features where event data will be dynamically rendered on the page, and thus, they are necessary for the planned scalability of the application.
+
+
 
 
 

@@ -728,6 +728,8 @@ You can fork this repository by using the following steps:
 | Pexels | Event Images | Free-to-use images sourced for website content CC BY |
 | Code Institute Blog | Inspiration and project iniliasing |
 | Bootstrap CSS | Site wide 
+|ADEMOLA THOMPSON|https://www.makeuseof.com/create-custom-404-error-page-django/|404 error page
+
 
 - "Yoga Class" by Andrea Piacquadio
 - "Playing Chess" by Alex Green

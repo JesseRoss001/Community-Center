@@ -1,3 +1,4 @@
+#HTML 
 
 # PEP 8 Validation Report
 
@@ -82,3 +83,4 @@ The codebase now adheres  to PEP 8 standards.
 - **Cross-Browser Compatibility**: This validation ensures that my stylesheets are more likely to be rendered consistently across different web browsers.
 - **Optimized Performance**: Error-free CSS can help to speed up page loading times, providing a better user experience.
 
+![Screenshot 2023-12-07 120315](https://github.com/JesseRoss001/Community-Center/assets/79084912/01201b0c-4494-4f37-b87a-f71f7fc7f17f)

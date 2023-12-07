@@ -631,6 +631,9 @@ def get_cumulative_graph_data(request):
     }
     return context
 
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
 
 @login_required
 def search_events(request):
@@ -694,5 +697,4 @@ def search_events(request):
         'form': form,
         'event_details_list': event_details_list,
     }
-
     return render(request, 'community/search_events.html', context)

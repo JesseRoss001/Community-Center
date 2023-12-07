@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 from django.conf import settings
+from django.conf.urls import handler404
 from django.conf.urls.static import static, serve
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
@@ -26,3 +27,4 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^$', RedirectView.as_view(url='community/', permanent=False)),
 ]
+handler404 = 'community.views.custom_404'

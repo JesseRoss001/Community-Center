@@ -26,4 +26,3 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^$', RedirectView.as_view(url='community/', permanent=False)),
 ]
-

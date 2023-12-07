@@ -6,6 +6,40 @@ Return back to the [README.md](README.md) file.
 
 You can watch the video [here](https://youtu.be/NTsB_5O4eM4).
 
+# Lighthouse Performance Testing Summary
+
+## Personal Overview on Mobile Performance
+
+- **Current Performance Score**: The low performance score for the mobile version is by design, due to the inclusion of carousel images. Despite their compression, these images significantly affect the overall score.
+
+## Efforts Implemented
+
+- **Image Optimization**: I have compressed the carousel images to reduce the load time, which is a known factor in performance scoring.
+
+## Future Developments
+
+- **Adopting Next-Generation Images**: In my next sprint, I plan to utilize next-generation images to further improve performance. This should offer a better balance between image quality and file size, leading to improved load times.
+
+## Design Considerations
+
+- **Accessibility and Color Usage**: Accessibility and thoughtful color usage have been paramount in my design process. Ensuring that our site is usable for all, including those with disabilities, has been a key factor in our design choices.
+
+## Conclusion
+
+I am dedicated to continuously enhancing our mobile site's performance and user experience. The forthcoming updates are poised to address the existing bottlenecks, with an expectation of a substantial improvement in our performance metrics.
+
+---
+
+*Note: This report reflects my commitment to site optimization and user-centric design. The performance metrics are periodically reviewed and updated in line with new optimizations and feature rollouts.*
+![Screenshot 2023-12-07 123300](https://github.com/JesseRoss001/Community-Center/assets/79084912/c0a65ddc-d4f0-45c3-8658-c71f8c32c9b7)
+![Screenshot 2023-12-07 123417](https://github.com/JesseRoss001/Community-Center/assets/79084912/bf2a3b66-8e07-44d0-8f4e-c3ce37c22c8f)
+![Screenshot 2023-12-07 123515](https://github.com/JesseRoss001/Community-Center/assets/79084912/5a4c3594-67eb-4c29-b51a-3623c60eebb2)
+![Screenshot 2023-12-07 123539](https://github.com/JesseRoss001/Community-Center/assets/79084912/d0adda8c-2cbd-4f25-ba65-c1ca72cee726)
+![Screenshot 2023-12-07 123559](https://github.com/JesseRoss001/Community-Center/assets/79084912/68b264de-76a3-4d9f-a97b-21229a0592b2)
+![Screenshot 2023-12-07 123626](https://github.com/JesseRoss001/Community-Center/assets/79084912/9b760053-1d9a-422c-a37b-dfa3e4c5e6df)
+![Screenshot 2023-12-07 123648](https://github.com/JesseRoss001/Community-Center/assets/79084912/f6144693-a587-41a3-b7c7-83ca5305752e)
+![Screenshot 2023-12-07 123722](https://github.com/JesseRoss001/Community-Center/assets/79084912/00f0116c-7612-450d-8a5c-439032b047fd)
+![Screenshot 2023-12-07 123743](https://github.com/JesseRoss001/Community-Center/assets/79084912/d5e616c4-fc95-4a4d-b349-115049f11019)
 
 
 # Feature Testing

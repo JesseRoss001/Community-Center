@@ -184,7 +184,7 @@ def register_staff(request):
     else:
         form = StaffForm()
     return render(
-        request, 'community/register_staff.html', {'form':form})  # noqa: E231
+        request, 'community/register_staff.html', {'form': form})  # noqa: E231
 
 
 def register_government(request):
@@ -203,7 +203,8 @@ def register_government(request):
             return redirect('home')
     else:
         form = GovernmentOfficialForm()
-    return render(request, 'community/register_government.html', {'form':form})
+    return render(
+        request, 'community/register_government.html', {'form': form})
 
 
 def register_instructor(request):
@@ -222,7 +223,8 @@ def register_instructor(request):
             return redirect('home')
     else:
         form = InstructorForm()
-    return render(request, 'community/register_instructor.html', {'form':form})
+    return render(
+        request, 'community/register_instructor.html', {'form': form})
 
 
 def general_public(request):
@@ -239,7 +241,7 @@ def general_public(request):
             return redirect('home')
     else:
         form = GeneralPublicForm()
-    return render(request, 'community/register_public.html', {'form':form})
+    return render(request, 'community/register_public.html', {'form': form})
 # Creating +update the event view
 
 

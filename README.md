@@ -565,7 +565,7 @@ Using this approach, I was able to apply the MoSCow prioritization and labels to
 ## Testing
 
 For all testing, please refer to the [TESTING.md](TESTING.md) file.
-
+For all validation, please refer to the [VALIDATION.md](VALIDATION.md) file.
 
 The live deployed application can be found deployed on [Heroku](https://community-centre-71f077e09006.herokuapp.com).
 

@@ -1,4 +1,34 @@
-#HTML 
+## HTML Validation Errors
+
+The following pages have been checked for HTML validation:
+
+- [Community Centre Main Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/)
+- [About Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/about/)
+- [Gallery Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/gallery/)
+- [Login Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/accounts/login/)
+- [Public Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_public/)
+- [Instructor Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_instructor/)
+- [Government Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_government/)
+- [Staff Registration Page](https://validator.w3.org/nu/?doc=https://community-centre-71f077e09006.herokuapp.com/community/register_staff/)
+
+### Known Validation Error
+
+An error has been detected by the Nu Html Checker due to the use of Crispy Forms tags which are not standard HTML elements. The error message is as follows:
+
+> Error: Element `ul` not allowed as child of element `small` in this context.
+
+This is a known issue associated with the use of Crispy Forms and will not be resolved as it pertains to the implementation specifics of the Crispy Forms Django package. The error is documented but does not affect the functionality of the forms or the website.
+
+
+![Screenshot 2023-12-07 120315](https://github.com/JesseRoss001/Community-Center/assets/79084912/ee0c318a-6b57-4403-b0a7-a426a941c923)
+![Screenshot 2023-12-07 120726](https://github.com/JesseRoss001/Community-Center/assets/79084912/96023eec-a26b-4c26-af63-abb8a7aa6627)
+![Screenshot 2023-12-07 120742](https://github.com/JesseRoss001/Community-Center/assets/79084912/e2c72992-e69b-4811-b040-3fa28aaf7e9d)
+![Screenshot 2023-12-07 120754](https://github.com/JesseRoss001/Community-Center/assets/79084912/e69c5dfc-bfee-40cc-98a4-c96eab5b17a3)
+![Screenshot 2023-12-07 120809](https://github.com/JesseRoss001/Community-Center/assets/79084912/f346136e-26ae-4988-ae44-02fb09f6b692)
+![Screenshot 2023-12-07 120823](https://github.com/JesseRoss001/Community-Center/assets/79084912/c2e041ff-c82e-4b94-b84b-c53c2009727e)
+![Screenshot 2023-12-07 120844](https://github.com/JesseRoss001/Community-Center/assets/79084912/c65b48cd-9cb1-4d6e-9221-80fee6e6eaa6)
+![Screenshot 2023-12-07 120853](https://github.com/JesseRoss001/Community-Center/assets/79084912/ecc3308d-4411-4481-bbcf-347c6b7a034c)
+
 
 # PEP 8 Validation Report
 

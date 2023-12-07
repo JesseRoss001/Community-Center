@@ -117,6 +117,8 @@ This file shows a rough demonstration on how the MVT was planned to be ready to 
 ## Time boxing 
 The intitial time boxing document can be found below 
 [View time boxing here] (https://drive.google.com/file/d/1ZcLm_VVa5sJz3wZoFjCXrjSpz_SdAryr/view?usp=sharing)
+![Screenshot 2023-12-07 145634](https://github.com/JesseRoss001/Community-Center/assets/79084912/71193af8-6262-45b3-a7db-acbe6bec345c)
+
 
 
 # Community Center Booking System

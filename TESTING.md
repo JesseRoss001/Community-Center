@@ -1,12 +1,23 @@
 # Testing
 
 Return back to the [README.md](README.md) file.
+## Browser Testing 
+
+The website was tested on Microsoft Edge, Google Chrome , Firefox and Opera; no issues were noted.  Google Chrome testing can be seen in the responsiveness video below. 
+![Screenshot 2023-12-07 191218](https://github.com/JesseRoss001/Community-Center/assets/79084912/76cded81-85cd-4f21-b110-cd1f48cc4585)
+![Screenshot 2023-12-07 191240](https://github.com/JesseRoss001/Community-Center/assets/79084912/1d5fe921-20af-469f-8077-29f0f13970a8)
+![Screenshot 2023-12-07 190619](https://github.com/JesseRoss001/Community-Center/assets/79084912/1d87a52f-f1e2-4443-ba30-933bb1bfb8df)
+![Screenshot 2023-12-07 190703](https://github.com/JesseRoss001/Community-Center/assets/79084912/6bcb6dc8-1db9-4aff-8df4-3d5bc1b7d0ab)
+![Screenshot 2023-12-07 190840](https://github.com/JesseRoss001/Community-Center/assets/79084912/51202974-29a7-4650-852a-7859df6b3cb9)
+![Screenshot 2023-12-07 190908](https://github.com/JesseRoss001/Community-Center/assets/79084912/cfe63a89-76da-47cc-9352-8a91ef85b310)
 
 ## Responsiveness
 
 You can watch the video [here](https://youtu.be/NTsB_5O4eM4).
+This demonstrates full responsiveness across pages
 
 # Lighthouse Performance Testing Summary
+
 
 ## Personal Overview on Mobile Performance
 

@@ -243,6 +243,7 @@ def general_public(request):
         form = GeneralPublicForm()
     return render(request, 'community/register_public.html', {'form': form})
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -254,7 +255,8 @@ def create_event(request, event_id=None):
     prefill_data = {}
 
     if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
-        messages.error(request, "You are not authorised to create events or update them.")
+        messages.error(
+            request, "You are not authorised to create events or update them.")
         return redirect('home')
 
     if event_id:
@@ -271,15 +273,24 @@ def create_event(request, event_id=None):
             event = form.save(commit=False)
             event.author = user_profile
 
-            if event.date > three_months_ahead or event.date < timezone.now().date():
-                messages.error(request, 'Event date must be within 3 months and not in the past.')
-                return render(request, 'community/events/create_event.html', {'form': form})
+            if event.date > three_months_ahead or event.date < timezone.now().date():  # noqa E501
+                messages.error(
+                    request,
+                    'Event date must be within 3 months and not in the past.')
+                return render(
+                    request,
+                    'community/events/create_event.html', {'form': form})
 
-            critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
-            overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
+            critical_profiles = UserProfile.objects.filter(
+                role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
+            overlapping_events = Event.objects.filter(
+                author__in=critical_profiles,
+                date=event.date, time=event.time).exclude(id=event.id)
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
-                return render(request, 'community/events/create_event.html', {'form': form})
+                return render(
+                    request,
+                    'community/events/create_event.html', {'form': form})
 
             event.save()
             messages.success(request, 'Event created successfully.')
@@ -290,7 +301,8 @@ def create_event(request, event_id=None):
         # If it's a GET request, initialize the form with pre-fill data
         form = EventForm(instance=instance, initial=prefill_data)
 
-    return render(request, 'community/events/create_event.html', {'form': form})
+    return render(
+         request, 'community/events/create_event.html', {'form': form})
 
 
 @login_required

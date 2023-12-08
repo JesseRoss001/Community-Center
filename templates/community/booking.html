@@ -170,7 +170,7 @@
             </li>
         {% endif %}
         <!-- Current Page -->
-        <li class="page-item active"><span class="page-link">Page {{ page_obj.number }}</span></li>
+        <li class="page-item active "><span class="page-link bg-info border-0 rounded text-light ">Page {{ page_obj.number }}</span></li>
         {% if page_obj.has_next %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if highlighted_event_id %}&event_id={{ highlighted_event_id }}{% endif %}">
@@ -267,5 +267,26 @@
         });
     });
 </script>
-
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Select all event cards
+    var eventCards = document.querySelectorAll('.event-card');
+  
+    // Function to add hover-effect class
+    function addHoverEffect() {
+      this.classList.add('hover-effect');
+    }
+  
+    // Function to remove hover-effect class
+    function removeHoverEffect() {
+      this.classList.remove('hover-effect');
+    }
+  
+    // Apply event listeners to each card
+    eventCards.forEach(function (card) {
+      card.addEventListener('mouseover', addHoverEffect);
+      card.addEventListener('mouseout', removeHoverEffect);
+    });
+  });
+</script>
 {% endblock %}

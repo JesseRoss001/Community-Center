@@ -401,7 +401,8 @@ def join_event(request, event_id):
 
     # Instructors and officials aren't allowed to join booking classes
     if user_profile.role in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
-        messages.error(request, "Permission denied")
+        messages.error(
+            request, "Instructors or officials cannot join,  denied")
         return redirect('home')
 
     # Check if user has already joined the event

@@ -68,13 +68,10 @@ li {
     background-color: #17a2b8;
     padding: 0.25rem 0.5rem;
     margin: 0.5rem 0;
-    border-radius: 0.25rem;
+    border-radius: 0.24rem;
   }
-  #event.highlighted-event {
-    font-weight: bold;
-    background-color: yellow;
-    border: 2px solid orange;
-}
+
+
 
 
 

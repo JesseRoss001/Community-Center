@@ -222,7 +222,11 @@ img-facility {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.5s, opacity 0.3s, visibility 0.3s;
 }
-
+#event.highlighted-event {
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid orange;
+}  
 /* Share Buttons Pop-up Animation */
 #shareButtonContainer.active .discord-button { transform: translate(calc(70px - 50px), 0px); opacity: 1; visibility: visible; }
 #shareButtonContainer.active .twitter-button { transform: translate(calc(47px - 50px), -47px); opacity: 1; visibility: visible; }

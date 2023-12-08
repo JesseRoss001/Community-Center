@@ -27,7 +27,7 @@
                     <p> {{ time_slot }} </p>
                     {% if slot_data.available %}
                     {% if user.profile.role == 'INSTRUCTOR' or user.profile.role == 'GOVERNMENT' %}
-                    <a href="{% url 'create_event' %}" class="btn btn-success btn-sm">Book Event</a>
+                    <a href="{% url 'create_event' %}?event_date={{ date|date:"Y-m-d" }}&event_time={{ time_slot }}" class="btn btn-success btn-sm">Book Event</a>
                     <!-- Adding a booking button -->
                     {% endif %}
                     {% else %}

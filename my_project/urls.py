@@ -28,5 +28,5 @@ urlpatterns = [
     re_path(r'^$', RedirectView.as_view(url='community/', permanent=False)),
 ]
 handler404 = 'community.views.custom_404'
-handler500 = 'your_app_name.views.custom_500'
-handler403 = 'your_app_name.views.custom_403'
+handler500 = 'community.views.custom_500'
+handler403 = 'community.views.custom_403'

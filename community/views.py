@@ -242,26 +242,28 @@ def general_public(request):
     else:
         form = GeneralPublicForm()
     return render(request, 'community/register_public.html', {'form': form})
-# Creating +update the event view
-
 
 logger = logging.getLogger(__name__)
 
 
 @login_required
 def create_event(request, event_id=None):
-    """
-    The view function for creating or updating an event.
-    Handles form submission for event creation
-    and updates, with validation for event dates and capacity.
-    """
     user_profile = request.user.profile
     three_months_ahead = timezone.now().date() + timedelta(days=90)
-    instance = get_object_or_404(Event, id=event_id) if event_id else None
+    instance = None
+    prefill_data = {}
+
     if user_profile.role not in [INSTRUCTOR, GOVERNMENT_OFFICIAL]:
-        messages.error(
-            request, "You are not authorised to create events or update them.")
+        messages.error(request, "You are not authorised to create events or update them.")
         return redirect('home')
+
+    if event_id:
+        instance = get_object_or_404(Event, id=event_id)
+
+    if 'event_date' in request.GET:
+        prefill_data['date'] = request.GET['event_date']
+    if 'event_time' in request.GET:
+        prefill_data['time'] = request.GET['event_time']
 
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES, instance=instance)
@@ -269,58 +271,26 @@ def create_event(request, event_id=None):
             event = form.save(commit=False)
             event.author = user_profile
 
-            if event.date > three_months_ahead or event.date < timezone.now().date():   # noqa: E231
-                messages.error(
-                    request,
-                    'Event date must be within 3 months and not in the past.')
-                return render(request,
-                              'community/events/create_event.html',
-                              {'form': form})
+            if event.date > three_months_ahead or event.date < timezone.now().date():
+                messages.error(request, 'Event date must be within 3 months and not in the past.')
+                return render(request, 'community/events/create_event.html', {'form': form})
 
-            critical_profiles = UserProfile.objects.filter(
-                role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
-            overlapping_events = Event.objects.filter(
-                author__in=critical_profiles,
-                date=event.date, time=event.time).exclude(id=event.id)
+            critical_profiles = UserProfile.objects.filter(role__in=[INSTRUCTOR, GOVERNMENT_OFFICIAL])
+            overlapping_events = Event.objects.filter(author__in=critical_profiles, date=event.date, time=event.time).exclude(id=event.id)
             if overlapping_events.exists():
                 messages.error(request, 'This time slot is already booked.')
-                return render(request,
-                              'community/events/create_event.html',
-                              {'form': form})
+                return render(request, 'community/events/create_event.html', {'form': form})
 
             event.save()
-
-            if not event_id and user_profile.role == 'INSTRUCTOR':
-                if user_profile.balance >= -400:
-                    user_profile.balance -= 200
-                    user_profile.save()
-                    BalanceChange.objects.create(
-                        user_profile=user_profile,
-                        event=event,
-                        change_amount=-200,
-                        transaction_type="Event Creation Fee"
-                    )
-                else:
-                    messages.error(
-                        request, "Insufficient fund balance to book an event.")
-                    return render(
-                        request, 'community/events/create_event.html',
-                        {'form': form})
-
-            elif not event_id and user_profile.role == 'GOVERNMENT_OFFICIAL':  # noqa: E231
-                user_profile.balance = 0
-                user_profile.save()
-
-            user_profile.created_events.add(event)
             messages.success(request, 'Event created successfully.')
             return redirect('home')
         else:
             messages.error(request, 'Invalid form submission.')
     else:
-        form = EventForm(instance=instance)
+        # If it's a GET request, initialize the form with pre-fill data
+        form = EventForm(instance=instance, initial=prefill_data)
 
-    return render(
-        request, 'community/events/create_event.html', {'form': form})
+    return render(request, 'community/events/create_event.html', {'form': form})
 
 
 @login_required

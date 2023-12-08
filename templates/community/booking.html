@@ -35,7 +35,7 @@
                     <!-- Check if there is an event in this time slot -->
                     <!-- Conditional styling based on event author's role -->
                     <div class=" p-2 mt-2 mb-2  rounded text-center ">
-                        <div id="event{{ forloop.parentloop.counter }}_{{ event.id }}" class="event-card" data-event-id="{{ event.id }}">
+                        <div id="event{{ event.id }}" class="event-card {% if event.id == highlighted_event_id %}highlighted-event{% endif %}" data-event-id="{{ event.id }}">
                         
                         <div class="pt-2 bg-light border-2 {% if event.author.role == 'INSTRUCTOR' %} border-warning {% else %} border-primary {% endif %} rounded">
                             <h5 class="mb-1 {% if event.author.role == 'INSTRUCTOR' %} text-warning {% else %} text-primary {% endif %} ">
@@ -130,7 +130,7 @@
                                                         instructor</span>
                                                 </form>
                                                 {% endif %}
-                                                <a href="{% url 'join_event' event.id %}"
+                                                <a href="{% url 'join_event' event.id %}?token={{ request.session.my_unique_token }}"
                                                     class=" {% if event.id in user_bookings %} d-none {% else %} btn {% if event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %} btn-sm {% endif %}"
                                                     onclick="return confirmJoinEvent()"><span
                                                         class="visually-hidden">Join this event on {{ event.date }} at
@@ -194,24 +194,24 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Listen for clicks on "Find Event" buttons
-        var findEventButtons = document.querySelectorAll('.find-event-btn');
-        findEventButtons.forEach(function(button) {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                var eventDate = button.getAttribute('data-event-date');
-                var eventId = button.getAttribute('data-event-id');
-
-                // Highlight the corresponding event in the "Booking" HTML
-                var eventElement = document.getElementById("event" + eventId);
+        // Get the highlighted event ID from the URL if it exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const highlightedEventId = urlParams.get('event_id');
+    
+        // Delay the scroll to ensure that the document is fully rendered
+        setTimeout(() => {
+            if (highlightedEventId) {
+                // If there is an event to highlight, find it, highlight it, and scroll to it
+                const eventElement = document.getElementById("event" + highlightedEventId);
                 if (eventElement) {
                     eventElement.classList.add("highlighted-event");
-                    eventElement.scrollIntoView({ behavior: 'smooth' });
+                    // Scroll to the eventElement with smooth behavior
+                    eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            }); // Close the click event listener function
-        });
+            }
+        }, 100); // Delay might need to be adjusted depending on the content size
     });
-</script>
+    </script>
 
 <script>
     $(document).ready(function () {

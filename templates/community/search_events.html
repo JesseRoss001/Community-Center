@@ -35,9 +35,9 @@
                 <p>Cost: {% if event_detail.cost == 0.00 %} Free {% else %} £{{ event_detail.cost }}0 {% endif %}</p>
                 <p>Tags: {{ event_detail.tags }}</p>
                 <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
-                    data-bs-target="#eventModal{{ event_detail.id }}">Read More</button>
+                    data-bs-target="#eventModal{{ event_detail.event.id }}">Read More</button>
                     <a href="{% url 'booking' %}?event_date={{ event_detail.event.date|date:'Y-m-d' }}&event_id={{ event_detail.event.id }}" class="btn find-event-btn {% if event_detail.event.author.role == 'INSTRUCTOR' %} btn-warning {% else %} btn-primary {% endif %}">Find Event</a>
-                <div class="modal fade" id="eventModal{{ event_detail.id }}" tabindex="-1"
+                <div class="modal fade" id="eventModal{{ event_detail.event.id }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">

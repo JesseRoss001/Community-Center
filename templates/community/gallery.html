@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Gallery</h1>
+    <h1 class="text-center">Gallery</h1>
     <div class="row">
         <!-- Looping through events with images -->
         {% for event in events_with_images %}
         <div class="col-md-4 ">
             <div class="card mb-4  ">
                 <!-- Displaying the event image -->
-                <img src="{{ event.image.url }}" class="card-img-top" alt="{{  event.title }}">
+                <img src="{{ event.image.url }}" id="event-image-{{ event.id }}" class="card-img-top" alt="{{ event.title }}">
                 <div class="card-body">
                     <h5 class="card-title"> {{ event.title }} </h5>
                     <!-- Checking if the user is authenticated and is the author of the event to show delete option -->
